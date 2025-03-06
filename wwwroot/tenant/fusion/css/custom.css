@@ -1,0 +1,193 @@
+﻿:root {
+    --poppins: 'Poppins', sans-serif;
+}
+
+.is-invalid {
+    color: #dc3545 !important;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.wizard > .actions {
+    margin-top: 26px;
+}
+
+.fs-20{
+    font-size: 20px;
+}
+
+/*START: Validation Message*/
+.field-validation-error {
+    color: #dc3545;
+    font-size: 12px;
+}
+
+.input-validation-error {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + 1.55rem);
+    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23f1416c'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23f1416c' stroke='none'/%3e%3c/svg%3e);
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.3875rem) center;
+    background-size: calc(0.75em + 0.775rem) calc(0.75em + 0.775rem);
+    margin-bottom: 3px;
+}
+
+
+    .input-validation-error ~ .invalid-feedback,
+    .input-validation-error ~ .invalid-tooltip {
+        display: block;
+    }
+
+.form-control.input-validation-error {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + 1.55rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23f1416c'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23f1416c' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.3875rem) center;
+    background-size: calc(0.75em + 0.775rem) calc(0.75em + 0.775rem);
+}
+
+    .form-control.input-validation-error:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+    }
+
+textarea.form-control.input-validation-error {
+    padding-right: calc(1.5em + 1.55rem);
+    background-position: top calc(0.375em + 0.3875rem) right calc(0.375em + 0.3875rem);
+}
+
+.form-select.input-validation-error {
+    border-color: #dc3545;
+}
+
+    .form-select.input-validation-error:not([multiple]):not([size]), .form-select.input-validation-error:not([multiple])[size="1"] {
+        --bs-form-select-bg-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23f1416c'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23f1416c' stroke='none'/%3e%3c/svg%3e");
+        padding-right: 5.5rem;
+        background-position: right 1rem center, center right 3rem;
+        background-size: 16px 12px, calc(0.75em + 0.775rem) calc(0.75em + 0.775rem);
+    }
+
+    .form-select.input-validation-error:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+    }
+
+.form-control-color.input-validation-error {
+    width: calc(3rem + calc(1.5em + 1.55rem));
+}
+
+.form-check-input.input-validation-error {
+    border-color: #dc3545;
+}
+
+    .form-check-input.input-validation-error:checked {
+        background-color: var(--bs-form-invalid-color);
+    }
+
+    .form-check-input.input-validation-error:focus {
+        box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+    }
+
+    .form-check-input.input-validation-error ~ .form-check-label {
+        color: var(--bs-form-invalid-color);
+    }
+/*END: Validation Message*/
+
+/* Tagify custom CSS starts */
+.tagify.form-control {
+    padding: 4px;
+}
+.tagify__input {
+    margin: 0px !important;
+    padding: 0px 10px !important;
+    line-height: 2 !important;
+}
+.tagify--empty .tagify__input::before {
+    top: 8px;
+}
+/* Tagify custom CSS ends */
+
+.wizard > .steps .current a,
+.wizard > .steps .current a:hover,
+.wizard > .steps .current a:active {
+    background: var(--primary)
+}
+
+.wizard > .actions a,
+.wizard > .actions a:hover,
+.wizard > .actions a:active {
+    background: var(--primary);
+}
+
+/* Tablist CSS starts */
+.wizard .steps ul {
+    border: 0px;
+    position: relative;
+    border-bottom: 1px solid var(--grey-5);
+    padding-bottom: 40px;
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.wizard > .steps a, .wizard > .steps a:hover, .wizard > .steps a:active {
+    display: block;
+    width: auto;
+    margin: 0;
+    padding: 1em 1em;
+    text-decoration: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: var(--grey-5) !important;
+    font-size: 26px !important;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding: 0px 0px !important;
+    border: 0px !important;
+    position: relative;
+}
+.wizard > .steps .current a, .wizard > .steps .current a:hover, .wizard > .steps .current a:active {
+    background: var(--white);
+    color: var(--bannermaintextcolor) !important;
+}
+.wizard > .steps .current a:after, .wizard > .steps .current a:hover:after, .wizard > .steps .current a:active:after {
+    content: '';
+    width: 100%;
+    height: 3px;
+    background: var(--primary);
+    position: absolute;
+    top: 77px;
+    left: 0;
+}
+.wizard > .steps .number {
+    font-size: 26px;
+}
+.wizard > .steps .disabled a, .wizard > .steps .disabled a:hover, .wizard > .steps .disabled a:active {
+    background: var(--white);
+}
+.wizard > .steps .done a, .wizard > .steps .done a:hover, .wizard > .steps .done a:active {
+    background: var(--white);
+}
+.wizard > .actions {
+    text-align: left;
+}
+.wizard > .steps > ul > li {
+    width: 100%;
+}
+@media (max-width: 1199px) {
+    .wizard .steps ul {
+        justify-content: unset;
+        flex-wrap: nowrap;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        overflow-y: hidden;
+    }
+    .wizard > .steps > ul > li {
+        margin-right: 20px;
+    }
+}
+/* Tablist CSS ends */

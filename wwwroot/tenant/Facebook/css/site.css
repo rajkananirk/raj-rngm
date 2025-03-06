@@ -1,0 +1,2381 @@
+body {
+    font-family: var(--poppins);
+    background: var(--bodybg);
+}
+/* Custom style starts */
+.mb-16 {
+    margin-bottom: 16px;
+}
+.mb-32 {
+    margin-bottom: 32px;
+}
+.mb-55 {
+    margin-bottom: 55px;
+}
+.mb-88 {
+    margin-bottom: 88px;
+}
+.mw-250 {
+    max-width: 250px;
+}
+/* Custom style ends */
+/* Skip to content CSS starts */
+.skip {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+.skip:focus {
+    position: absolute;
+    width: auto;
+    height: auto;
+    z-index: 9;
+    left: 7px;
+    top: 5px;
+    background: var(--white);
+    color: var(--primary);
+    padding: 5px 15px;
+    border: 2px solid var(--primary);
+}
+/* Skip to content CSS ends */
+/* Banner Image section CSS starts */
+.banner-section {
+    margin: 50px 0;
+    padding: 0px 26px;
+}
+.banner-block {
+    background: var(--white);
+    padding: 0px 46px 0px 39px;
+    max-width: 1388px;
+    margin: 0 auto;
+}
+.banner-block h1 {
+    color: var(--bannermaintextcolor);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding-top: 82px;
+}
+.banner-block span {
+    color: var(--bannermaintextcolor);
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: block;
+}
+.banner-block .banner-text {
+    color: var(--black);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    width: 70%;
+    margin: 30px 0px 0px;
+}
+.banner-block .banner-img {
+    max-width: 100%;
+    width: 100%;
+}
+svg#bigTriangleColor {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 250px;
+    display: block;
+    z-index: 100;
+}
+/* Banner Image section CSS ends */
+/* Trusted platforms CSS starts */
+.trusted-platforms {
+    border-top: 1px solid var(--grey);
+    border-bottom: 1px solid var(--grey);
+    background: var(--white);
+    padding: 50px 0;
+}
+.trusted-platforms-heading {
+    color: var(--bannermaintextcolor);
+    text-align: center;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.trusted-platforms-list {
+    padding: 0;
+    margin: 40px 0px;
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.trusted-platforms-list li {
+    width: 16.66%;
+    text-align: center;
+    margin: 20px 0;
+}
+.trusted-platforms-list li img {
+    max-width: 100%;
+    padding: 20px;
+}
+/* Trusted platforms CSS ends */
+/* Banner Image section CSS starts */
+.emp-banner-section {
+    margin: 50px 0;
+    padding: 0px 26px;
+}
+.emp-banner-block {
+    background: var(--white);
+    padding: 0px 46px 0px 39px;
+    max-width: 1388px;
+    margin: 0 auto;
+    height: 629px;
+}
+.emp-banner-block h1 {
+    color: var(--bannermaintextcolor);
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding-top: 82px;
+}
+.emp-banner-block .emp-banner-text {
+    color: var(--grey-3);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    margin: 30px 0px 50px;
+}
+.emp-banner-block .emp-banner-img {
+    max-width: 100%;
+    /* margin: 33px 0 0 auto; */
+    margin: 0px 0 0 auto;
+    display: block;
+}
+svg#bigTriangleColor {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 250px;
+    display: block;
+    z-index: 100;
+}
+/* Banner Image section CSS ends */
+/* Homepage login type CSS starts */
+.login-type-section {
+    margin: -280px 0px 50px;
+    z-index: 101;
+    position: relative;
+}
+.emp-login-type-section {
+    margin: -280px 0px 50px;
+    z-index: 101;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+.login-type-block {
+    width: 320px;
+    border-radius: 8px;
+    background: var(--white);
+    box-shadow: 0px 3px 16px -4px rgba(0, 0, 0, 0.45);
+    padding: 20px;
+}
+.login-type-block img {
+    width: 100%;
+}
+.login-type-name {
+    color: var(--secondary);
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: center;
+    padding: 24px 0px 11px;
+    display: inline-block;
+    width: 100%;
+    text-decoration: none;
+}
+.login-type-text {
+    color: var(--black);
+    text-align: center;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+/* Homepage login type CSS ends */
+/* Homepage program benefits CSS starts */
+.program-benefits-section {
+    margin: 50px auto;
+    padding: 0px 52px;
+    display: block;
+    width: 100%;
+    max-width: 1440px;
+}
+.program-benefits-img {
+    width: 100%;
+}
+.program-benefits-title {
+    background: var(--primary);
+    color: var(--white);
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    margin: 50px 0;
+    text-align: center;
+    padding: 18px 0;
+}
+.program-benefits-points {
+    border-radius: 0px 8px 8px 0px;
+    border: 1px solid var(--grey);
+    background: var(--white);
+    padding: 30px 70px;
+    list-style-type: none;
+}
+.program-benefits-points .point {
+    display: flex;
+    align-items: center;
+    margin: 40px 0px;
+}
+.program-benefits-points .point img, .program-benefits-points .point svg {
+    width: 44px;
+    height: 44px;
+    margin-right: 30px;
+}
+.program-benefits-points .point .point-desc {
+    color: var(--bannermaintextcolor);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+}
+/* Homepage program benefits CSS ends */
+/* Homepage featured jobs CSS starts */
+.featured-jobs-section {
+    display: inline-block;
+    width: 100%;
+    margin: 50px 0;
+}
+.emp-featured-jobs-section {
+    display: inline-block;
+    width: 100%;
+    margin: 50px 0;
+    border-top: 1px solid var(--grey);
+    border-bottom: 1px solid var(--grey);
+    background: var(--white);
+    padding: 60px 0 80px;
+}
+.featured-job-title {
+    color: var(--bannermaintextcolor);
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.featured-job-block {
+    padding: 25px;
+    border-radius: 8px;
+    background: var(--white);
+    box-shadow: 0px 3px 16px -4px rgba(0, 0, 0, 0.45);
+}
+.featured-job-block .featured-job-name {
+    color: var(--black);
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    min-height: 100px;
+}
+.featured-job-block .featured-job-name a {
+    cursor: pointer;
+}
+.featured-job-block .job-details {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+.featured-job-block .job-location, .featured-job-block .job-time, .featured-job-block .job-type {
+    width: 50%;
+    color: var(--grey-2);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 0px;
+}
+.featured-job-block .job-location {
+    margin-bottom: 10px;
+}
+.featured-job-block .job-time {
+    text-align: right;
+    margin-bottom: 10px;
+}
+.featured-job-block .job-location img, .featured-job-block .job-time img, .featured-job-block .job-type img {
+    margin-right: 8px;
+}
+/* Homepage featured jobs CSS ends */
+
+/* Hiring Manager Registration page CSS starts */
+/* Back to Home CSS starts */
+.back-to-home {
+    color: var(--primary);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    display: inline-block;
+    text-decoration: none;
+    padding: 0px 70px;
+}
+/* Back to Home CSS ends */
+/* Page title CSS starts */
+.page-title-section {
+    margin: 50px 0px;
+}
+.page-title-block {
+    margin: 150px 0;
+    position: relative;
+}
+.page-title-bg {
+    border-top: 1px solid var(--grey);
+    border-bottom: 1px solid var(--grey);
+    background: var(--white);
+    padding: 70px 0 70px 600px;
+    margin-bottom: 40px;
+}
+.page-title-controls {
+    padding: 0px 0 0px 600px;
+}
+.page-title-controls p {
+    color: var(--bannermaintextcolor);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.2px;
+}
+.page-title-bg h1 {
+    color: var(--bannermaintextcolor);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 24px;
+}
+.page-title-bg p {
+    color: var(--black-3);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    margin-bottom: 0px;
+}
+.page-title-img {
+    position: absolute;
+    top: -100px;
+    left: 70px;
+    border-radius: 8px;
+    border: 1px solid var(--grey-6);
+    background: var(--white);
+    padding: 24px;
+    width: 490px;
+}
+.page-title-img img {
+    border-radius: 8px;
+    width: 100%;
+}
+/* Page title CSS ends */
+/* Need to know CSS starts */
+.need-to-know {
+    background: var(--primary);
+    padding: 90px 0;
+}
+.need-to-know h3 {
+    color: var(--white);
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.need-to-know p {
+    color: var(--white);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    margin: 27px 0 0;
+    width: 75%;
+}
+/* Need to know CSS ends */
+/* Note section CSS starts */
+.note-section {
+    margin: 80px 0;
+}
+.note-section p {
+    color: var(--grey-5);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    width: 83%;
+}
+/* Note section CSS ends */
+/* Registration form CSS starts */
+.registration-form {
+    margin-bottom: 100px;
+}
+.refer-talent-form {
+    margin-top: 100px;
+}
+.file-upload-text {
+    color: var(--grey-5);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    margin-top: 5px;
+    display: inline-block;
+}
+.refer-talent-form h3 {
+    color: var(--bannermaintextcolor);
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.registration-form-tabs {
+    border-radius: 16px;
+    border: 1px solid var(--grey);
+    background: var(--white);
+    padding: 80px 100px;
+}
+.registration-form-tabs .nav-tabs {
+    border: 0px;
+    position: relative;
+    border-bottom: 1px solid var(--grey-5);
+    padding-bottom: 40px;
+    margin-bottom: 50px;
+}
+.registration-form-tabs .nav-tabs li button {
+    color: var(--grey-5) !important;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    padding: 0px 0px !important;
+    border: 0px !important;
+    position: relative;
+}
+.registration-form-tabs .nav-tabs li button.active, .registration-form-tabs .nav-tabs li button:hover {
+    color: var(--bannermaintextcolor) !important;
+    isolation: auto !important;
+}
+.registration-form-tabs .nav-tabs li button.active:after, .registration-form-tabs .nav-tabs li button:hover:after {
+    content: '';
+    width: 100%;
+    height: 3px;
+    background: var(--primary);
+    position: absolute;
+    top: 77px;
+    left: 0;
+}
+.registration-form-tabs .nav-tabs li {
+    margin-right: 250px;
+}
+.registration-form-tabs .nav-tabs li:last-child {
+    margin-right: 0;
+}
+.iti {
+    position: relative;
+    display: inline-block;
+}
+input[type=tel] {
+    padding-left: 52px;
+    position: relative;
+}
+.uploaded-doc-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.uploaded-doc-list li {
+    margin-bottom: 8px;
+}
+.doc-name {
+    color: var(--black);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+}
+.doc-upload-date {
+    color: var(--grey-3);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.registration-form-data .table-responsive table {
+    background: var(--white);
+    box-shadow: 0px 7px 19px 1px rgba(0, 0, 0, 0.05);
+}
+.registration-form-data .table-responsive table thead th {
+    background: var(--bglight);
+    padding: 10px 24px;
+    color: var(--black);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.3px;
+}
+.registration-form-data .table-responsive table tbody td {
+    padding: 8px 24px;
+    color: var(--grey-3);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.3px;
+}
+/* Registration form CSS ends */
+/* Registration msg CSS starts */
+.registration-success-msg {
+    border-radius: 16px;
+    border: 1px solid var(--grey);
+    background: var(--white);
+    padding: 52px 180px 100px;
+}
+.success-msg-title {
+    text-align: center;
+    color: var(--grey-5);
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 55px;
+}
+.success-msg-title img {
+    margin-right: 24px;
+}
+.success-msg-desc {
+    color: var(--grey-5);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.18px;
+    max-width: 674px;
+    margin-bottom: 54px;
+}
+.submit-another-response {
+    color: var(--primary);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    display: block;
+    margin-top: 28px;
+    text-decoration: none;
+}
+/* Registration msg CSS ends */
+/* Need to know block CSS starts */
+.need-to-know-block {
+    border-radius: 16px;
+    background: var(--white);
+    padding: 20px;
+    position: relative;
+    margin: 80px 0 50px;
+}
+.need-to-know-icon {
+    background: var(--white);
+    height: 84px;
+    width: 84px;
+    border-radius: 100%;
+    border: 8px solid var(--bannermaintextcolor);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.need-to-know-title {
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin: 50px 0 10px;
+    text-align: center;
+}
+.need-to-know-title.pink {
+    color: var(--pink-1);
+}
+.need-to-know-title.green {
+    color: var(--green-1);
+}
+.need-to-know-list li {
+    color: var(--grey-5);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    margin-bottom: 30px;
+}
+/* Need to know block CSS ends */
+/* Hiring Manager Registration page CSS ends */
+
+/* Resources page CSS starts */
+/* Page title CSS starts */
+.page-title-section-two {
+    margin: 50px auto;
+    max-width: 1440px;
+}
+.back-to-home-two {
+    color: var(--primary);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    display: inline-block;
+    text-decoration: none;
+    padding: 0px 70px;
+}
+.page-title-block-two {
+    border-radius: 8px;
+    border: 1px solid var(--grey);
+    background: var(--white);
+    padding: 40px 50px 70px;
+    margin: 40px 70px 70px;
+    position: relative;
+}
+.page-title-block-two .page-title-content h1 {
+    color: var(--bannermaintextcolor);
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.page-title-block-two .page-title-content p {
+    color: var(--black);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    margin-top: 10px;
+}
+.page-title-image {
+    position: absolute;
+    right: 200px;
+    top: -80px;
+    width: 400px;
+}
+.page-title-image img {
+    width: 100%;
+}
+/* Page title CSS ends */
+/* Resources section CSS starts */
+.resouces-section {
+    padding: 0px 70px;
+    margin: 120px auto;
+    width: 100%;
+    max-width: 1440px;
+}
+.resources-sidebar {
+    border-radius: 8px;
+    border: 1px solid var(--grey);
+    background: var(--white);
+    padding: 70px 0 117px;
+}
+.resources-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.resources-sidebar ul li a {
+    color: var(--grey-3);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    padding: 10px 40px;
+    display: inline-block;
+}
+.resources-sidebar ul li a[aria-expanded="true"], .resources-sidebar ul li a:hover {
+    color: var(--primary);
+    font-weight: 600;
+    position: relative;
+}
+.resources-sidebar ul li a[aria-expanded="true"]:before, .resources-sidebar ul li a:hover:before {
+    content: '';
+    width: 4px;
+    height: 100%;
+    position: absolute;
+    background: var(--primary);
+    left: 0;
+    top: 0;
+}
+.resource-list {
+    border-radius: 8px;
+    background: var(--white);
+    box-shadow: 0px 3px 16px -4px rgba(0, 0, 0, 0.45);
+    padding: 56px 60px 56px 32px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 48px;
+}
+.resource-list:hover {
+    transform: scale(1.02);
+}
+.resource-icon {
+    margin-right: 32px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+.resource-icon img {
+    width: 100%;
+}
+.resource-list .resource-details .rss-name {
+    color: var(--primary);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 0px;
+}
+.resource-list .resource-details .rss-desc {
+    color: var(--grey-3);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 16px 0 0;
+}
+.rss-download-icon {
+    position: absolute;
+    right: 32px;
+}
+.resources-sidebar ul ul li a {
+    padding: 10px 40px 10px 80px;
+}
+.personal-details-title {
+    color: var(--bannermaintextcolor);
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 24px;
+}
+.personal-details-faqs-forms {
+    max-height: 500px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+/* width */
+.personal-details-faqs-forms::-webkit-scrollbar {
+    width: 10px;
+}
+/* Track */
+.personal-details-faqs-forms::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+/* Handle */
+.personal-details-faqs-forms::-webkit-scrollbar-thumb {
+    background: #d9d9d9; 
+}  
+/* Handle on hover */
+.personal-details-faqs-forms::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+/* Resources section CSS ends */
+/* Progress bar css starts */
+.progress-section {
+    margin-top: 100px;
+    display: inline-block;
+    width: 100%;
+}
+#progressbar {
+    overflow: hidden;
+    color: var(--black);
+    max-width: 600px;
+    margin: 0px auto;
+}
+#progressbar li {
+    list-style-type: none;
+    font-size: 16px;
+    width: 25%;
+    float: left;
+    position: relative;
+    font-weight: 400;
+    text-align: center;
+}
+#progressbar li:before {
+    display: block;
+    font-size: 20px;
+    color: #ffffff;
+    background: lightgray;
+    border-radius: 50%;
+    margin: 30px auto 10px auto;
+    content: '';
+}
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 10px;
+    background: #f2f2f2;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    border-bottom: 1px solid #d6d6d6;
+    border-top: 1px solid #d6d6d6;
+}
+#progressbar li:first-child:after {
+    border-left: 1px solid #d6d6d6;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+#progressbar li:last-child:after {
+    border-right: 1px solid #d6d6d6;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+#progressbar li.active:after {
+    background: var(--green-1);
+    border-top: 1px solid var(--green-1);
+    border-bottom: 1px solid var(--green-1);
+}
+/* Progress bar css ends */
+/* Resources page CSS ends */
+
+/* Contact Us page CSS starts */
+.contact-banner {
+    max-width: 1440px;
+    margin: 94px auto 82px;
+    padding: 0px 60px;
+}
+.contact-banner-content {
+    position: relative;
+    border-radius: 8px;
+    border: 1px solid var(--grey);
+    background: var(--white);
+    padding: 83px 50px 65px 50px;
+}
+.contact-banner-content-details {
+    max-width: 507px;
+    position: relative;
+    z-index: 1;
+}
+.contact-banner-content-details h1 {
+    color: var(--bannermaintextcolor);
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.64px;
+    margin-bottom: 50px;
+}
+.contact-banner-content-details span {
+    color: var(--black-3);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.contact-banner-img {
+    position: absolute;
+    top: -40px;
+    right: 0;
+}
+.contact-us {
+    max-width: 1440px;
+    margin: 100px auto;
+    padding: 0px 70px;
+}
+.contact-title-block {
+    border-radius: 8px;
+    border: 1px solid var(--grey);
+    background: var(--white);
+    padding: 66px 89px;
+}
+.required-fields-text {
+    color: var(--grey-3);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.3px;
+}
+.contact-center-note p {
+    background: var(--primary);
+    padding: 33px 15px 36px 15px;
+    color: var(--white);
+    text-align: center;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    margin-bottom: 0;
+}
+/* Contact Us page CSS ends */
+
+/* Employee page resources section CSS starts */
+.emp-rss-section {
+    background: var(--primary);
+    padding: 100px 0;
+    margin: 200px 0;
+}
+.emp-rss-img {
+    position: absolute;
+    left: 0;
+    top: -250px;
+    max-width: 100%;
+}
+.emp-rss-title {
+    color: var(--white);
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.emp-rss-desc {
+    color: var(--white);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    margin: 36px 0;
+    max-width: 376px;
+}
+/* Employee page resources section CSS ends */
+
+/* Job seeker banner CSS starts */
+.job-seeker-banner {
+    max-width: 1440px;
+    margin: 70px auto;
+    padding: 0px 60px;
+}
+.job-seeker-banner-search {
+    max-width: 1440px;
+    margin: 0px auto;
+    padding: 0px 60px;
+}
+.job-seeker-content {
+    border-radius: 8px;
+    border: 1px solid var(--grey);
+    background: var(--white);
+    padding: 141px 89px 155px 89px;
+    position: relative;
+}
+.job-seeker-content h1 {
+    color: var(--bannermaintextcolor);
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    max-width: 621px;
+    position: relative;
+    z-index: 1;
+}
+.job-seeker-content h1 span {
+    color: var(--orange-1);
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.job-seeker-content span {
+    color: var(--black);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 16px;
+}
+.job-seeker-banner-img {
+    position: absolute;
+    top: 40px;
+    right: 58px;
+}
+.search-job-block {
+    position: relative;
+    padding: 58px 89px;
+    border-radius: 8px;
+    background: var(--white);
+    box-shadow: 0px 1px 19px 6px rgba(0, 0, 0, 0.05);
+    margin: -105px 58px 0px 89px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.search-job-block span, .search-job-block h2 {
+    position: absolute;
+    top: -78px;
+    left: 0;
+    width: 340px;
+    height: 78px;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+/* Job seeker banner CSS starts */
+/* Job Seeker category section CSS starts */
+.job-catg-section {
+    margin: 100px 0 50px;
+}
+.job-catg-section h3 {
+    color: var(--bannermaintextcolor);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+    margin-bottom: 100px;
+}
+.job-catg-list {
+    border-radius: 8px;
+    background: var(--white);
+}
+.job-catg-list img {
+    max-width: 100%;
+    width: 100%;
+}
+.job-catg-list p {
+    color: var(--black-3);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 27px 20px;
+    text-align: center;
+}
+/* Job Seeker category section CSS ends */
+/* Job seeker right fit section CSS starts */
+.right-fit-section {
+    background: var(--primary);
+    padding: 75px 0;
+    margin: 200px 0px;
+}
+.right-fit-title {
+    color: var(--white);
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 50px;
+}
+.right-fit-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: item;
+}
+.right-fit-list li {
+    counter-increment: item;
+    color: var(--white);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    margin-bottom: 20px;
+}
+.right-fit-list li:before {
+    content: counter(item);
+    width: 64px;
+    height: 64px;
+    display: inline-block;
+    border-radius: 100%;
+    margin-right: 34px;
+    color: var(--black);
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 2.5;
+    text-align: center;
+}
+.right-fit-list li.pink:before {
+    background: var(--pink-1);
+}
+.right-fit-list li.orange:before {
+    background: var(--orange-1);
+}
+.right-fit-list li.green:before {
+    background: var(--green-1);
+}
+.right-fit-count {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    margin-right: 34px;
+    color: var(--black);
+    font-family: Poppins;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.right-fit-count.pink {
+    background: var(--pink-1);
+}
+.right-fit-count.orange {
+    background: var(--orange-1);
+}
+.right-fit-count.green {
+    background: var(--green-1);
+}
+.right-fit-img {
+    position: absolute;
+    top: -180px;
+}
+/* Job seeker right fit section CSS ends */
+
+/* Job seeker benefit slider CSS starts */
+.benefit-slider {
+    background: var(--white);
+    box-shadow: 0px 1px 19px 6px rgba(0, 0, 0, 0.05);
+    /* padding-bottom: 50px; */
+    margin-bottom: 100px;
+}
+.slider-title {
+    color: var(--bannermaintextcolor);
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0px 0px 42px;
+}
+.slider-title span {
+    color: var(--orange-1);
+}
+.slider-text {
+    max-width: 500px;
+    color: var(--black-3);
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.22px;
+    margin-bottom: 100px;
+}
+.owl-carousel .owl-item img.slider-banner-img {
+    height: 440px;
+    margin: 0 auto;
+    width: auto;
+    padding: 50px;
+}
+.benefit-slider .owl-theme .owl-dots, .benefit-slider .owl-theme .owl-nav {
+    text-align: left;
+    position: absolute;
+    bottom: 30px;
+}
+.benefit-slider .owl-carousel .owl-nav button.owl-next, .benefit-slider .owl-carousel .owl-nav button.owl-prev {
+    background: var(--primary);
+    color: var(--white);
+    width: 62px;
+    height: 57px;
+    border-radius: 8px;
+}
+.benefit-slider .owl-carousel .owl-nav button.owl-next.disabled, .benefit-slider .owl-carousel .owl-nav button.owl-prev.disabled {
+    opacity: 1;
+    background: var(--grey);
+}
+.owl-carousel .owl-nav button.owl-prev span, .owl-carousel .owl-nav button.owl-next span {
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+}
+.owl-carousel .owl-nav button.owl-prev span {
+    background: url('../images/prev-icon.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.owl-carousel .owl-nav button.owl-next span {
+    background: url('../images/next-icon.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+/* Job seeker benefit slider CSS ends */
+
+/* Modal popup CSS starts */
+.modal-body {
+    padding: 30px;
+}
+.modal-body .btn-close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+.modal-title {
+    color: var(--bannermaintextcolor);
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.modal-desc-dark {
+    color: var(--black);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 24px 0px 32px;
+}
+.modal-desc-light {
+    color: var(--grey-5);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 40px 0;
+}
+/* Modal popup CSS ends */
+
+/* Employer login CSS starts */
+.employer-login-section {
+    max-width: 1440px;
+    margin: 100px auto;
+    padding: 0px 70px;
+}
+.employer-login-block {
+    border-radius: 32px;
+    border: 1px solid var(--grey);
+    background: var(--white);
+    padding: 100px;
+}
+.employer-login-block h3, .employer-login-block h1 {
+    color: var(--bannermaintextcolor);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 24px;
+}
+.employer-login-block p {
+    color: var(--grey-5);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 52px;
+}
+.forgot-password a {
+    color: var(--primary);
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+}
+/* Employer login CSS ends */
+
+/* Support Provider Banner CSS starts */
+.support-provider-banner {
+    margin: 70px auto;
+    max-width: 1440px;
+    padding: 0px 70px;
+}
+.support-provider-content {
+    position: relative;
+    padding: 100px 70px 50px;
+    border-radius: 32px;
+    border: 1px solid var(--grey);
+    background: var(--white);
+}
+.support-provider-text {
+    position: relative;
+    z-index: 1;
+}
+.support-provider-text h1 {
+    color: var(--bannermaintextcolor);
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    max-width: 682px;
+    margin-bottom: 22px;
+}
+.support-provider-text span {
+    color: var(--black-3);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    max-width: 529px;
+    display: inline-block;
+}
+.support-provider-banner-img {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+.support-provider-banner-img img {
+    width: 100%;
+}
+/* Support Provider Banner CSS ends */
+/* Support provider membership section CSS starts */
+.memnership-section {
+    max-width: 1440px;
+    margin: 100px auto;
+}
+.memnership-section h3, .memnership-section h2 {
+    color: var(--bannermaintextcolor);
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+    margin: 50px 0 70px;
+    display: inline-block;
+    width: 100%;
+}
+.membership-blocks {
+    display: flex;
+    align-items: self-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.membership-block {
+    border-radius: 64px;
+    box-shadow: 0px 1px 19px 6px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    max-width: 211px;
+    padding: 30px;
+    min-height: 375px;
+}
+.membership-block.blue {
+    background: var(--bannermaintextcolor);
+    margin-top: 130px;
+}
+.membership-block.white {
+    background: var(--white);
+}
+.membership-block img {
+    margin: 50px 0;
+}
+.membership-block.blue p {
+    color: var(--white);
+}
+.membership-block.white p {
+    color: var(--grey-3);
+}
+/* Support provider membership section CSS ends */
+
+/* Search jobs CSS starts */
+.search-jobs-filter {
+    max-width: 1440px;
+    margin: 60px auto;
+}
+.search-block {
+    /* display: flex;
+    align-items: end;
+    justify-content: space-between; */
+    border-radius: 15px;
+    background: var(--bglight);
+    padding: 24px 16px;
+}
+.search-title {
+    color: var(--black);
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 0px;
+}
+.search-btns .btn-primary, .search-btns .btn-secondary {
+    padding: 8px 24px;
+}
+/* Search jobs CSS ends */
+/* Job listing CSS starts */
+.job-listing-section {
+    max-width: 1440px;
+    margin: 0 auto 100px;
+}
+.job-listing-filter {
+    border-radius: 8px;
+    background: var(--white);
+    padding: 15px;
+}
+.filter-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.filter-title span, .filter-title a {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.3px;
+}
+.filter-title span {
+    color: var(--grey-3);
+}
+.filter-title a {
+    color: var(--primary);
+    text-decoration: none;
+}
+.filter-block-title {
+    color: var(--grey-3);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.3px;
+    position: relative;
+    padding-right: 20px;
+}
+.filter-block-title .fa {
+    position: absolute;
+    right: 3px;
+    top: 4px;
+}
+.filter-block-title[aria-expanded="false"] .fa:before{
+    content: "\f107";
+}
+.filter-types .form-check-label {
+    color: var(--black-3);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 11px;
+}
+.filter-types .form-check-label span {
+    color: var(--grey-5);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 11px;
+}
+.view-more-link {
+    color: var(--primary);
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+    text-decoration: none;
+}
+.job-search-results {
+    color: var(--black);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.18px;
+}
+.job-listing-block {
+    border-radius: 4px;
+    background: var(--white);
+    box-shadow: 0px 1px 19px 6px rgba(0, 0, 0, 0.05);
+    padding: 15px 24px;
+    margin-top: 20px;
+}
+.job-desc {
+    color: var(--black-3);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.3px;
+    margin: 20px 0 0;
+}
+.job-list-title {
+    color: var(--primary);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.job-catg, .job-location, .job-type, .job-share-posted, .last-viewed, .job-duration {
+    color: var(--black-3);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.3px;
+    margin-top: 5px;
+}
+.job-catg img, .job-location img, .job-type img, .job-share-posted img, .last-viewed img, .job-duration img {
+    width: 20px;
+    height: 20px;
+}
+.job-share-posted, .last-viewed, .job-duration {
+    text-align: right;
+}
+/* Job listing CSS ends */
+/* Pagination block CSS starts */
+.pagination-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.listing-details {
+    display: flex;
+    align-items: center;
+}
+.showing-records, .listing-count .form-select {
+    color: var(--black-3);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.3px;
+}
+.listing-count {
+    margin-right: 24px;
+}
+.listing-count .form-select {
+    border: 0;
+    background-color: transparent;
+}
+.pagination-list {
+    display: flex;
+    align-items: center;
+}
+.pagination-list ul {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.pagination-list ul li {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 2px;
+}
+.pagination-list ul li a {
+    text-decoration: none;
+    color: var(--grey-3);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.3px;
+}
+.pagination-list ul li.active, .pagination-list ul li:hover {
+    border-radius: 4px;
+    background: var(--bglight);
+}
+.pagination-list ul li.active a, .pagination-list ul li:hover a {
+    color: var(--black-3);
+}
+.pagination-list ul li.ellipsis-icon:hover {
+    background: transparent;
+    border-radius: 0;
+}
+.previous-details, .next-details {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+/* Pagination block CSS ends */
+/* Job details page CSS starts */
+.job-details-h1 {
+    color: var(--black);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding: 40px 70px;
+}
+.job-details-section {
+    max-width: 1440px;
+    margin: 0 auto 100px;
+}
+.job-details-block {
+    background: var(--white);
+    border: 1px solid var(--white);
+    filter: drop-shadow(0px 4px 8px rgba(39, 40, 51, 0.12));
+    padding: 15px 20px;
+}
+.job-summary-block {
+    border-radius: 4px;
+    border: 1px solid var(--bglight);
+    background: var(--white);
+    box-shadow: 0px 1px 19px 6px rgba(0, 0, 0, 0.05);
+    padding: 50px 20px 30px;
+}
+.job-details-summary p, .job-details-summary h2, .skills-needed p, .description-block p, .videos-block p {
+    color: var(--black-3);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.3px;
+    text-transform: capitalize;
+    margin-bottom: 5px;
+}
+.job-details-summary p span, .description-block p span {
+    font-weight: 400;
+}
+.description-block p span {
+    display: block;
+}
+.job-details-summary p a {
+    color: var(--black-3);
+    text-transform: lowercase;
+}
+.skills-needed ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.skills-needed ul li {
+    border-radius: 32px;
+    border: 1px solid var(--lightblue);
+    background: var(--bodybg);
+    padding: 5px 15px;
+    margin: 0 10px 10px 0;
+    color: var(--primary);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+}
+.tooltip-inner {
+    text-align: left !important;
+}
+/* Job details page CSS ends */
+
+/* Responsive media queries CSS starts */
+@media (max-width: 1399px) {
+    .login-type-section {
+        margin: -230px 0px 50px;
+    }
+    .emp-login-type-section {
+        margin: -230px 0px 50px;
+    }
+    .program-benefits-title {
+        font-size: 30px;
+        margin: 15px 0;
+        padding: 10px 0;
+    }
+    .program-benefits-points {
+        padding: 0px 50px;
+    }
+    .program-benefits-points .point {
+        margin: 30px 0px;
+    }
+    .program-benefits-points .point .point-desc {
+        font-size: 18px;
+    }
+    .featured-job-block .job-location, .featured-job-block .job-time, .featured-job-block .job-type {
+        width: 100%;
+    }
+    .featured-job-block .job-time {
+        text-align: left;
+    }
+    .owl-carousel .owl-item img.slider-banner-img {
+        height: 360px;
+        padding: 30px;
+    }
+    .need-to-know-block {
+        min-height: 410px;
+    }
+}
+
+@media (max-width: 1299px) {
+    .login-type-section {
+        margin: -170px 0px 50px;
+    }
+    .emp-login-type-section {
+        margin: -170px 0px 50px;
+    }
+    .banner-block .banner-text {
+        width: 100%;
+    }
+    .emp-banner-block .emp-banner-text {
+        width: 100%;
+    }
+    .page-title-image {
+        right: 100px;
+    }
+    .job-seeker-banner-img img {
+        max-width: 530px;
+    }
+    .contact-us-title {
+        margin: 0px 0px 100px;
+    }
+    .contact-us-desc {
+        margin: 0 auto 100px;
+    }
+}
+@media (max-width: 1199px) {
+    .login-type-section {
+        margin: 50px 0px 50px;
+    }
+    .emp-login-type-section {
+        margin: 50px 0px 50px;
+    }
+    .banner-block h1 {
+        font-size: 30px;
+        padding-top: 60px;
+    }
+    .banner-block span {
+        font-size: 24px;
+    }
+    .banner-block .banner-text {
+        font-size: 18px;
+    }
+    .emp-banner-block h1 {
+        font-size: 30px;
+        padding-top: 60px;
+    }
+    .emp-banner-block .emp-banner-text {
+        font-size: 18px;
+    }
+    svg#bigTriangleColor {
+        height: 150px;
+    }
+    .login-type-block {
+        width: 300px;
+    }
+    .program-benefits-points .point {
+        margin: 20px 0px;
+    }
+    .need-to-know p {
+        width: 100%;
+    }
+    .note-section p {
+        width: 100%;
+    }
+    .resources-sidebar ul li a {
+        font-size: 18px;
+        padding: 10px 30px;
+    }
+    .resource-list {
+        padding: 56px 40px 56px 20px;
+    }
+    .resource-icon {
+        margin-right: 20px;
+    }
+    .resource-list .resource-details .rss-name {
+        font-size: 20px;
+    }
+    .resource-list .resource-details .rss-desc {
+        font-size: 14px;
+    }
+    .rss-download-icon {
+        right: 12px;
+    }
+    .page-title-image {
+        right: 0px;
+    }
+    .emp-rss-img {
+        top: -180px;
+    }
+    .search-job-block {
+        padding: 40px;
+        margin: 100px 0px 0px 0px;
+    }
+    .search-job-block span, .search-job-block h2 {
+        top: -60px;
+        width: 300px;
+        height: 60px;
+        font-size: 20px;
+    }
+    .job-seeker-content {
+        padding: 60px 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .job-seeker-content-mobile {
+        width: 50%;
+    }
+    .job-seeker-banner-img {
+        position: relative;
+        width: 40%;
+        top: 0;
+        right: 0;
+    }
+    .job-seeker-banner-img img {
+        max-width: 100%;
+    }
+    .job-seeker-content h1, .job-seeker-content h1 span {
+        font-size: 44px;
+    }
+    .right-fit-img {
+        top: -120px;
+        max-width: 100%;
+        left: 0;
+    }
+    .owl-carousel .owl-item img.slider-banner-img {
+        height: 300px;
+        padding: 20px 0 0;
+    }
+    .need-to-know-block {
+        min-height: 350px;
+    }
+    .contact-us-title {
+        font-size: 44px;
+    }
+    .slider-title {
+        margin: 20px 0px 20px;
+    }
+    .support-provider-content {
+        padding: 50px 70px 50px;
+    }
+    .support-provider-text h1, .support-provider-text span {
+        max-width: 100%;
+    }
+    .support-provider-banner-img {
+        position: relative;
+        top: auto;
+        right: auto;
+        text-align: center;
+    }
+    .membership-blocks {
+        justify-content: center;
+    }
+    .membership-block {
+        max-width: 300px;
+        margin: 0 30px 30px;
+    }
+    .membership-block.blue {
+        margin-top: 0px;
+    }
+    .contact-banner-img {
+        top: 30px;
+        right: 30px;
+    }
+    .contact-banner-img img {
+        width: 450px;
+    }
+    .trusted-platforms-list li {
+        width: 33%;
+    }
+}
+@media (max-width: 1070px) {
+    .page-title-block-two .page-title-content h1 {
+        font-size: 50px;
+    }
+    .page-title-block-two .page-title-content p {
+        font-size: 18px;
+    }
+    .page-title-image {
+        top: -100px;
+    }
+}
+@media (max-width: 991px) {
+    .banner-block h1 {
+        font-size: 24px;
+        padding-top: 50px;
+    }
+    .banner-block span {
+        font-size: 20px;
+    }
+    .banner-block .banner-text {
+        font-size: 16px;
+    }
+    svg#bigTriangleColor {
+        display: none;
+    }
+    .banner-block {
+        filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.20));
+        padding: 0px 0px 0px 39px;
+        border-radius: 8px;
+    }
+    .banner-block .banner-img {
+        border-bottom-right-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    .emp-banner-block h1 {
+        font-size: 24px;
+        padding-top: 50px;
+    }
+    .emp-banner-block .emp-banner-text {
+        font-size: 16px;
+        margin: 30px 0px;
+    }
+    .emp-banner-block {
+        filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.20));
+        padding: 20px;
+        border-radius: 8px;
+        height: auto;
+    }
+    .emp-banner-block .emp-banner-img {
+        border-bottom-right-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    .login-type-block {
+        margin-bottom: 30px;
+    }
+    .program-benefits-title, .program-benefits-points {
+        border-radius: 8px;
+    }
+    .program-benefits-img {
+        max-width: 500px;
+    }
+    .back-to-home {
+        padding: 0px 30px;
+    }
+    .job-details-h1 {
+        font-size: 30px;
+        padding: 20px 30px;
+    }
+    .page-title-block {
+        margin: 50px 0;
+        position: relative;
+    }
+    .page-title-img {
+        position: relative;
+        top: 0;
+        left: 30px;
+        max-width: 490px;
+        display: block;
+        margin-bottom: 30px;
+    }
+    .page-title-bg {
+        padding: 70px 30px;
+    }
+    .page-title-controls {
+        padding: 0px 30px;
+    }
+    .registration-form-tabs {
+        border-radius: 16px;
+        border: 1px solid var(--grey);
+        background: var(--white);
+        padding: 50px 50px;
+    }
+    .registration-form-tabs .nav-tabs {
+        overflow-x: auto;
+        display: flex;
+        flex-wrap: nowrap;
+        width: 100%;
+        white-space: nowrap;
+        overflow-y: hidden;
+    }
+    .registration-form-tabs .nav-tabs li {
+        margin-right: 50px;
+        display: flex;
+        width: 100%;
+    }
+    .registration-form-tabs .nav-tabs li button.active:after, .registration-form-tabs .nav-tabs li button:hover:after {
+        top: 75px;
+    }
+    .resources-sidebar {
+        padding: 50px 0 50px;
+        margin-bottom: 48px;
+    }
+    .page-title-block-two {
+        padding: 40px 50px;
+        margin: 40px 70px 0px;
+    }
+    .page-title-image {
+        display: none;
+    }
+    .resouces-section {
+        margin: 50px auto;
+    }
+    .registration-success-msg {
+        padding: 50px 50px;
+    }
+    .emp-rss-section {
+        padding: 50px 0;
+        margin: 0px 0 50px;
+    }
+    .emp-rss-section .row {
+        align-items: center;
+    }
+    .emp-rss-img {
+        position: relative;
+        top: auto;
+    }
+    .emp-rss-desc {
+        max-width: 100%;
+    }
+    .job-seeker-content {
+        padding: 40px 40px;
+        flex-wrap: wrap;
+    }
+    .job-seeker-content-mobile {
+        width: 100%;
+    }
+    .job-seeker-banner-img {
+        width: 100%;
+        top: 20px;
+    }
+    .right-fit-img {
+        top: 0px;
+        left: 0;
+        position: relative;
+    }
+    .right-fit-section {
+        background: var(--primary);
+        padding: 50px 0;
+        margin: 50px 0px;
+    }
+    .right-fit-list li {
+        display: inline-block;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    .right-fit-count {
+        display: inline-block;
+        margin-right: 24px;
+        line-height: 2.5;
+        float: left;
+        text-align: center;
+    }
+    .right-fit-list-text {
+        display: inline-block;
+        float: left;
+        width: calc(100% - 88px);
+        padding: 15px 0px;
+    }
+    .job-seeker-banner-img img {
+        max-width: 300px;
+        margin: 0 auto;
+        display: block;
+    }
+    .owl-carousel .owl-item img.slider-banner-img {
+        height: 220px;
+        padding: 0px;
+    }
+    .slider-title {
+        font-size: 26px;
+    }
+    .slider-text {
+        font-size: 16px;
+    }
+    .need-to-know-list li {
+        font-size: 18px;
+    }
+    .benefit-slider .owl-theme .owl-dots, .benefit-slider .owl-theme .owl-nav {
+        bottom: 10px;
+    }
+    .support-provider-text h1 {
+        font-size: 30px;
+    }
+    .support-provider-text span {
+        font-size: 16px;
+    }
+    .job-share-posted, .last-viewed, .job-duration {
+        text-align: left;
+    }
+    .contact-banner {
+        margin: 50px auto;
+        padding: 0px 30px;
+    }
+    .contact-banner-content {
+        padding: 20px 20px;
+    }
+    .contact-banner-content-details {
+        max-width: 100%;
+    }
+    .contact-banner-content-details h1 {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+    .contact-banner-content-details span {
+        font-size: 16px;
+    }
+    .contact-banner-img {
+        top: 0px;
+        right: 0;
+        position: relative;
+        text-align: center;
+        margin: 30px 0 0;
+    }
+    .contact-banner-img img {
+        max-width: 300px;
+        width: 100%;
+    }
+    .contact-us {
+        margin: 30px auto;
+        padding: 0px 15px;
+    }
+    .contact-title-block {
+        padding: 20px;
+    }
+    .personal-details-faqs-forms {
+        max-height: 100%;
+    }
+}
+@media (max-width: 767px) {
+    .banner-block {
+        padding: 20px;
+    }
+    .banner-block h1 {
+        padding-top: 0px;
+    }
+    .banner-block .banner-text {
+        font-size: 14px;
+        margin: 15px 0px;
+    }
+    .banner-block span {
+        font-size: 18px;
+    }
+    .emp-banner-block {
+        padding: 20px;
+    }
+    .emp-banner-block h1 {
+        padding-top: 0px;
+    }
+    .emp-banner-block .emp-banner-text {
+        font-size: 14px;
+        margin: 15px 0px;
+    }
+    .login-type-block {
+        width: 100%;
+    }
+    .featured-job-block .featured-job-name {
+        min-height: auto;
+        margin-bottom: 20px;
+    }
+    .featured-job-block {
+        margin-bottom: 20px;
+    }
+    .banner-block .banner-img {
+        border-radius: 8px;
+    }
+    .emp-banner-block .emp-banner-img {
+        border-radius: 8px;
+        margin: 20px auto 0px;
+    }
+    .back-to-home-two {
+        padding: 0px 30px;
+    }
+    .page-title-block-two {
+        padding: 20px 20px;
+        margin: 40px 30px 0px;
+    }
+    .page-title-block-two .page-title-content h1 {
+        font-size: 40px;
+    }
+    .page-title-block-two .page-title-content p {
+        font-size: 16px;
+        margin-bottom: 0;
+    }
+    .resouces-section {
+        padding: 0px 30px;
+    }
+    .resources-sidebar {
+        padding: 30px 0;
+    }
+    .resource-list {
+        padding: 20px 40px 20px 20px;
+        flex-wrap: wrap;
+    }
+    .resource-icon {
+        margin-right: 0px;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    .resource-icon img {
+        width: 100%;
+        max-width: 50px;
+    }
+    .rss-download-icon {
+        right: 15px;
+        top: 32px;
+    }
+    .search-job-block {
+        flex-wrap: wrap;
+    }
+    .right-fit-img {
+        max-width: 250px;
+        display: block;
+        margin: 0px auto 20px;
+    }
+    .search-job-block span, .search-job-block h2 {
+        width: 180px;
+        font-size: 18px;
+    }
+    .slider-title {
+        font-size: 26px;
+        margin: 20px 0px 10px;
+        text-align: center;
+    }
+    .slider-text {
+        max-width: 100%;
+        text-align: center;
+        margin-bottom: 0px;
+    }
+    .benefit-slider .owl-theme .owl-dots, .benefit-slider .owl-theme .owl-nav {
+        text-align: center;
+        position: relative;
+    }
+    .need-to-know-block {
+        min-height: auto;
+    }
+    .employer-login-block {
+        padding: 30px;
+    }
+    .support-provider-banner {
+        margin: 20px auto;
+        padding: 0px 20px;
+    }
+    .support-provider-content {
+        padding: 30px 30px;
+    }
+    .trusted-platforms-list li {
+        width: 50%;
+    }
+}
+@media (max-width: 575px) {
+    .program-benefits-section {
+        padding: 0px 20px;
+    }
+    .program-benefits-title {
+        font-size: 24px;
+    }
+    .program-benefits-points {
+        padding: 0px;
+    }
+    .program-benefits-points .point {
+        margin: 0px;
+        flex-wrap: wrap;
+        justify-content: center;
+        border-bottom: 1px solid var(--grey);
+        padding: 20px;
+    }
+    .program-benefits-points .point img {
+        margin-right: 0px;
+    }
+    .program-benefits-points .point .point-desc {
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+    }
+    .page-title-img {
+        left: 0;
+        max-width: 300px;
+        margin: 0 auto 30px;
+    }
+    .registration-form-tabs {
+        padding: 20px 20px;
+    }
+    .registration-form-tabs .nav-tabs {
+        padding-bottom: 20px;
+    }
+    .registration-form-tabs .nav-tabs li {
+        margin-right: 30px;
+    }
+    .registration-form-tabs .nav-tabs li button {
+        font-size: 18px;
+    }
+    .registration-form-tabs .nav-tabs li button.active:after, .registration-form-tabs .nav-tabs li button:hover:after {
+        top: 43px;
+    }
+    .registration-success-msg {
+        padding: 20px 20px;
+    }
+    .success-msg-title {
+        text-align: left;
+        margin-bottom: 25px;
+    }
+    .success-msg-desc {
+        margin-bottom: 25px;
+    }
+    .contact-us-title {
+        font-size: 30px;
+    }
+    .contact-us-desc, .contact-note {
+        font-size: 14px;
+    }
+    .job-seeker-banner-img img {
+        max-width: 100%;
+    }
+    .owl-carousel .owl-item img.slider-banner-img {
+        height: 200px;
+    }
+    .job-seeker-banner {
+        margin: 30px auto;
+        padding: 0px 20px;
+    }
+    .job-seeker-banner-search {
+        padding: 0px 20px;
+    }
+    .job-seeker-content {
+        padding: 20px 20px 30px;
+    }
+    .job-seeker-content h1, .job-seeker-content h1 span {
+        font-size: 30px;
+    }
+    .search-job-block {
+        padding: 20px;
+    }
+    .employer-login-section {
+        margin: 30px auto;
+        padding: 0px 10px;
+    }
+    .search-btns .btn-primary, .search-btns .btn-secondary {
+        width: 100%;
+    }
+    .contact-banner-content-details h1 {
+        font-size: 30px;
+    }
+    .trusted-platforms-list li {
+        width: 100%;
+        border-top: 1px solid var(--grey);
+        margin: 0;
+    }
+    .trusted-platforms {
+        padding: 50px 0 0;
+    }
+    .trusted-platforms-list {
+        margin: 40px 0px 0px;
+    }
+}

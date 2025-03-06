@@ -1,0 +1,162 @@
+.btn-primary-big {
+    border-radius: 12px;
+    border: 1.5px solid var(--white);
+    background: var(--primary);
+    color: var(--white);
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.24px;
+    padding: 12px 55px;
+}
+.btn-primary {
+    border-radius: 8px;
+    border: 1.5px solid var(--white);
+    background: var(--primary);
+    color: var(--white);
+    text-align: center;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.18px;
+    padding: 10px 30px;
+}
+.btn-secondary {
+    border: 1.5px solid var(--primary);
+    background: var(--white);
+    color: var(--primary);
+    border-radius: 8px;
+    text-align: center;
+    font-family: var(--poppins);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.18px;
+    padding: 10px 27px;
+}
+.form-label {
+    color: var(--grey-3);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.3px;
+}
+span.required {
+    color: var(--red-required);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.3px;
+}
+.form-check-input {
+    border: 2px solid var(--grey-4);
+}
+.form-check-inline {
+    margin-right: 32px;
+}
+.form-check-label {
+    color: var(--grey-4);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.16px;
+}
+.form-check-input[type=checkbox] {
+    border-radius: 0;
+    border: 2px solid var(--primary);
+    background-color: transparent;
+}
+.form-check-input:checked[type=checkbox] {
+    --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%231c00cb' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+.form-check.checkbox {
+    padding-left: 1.8em;
+}
+.form-check.checkbox .form-check-input {
+    margin-left: -1.8em;
+}
+.checkbox .form-check-input {
+    width: 20px;
+    height: 20px;
+}
+.checkbox .form-check-label {
+    color: var(--grey-3);
+    font-weight: 600;
+    line-height: 1.7;
+}
+.checkbox .form-check-input:checked[type=checkbox] + label {
+    color: var(--primary);
+}
+.checkbox-dark {
+    color: var(--grey-3);
+    font-weight: 600;
+}
+.primary-label {
+    color: var(--primary);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+}
+.form-control {
+    border-radius: 8px;
+    border: 1px solid var(--grey-2);
+    background: var(--white);
+    color: var(--grey-5);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 8px 14px;
+    min-height: 40px;
+}
+.passcode-icon {
+    position: relative;
+}
+.passcode-icon .form-control {
+    padding-right: 65px !important;
+}
+.passcode-icon i {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+.form-select {
+    min-height: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--grey-2);
+    color: var(--grey-5);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    /* line-height: normal; */
+    padding: 8px 30px 8px 14px;
+}
+textarea.form-control {
+    height: auto;
+}
+.radiobutton.form-check {
+    padding-left: 1.6em;
+}
+.radiobutton.form-check .form-check-input {
+    margin-left: -1.4em;
+    width: 26px;
+    height: 26px;
+}
+.radiobutton .form-check-input[type=radio] {
+    background-color: var(--white);
+    border-color: var(--primary);
+}
+.radiobutton .form-check-input:checked[type=radio] {
+    --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%231c00cb' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 5-6'/%3e%3c/svg%3e");
+}

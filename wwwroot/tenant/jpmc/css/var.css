@@ -1,0 +1,23 @@
+:root {
+--primary: #004b7a;
+--secondary: #2a42e4;
+--white: #ffffff;
+--black: #000000;
+--black-2: #09121f;
+--black-3: #1c1c1c;
+--bodybg: #f8f9fd;
+--bglight: #eef2fc;
+--bannermaintextcolor: #0d0e38;
+--grey: #b7b7b7;
+--grey-2: #3b4b54;
+--grey-3: #55627b;
+--grey-4: #888b8d;
+--grey-5: #757575;
+--grey-6: #c9c9c9;
+--lightblue: #a4c5f9;
+--red-required: #da1010;
+--orange-1: #efb37d;
+--pink-1: #f1a3ad;
+--green-1: #48be97;
+ 
+}
