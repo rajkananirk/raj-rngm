@@ -1,0 +1,31 @@
+﻿@inject ICP_TenantService tenantServcie
+
+@{
+    var dynamicContent = await tenantServcie.GetAllTenantDynamicContent(CommonFunctions.GetActiveTenant()?.TenantMasterId ?? -1);
+}
+
+<div class="modal fade global-modal-popup" id="ModalAgreeToLimitedAccess" tabindex="-1"
+     data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body pt-5">
+                @Html.Raw(dynamicContent.Where(s => s.TenantDynamicContentType == EnumList.EnumTenantDynamicContentType.AgreeToLimitedAccess).Select(s => s.DynamicContent).FirstOrDefault() ?? "")
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button id="btnSubmitAgreeToLimitedAccess" type="button" class="btn btn-primary ladda-button" data-spinner-color="#fff" data-style="slide-up">
+                    <span>Confirm</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade global-modal-popup" id="ModalAgreeToLimitedAccess_RTN" tabindex="-1"
+     data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            @Html.Raw(dynamicContent.Where(s => s.TenantDynamicContentType == EnumList.EnumTenantDynamicContentType.AgreeToJoinRTN).Select(s => s.DynamicContent).FirstOrDefault() ?? "")
+        </div>
+    </div>
+</div>

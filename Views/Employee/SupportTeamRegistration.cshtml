@@ -1,0 +1,215 @@
+﻿@model CP_CommunityMemberVm
+
+@{
+    ViewData["Title"] = "Support Team Registration";
+     
+    var validationData = new List<KeyValuePair<string, string>>();
+    var locationData = DropdownFunctions.GetAllLocationForTraditioalStaffing(CommonFunctions.GetActiveTenant().ClientId);
+}
+
+@await Html.PartialAsync("_RenderSections")
+
+
+<!-- Hiring Manager section form code starts -->
+<section class="registration-form">
+    <div class="container">
+        <div class="registration-form-tabs mb-5">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="BasicInformationTab" data-bs-toggle="tab" data-bs-target="#BasicInformation" type="button" role="tab" aria-controls="BasicInformation" aria-selected="true">1. Basic Information</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="SurveyDetailsTab" data-bs-toggle="tab" data-bs-target="#SurveyDetails" type="button" role="tab" aria-controls="SurveyDetails" aria-selected="false">2. Survey Details</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="BasicInformation" role="tabpanel" aria-labelledby="BasicInformationTab">
+                    <form>
+                        <div class="row">
+                            <div class="row mb-32">
+                                <div class="col-12 mb-5 mb-md-0">
+                                    <label for="InterestedVolunteering" class="form-label d-block">I am interested in volunteering as a <span class="required">*</span></label>
+                                    <div class="form-check mb-16">
+                                        <input class="form-check-input" type="radio" name="InterestedVolunteering" id="InterestedVolunteering1" value="Peer Buddy">
+                                        <label class="form-check-label" for="InterestedVolunteering1">Peer Buddy</label>
+                                    </div>
+                                    <div class="form-check mb-16">
+                                        <input class="form-check-input" type="radio" name="InterestedVolunteering" id="InterestedVolunteering2" value="Mentor">
+                                        <label class="form-check-label" for="InterestedVolunteering2">Mentor</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="InterestedVolunteering" id="InterestedVolunteering3" value="Both">
+                                        <label class="form-check-label" for="InterestedVolunteering3">Both</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-32">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="CheckboxOne">
+                                    <label class="form-check-label checkbox-dark" for="CheckboxOne">I have completed a session of the Insights and Understanding Training</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-xl-4 col-md-6 mb-5 mb-md-0">
+                                <label for="FirstName" class="form-label">First Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="FirstName" placeholder="Jerry">
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <label for="LastName" class="form-label">Last Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="LastName" placeholder="Seinfeld">
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-xl-4 col-md-6 mb-5 mb-md-0">
+                                <label for="Title" class="form-label">Title <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="Title" placeholder="UX Designer">
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <label for="Division" class="form-label">Division <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="Division" placeholder="Technology">
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-xl-4 col-md-6 mb-5 mb-md-0">
+                                <label for="ManagerName" class="form-label">Your Manager's Name</label>
+                                <input type="text" class="form-control" id="ManagerName" placeholder="George Costanza">
+                            </div>
+                            <div class="col-xl-4 col-md-6 mb-5 mb-md-0">
+                                <label for="Location" class="form-label">Location (City, State)</label>
+                                <input type="text" class="form-control" id="Location" placeholder="San Francisco, California">
+                            </div>
+                        </div>
+                        <div class="row mb-88">
+                            <div class="col-xl-4 col-md-6">
+                                <label for="Email" class="form-label">Email <span class="required">*</span></label>
+                                <input type="email" class="form-control" id="Email" placeholder="name@universityemail.edu">
+                            </div>
+                            <div class="col-xl-4 col-md-6 iti">
+                                <label for="Phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="Phone" name="phone">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <button type="button" class="btn-primary">Next</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="SurveyDetails" role="tabpanel" aria-labelledby="SurveyDetailsTab">
+                    <form>
+                        <div class="row mb-55">
+                            <div class="col-12 mb-5 mb-md-0">
+                                <label for="PfizerSourceAbledSupportTeamMember" class="form-label d-block">1. I have notified my Manager about my interest in being a Pfizer SourceAbled Support Team Member, and they are aligned. <span class="required">*</span></label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="PfizerSourceAbledSupportTeamMember" id="PfizerSourceAbledSupportTeamMember1" value="Yes">
+                                    <label class="form-check-label" for="PfizerSourceAbledSupportTeamMember1">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="PfizerSourceAbledSupportTeamMember" id="PfizerSourceAbledSupportTeamMember2" value="No">
+                                    <label class="form-check-label" for="PfizerSourceAbledSupportTeamMember2">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-12 mb-5 mb-md-0">
+                                <label for="MemberDisabilityCRG" class="form-label d-block">2. Are you a member of the disability CRG? <span class="required">*</span></label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="MemberDisabilityCRG" id="MemberDisabilityCRG1" value="Yes">
+                                    <label class="form-check-label" for="MemberDisabilityCRG1">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="MemberDisabilityCRG" id="MemberDisabilityCRG2" value="No">
+                                    <label class="form-check-label" for="MemberDisabilityCRG2">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-12 mb-5 mb-md-0">
+                                <label for="FusionParticipation" class="form-label">3. What do you hope to get out of your participation as a Pfizer SourceAbled Support Team Member? <span class="required">*</span></label>
+                                <textarea class="form-control" id="FusionParticipation" rows="3" placeholder="Enter your answer"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-12 mb-5 mb-md-0">
+                                <label for="ComfortableWorking" class="form-label d-block">4. Are you comfortable with working with someone virtually if you are not able to meet in person? <span class="required">*</span></label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="ComfortableWorking" id="ComfortableWorking1" value="Yes">
+                                    <label class="form-check-label" for="ComfortableWorking1">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="ComfortableWorking" id="ComfortableWorking2" value="No">
+                                    <label class="form-check-label" for="ComfortableWorking2">No</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="ComfortableWorking" id="ComfortableWorking3" value="Other">
+                                    <label class="form-check-label" for="ComfortableWorking3">Other</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-12 mb-5 mb-md-0">
+                                <label for="AbleToCommit" class="form-label d-block">5. Are you able to be committed to the Fusion SourceAbled Program for a period of at least 6 months? (weekly/bi-weekly check-ins) <span class="required">*</span></label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="AbleToCommit" id="AbleToCommit1" value="Yes">
+                                    <label class="form-check-label" for="AbleToCommit1">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="AbleToCommit" id="AbleToCommit2" value="No">
+                                    <label class="form-check-label" for="AbleToCommit2">No</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="AbleToCommit" id="AbleToCommit3" value="Other">
+                                    <label class="form-check-label" for="AbleToCommit3">Other</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-12 mb-5 mb-md-0">
+                                <label for="ExtracurricularActivities" class="form-label d-block">6. Please list any of your extracurricular activities, interests, and/or hobbies.<br />(This information may help with matching you to a Buddy) <span class="required">*</span></label>
+                                <textarea class="form-control" id="ExtracurricularActivities" rows="3" placeholder="Enter your answer"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-88">
+                            <div class="col-12 mb-5 mb-md-0">
+                                <label for="InterestedRole" class="form-label d-block">7. What role/s are you interested in? <span class="required">*</span></label>
+                                <textarea class="form-control" id="InterestedRole" rows="3" placeholder="Enter your answer"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-88">
+                            <div class="col-12 mb-5 mb-md-0">
+                                <label for="SourceAbledTrainings" class="form-label d-block">8. Have you previously attended any SourceAbled trainings? <span class="required">*</span></label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="SourceAbledTrainings" id="SourceAbledTrainings1" value="Yes">
+                                    <label class="form-check-label" for="SourceAbledTrainings1">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="SourceAbledTrainings" id="SourceAbledTrainings2" value="No">
+                                    <label class="form-check-label" for="SourceAbledTrainings2">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <button class="btn-secondary me-3 mb-3 mb-sm-0 col-xl-2 col-lg-3 col-md-4 col-sm-4 col-12">Go Back</button>
+                                <button class="btn-primary col-xl-2 col-lg-3 col-md-4 col-sm-4 col-12">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="registration-success-msg">
+            <div class="success-msg-title">
+                <img src="~/tenant/pfizer/images/success-icon.svg" alt="" title="">
+                <span>Success!</span>
+            </div>
+            <div class="success-msg-desc">We have received your request. You will be contacted soon based on the responses you submitted.</div>
+            <div class="col-12">
+                <button class="btn-primary">Go to Home</button>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hiring Manager section form code ends -->

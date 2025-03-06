@@ -1,0 +1,94 @@
+﻿@model Paginated<CP_RequirementVm>
+
+@if (Model.Data != null && Model.Data.Any())
+{
+    <h2 class="job-search-results mt-3 mt-md-0">@Model.Pager.TotalItems job opportunities</h2>
+
+    @foreach (var item in Model.Data)
+    {
+        var date = item.RequirementOpenDate.HasValue ? item.RequirementOpenDate.Value : item.ModifiedDate.HasValue ? item.ModifiedDate.Value : item.CreatedDate;
+
+        <div class="job-listing-block">
+            <div class="row">
+                <div class="col-xl-8 col-lg-6">
+                    <div class="job-list-title">
+                        <h3 class="fs-20">
+                            <a href="javascript:void(0)" class="text-decoration-none cursor-pointer" style="cursor: pointer !important;" onclick="redirectToJobDetails('@item.RequirementID')">
+                                @item.JobTitleText
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="job-catg">
+                        <img src="~/imgs/job-catg.svg" alt="Requirement Category Name" title="@(!string.IsNullOrWhiteSpace(item.CategoryName) ? item.CategoryName : "-")">  @(!string.IsNullOrWhiteSpace(item.CategoryName) ? item.CategoryName : "-")
+                    </div>
+                    <div class="job-location">
+                        <img src="~/imgs/map.svg" alt="Requirement Address" title="@item.RequirementAddress @(item.IsNationwide ? "and nationwide" : "")"> @item.RequirementAddress @(item.IsNationwide ? "and nationwide" : "")
+                    </div>
+                    <div class="job-type">
+                        <img src="~/imgs/buildings.svg" alt="Requirement Type" title="@(!string.IsNullOrWhiteSpace(item.RemoteOptionTypeName) ? item.RemoteOptionTypeName : "-")"> @(!string.IsNullOrWhiteSpace(item.RemoteOptionTypeName) ? item.RemoteOptionTypeName : "-")
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6">
+                    <div class="job-share-posted">
+                        <span class="share">
+                            <img src="~/imgs/job-share.svg" alt="Share Requirement" title="Share Requirement"> Share
+                        </span>
+                        <span class="mx-2">|</span>
+                        <span class="posted">Posted On: @date.ToString("MMM dd, yyyy")</span>
+                    </div>
+                    <div class="job-duration">
+                        @{
+                            var duration = string.Empty;
+                            var months = 0;
+
+                            if (!string.IsNullOrWhiteSpace(item.RequirementDuration))
+                                duration = item.RequirementDuration.Trim();
+
+                            if (!string.IsNullOrEmpty(duration) && duration.All(char.IsDigit))
+                                months = Convert.ToInt32(duration);
+
+                            duration = string.Format("{0} {1}", months, "Months");
+
+                            if (!string.IsNullOrWhiteSpace(item.RequirementDuration) && item.RequirementDuration.All(char.IsDigit) == false)
+                                duration = item.RequirementDuration.Trim();
+                        }
+
+                        <img src="~/imgs/clock.svg" alt="Requirement Posted Date" title="@duration">
+                        @duration, @item.JobTypeText
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    @{
+                        var description = System.Text.RegularExpressions.Regex.Replace(item.RequirementJobDescription, "<.*?>", String.Empty);
+                        if (!string.IsNullOrEmpty(description) && description.Length > 300)
+                        {
+                            var jobdesc = description.Substring(0, 300);
+
+                            var index = jobdesc.LastIndexOf(' ');
+
+                            description = jobdesc.Substring(0, index);
+                            description = description + " ...";
+                        }
+                    }
+                    <p class="job-desc">
+                        @Html.Raw(description)
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+
+    @await Html.PartialAsync("_Pager", Model.Pager)
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h5 class="mb-5 mt-5 text-center">No jobs were found. New opportunities are posted daily so you can always try again later.</h5>
+        </div>
+    </div>
+}
+
+

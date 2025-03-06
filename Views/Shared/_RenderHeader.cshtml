@@ -1,0 +1,432 @@
+﻿@model Tuple<CP_TenantMasterVm, List<CP_TenantDetailTypeTxnVm>, CP_ClientMenuVm?>
+@inject IConfiguration Configuration
+
+@{
+    var isAuthenticated = CommonFunctions.IsAuthenticated();
+    var ta = Configuration.GetSection("Endpoints").GetValue<string>("EHTalentArbor") ?? string.Empty;
+    var avatar = CommonFunctions.GetCandidateAvatarBase64(CommonFunctions.GetUserId());
+    var server = Configuration.GetSection("TenantServer").GetSection("Server").Value ?? "";
+    var tenant = CommonFunctions.GetActiveTenant();
+    var tenantDir = tenant?.DomainDirectory ?? "oh";
+
+}
+
+@if (Model.Item3 != null && !string.IsNullOrWhiteSpace(Model.Item3.Header))
+{
+    if (isAuthenticated)
+    {
+
+        <header class="after-login-header">
+            <div class="topbar">
+                <div class="topbar-inner">
+                    <div class="right-topbar">
+                        <a href="#content" class="skip-to-content show-on-focus" id="skip-to-content">Skip to content</a>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="navbar navbar-expand-xl navbar-light">
+                <div class="container-fluid align-items-center justify-content-between">
+                    <a class="navbar-brand m-0 p-0" href="/portal/@tenantDir">
+                        <img class="navbar-logo" src="~/tenant/@tenantDir/images/logo.png" alt="Logo" title="RangamWorks Logo" height="60">
+                    </a>
+                    <form id="frmTaJobs" asp-action="TaJobs" asp-controller="Jobs" method="post" asp-antiforgery="true">
+                        <div class="search-block-header d-none d-xl-flex">
+                            <input id="countryId" name="countryId" value="@((int)EnumList.Country.UnitedState)" type="hidden" />
+                            <div class="search-input me-2">
+                                <img src="~/tenant/@tenantDir/images/search-icon.svg" />
+
+                                <input id="keywords2" name="keywords2" type="text" class="form-control" placeholder="Search Job Title or Keywords" maxlength="100">
+                            </div>
+                            <button type="submit" class="btn-secondary">Search</button>
+                        </div>
+                    </form>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item d-block d-xl-none">
+                                <div class="search-block-header">
+                                    <div class="search-input me-sm-2 me-0">
+                                        <img src="~/tenant/@tenantDir/images/search-icon.svg">
+                                        <input type="text" class="form-control" placeholder="Search Job Title or Keywords" maxlength="1000">
+                                    </div>
+                                    <button class="btn-secondary">Search</button>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="@($"{ta}job-seeker/dashboard")">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@($"{ta}job-seeker/jobs")">My Jobs</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="dropAboutUs" class="nav-link dropdown-toggle" href="#" data-bs-auto-close="outside" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">About Us</a>
+                                <ul class="dropdown-menu" aria-labelledby="AboutUs">
+                                    <li><a class="dropdown-item" href="/portal/@tenantDir/about">Who We Are</a></li>
+                                    <li><a class="dropdown-item" href="/portal/@tenantDir/service">What We Offer</a></li>
+                                    <li><a class="dropdown-item" href="/portal/@tenantDir/partners-employers">Partners &amp; Employers</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="dropResources" class="nav-link dropdown-toggle" href="#" data-bs-auto-close="outside"
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+                                <ul class="dropdown-menu" aria-labelledby="ProviderDropdown">
+                                    <li><a class="dropdown-item" href="/portal/@tenantDir/training">Training</a></li>
+                                    <li><a class="dropdown-item" href="/portal/@tenantDir/faqs">FAQ</a></li>
+                                    <li><a class="dropdown-item" href="/portal/@tenantDir/refertalent">Refer Someone</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a id="linkContact" class="nav-link" href="/portal/@tenantDir/contact">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="navbar-right d-flex align-items-center">
+                        <ul class="navbar-nav align-items-center flex-row">
+                            <li class="nav-item dropdown ps-xl-3 ps-0 user-dropdown border-0">
+                                <a class="nav-link dropdown-toggle text-primary border-0" href="#" data-bs-auto-close="outside" id="ProviderDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                                    @if (avatar != null && !string.IsNullOrWhiteSpace(avatar.FileBase64))
+                                    {
+                                        <img src="@($"data:image/{avatar.FileExtension};base64,{avatar.FileBase64}")" alt="User" class="img-fluid" style="width:25px;" />
+                                    }
+                                    else
+                                    {
+                                        <img class="me-xl-2 me-0" src="~/tenant/@tenantDir/images/user-icon.svg" alt="" />
+                                    }
+                                    @* <span class="d-none d-xl-inline-block">@CommonFunctions.GetUserDisplayName()</span> *@
+                                </a>
+                                <ul class="dropdown-menu" id="user-details-dropdown" aria-labelledby="ProviderDropdown">
+                                    <li>
+                                        <div class="user-details">
+                                            <div class="user-profile-img">
+                                                @if (avatar != null && !string.IsNullOrWhiteSpace(avatar.FileBase64))
+                                                {
+                                                    <a class="" asp-controller="JobSeekerProfile" asp-action="Basic">
+                                                        <img src="@($"data:image/{avatar.FileExtension};base64,{avatar.FileBase64}")" alt="User" width="50" class="img-fluid user-icon me-2" />
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/tenant/@(tenantDir)/images/user-icon.svg" alt="" />
+                                                }
+
+                                            </div>
+                                            <div class="user-profile-details">
+                                                <span class="username"><b>@CommonFunctions.GetUserDisplayName()</b></span>
+                                                <span class="user-email">@CommonFunctions.GetUserEmail()</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@($"{ta}job-seeker/profile/basic")">
+                                            <img class="me-2" src="~/tenant/@tenantDir/images/edit-profile.svg" alt="" />
+                                            <span>Edit Your Profile</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@($"{ta}job-seeker/dashboard")">
+                                            <img class="me-2" src="~/tenant/@tenantDir/images/dashboard.svg" alt="" />
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@($"{ta}job-seeker/profile/details")">
+                                            <img class="me-2" src="~/tenant/@tenantDir/images/profile.svg" alt="" />
+                                            <span>Profile</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@($"{ta}JobSeeker/SearchJob")">
+                                            <img class="me-2" src="~/tenant/@tenantDir/images/search-job-icon.svg" alt="" />
+                                            <span>Search Jobs</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@($"{ta}job-seeker/jobs")">
+                                            <img class="me-2" src="~/tenant/@tenantDir/images/my-job.svg" alt="" />
+                                            <span>My Jobs</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@($"{ta}job-seeker/settings")">
+                                            <img class="me-2" src="~/tenant/@tenant?.DomainDirectory/images/settings.svg" alt="" />
+                                            <span>Settings</span>
+
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/portal/@tenantDir/member/external-logout">
+                                            <img class="me-2" src="~/tenant/@tenantDir/images/logout-icon.svg" alt="" />
+                                            <span>Logout</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    }
+    else
+    {
+        @Html.Raw(Model.Item3.Header)
+    }
+}
+else
+{
+    var action = Convert.ToString(ViewContext.RouteData.Values["action"]) ?? string.Empty;
+    var controller = Convert.ToString(ViewContext.RouteData.Values["controller"]) ?? string.Empty;
+
+    var loginType = 0;
+
+    /*
+    * 0 = Root
+    * 1 = Employee
+    * 2 = Jobseeker
+    */
+
+    if ((action.Equals("Index") && controller.Equals("Home"))
+    || (action.Equals("Index") && controller.Equals("Employee"))
+    || (action.Equals("Index") && controller.Equals("Jobseeker"))
+    || (action.Equals("Index") && controller.Equals("SupportProvider"))
+    || (action.Equals("Index") && controller.Equals("Contact")))
+    {
+        loginType = 0;
+    }
+    else if ((action.Equals("HiringManagerRegistration") && controller.Equals("Employee"))
+    || (action.Equals("ReferTalent") && controller.Equals("Employee"))
+    || (action.Equals("Resources") && controller.Equals("Home")))
+    {
+        loginType = 1;
+    }
+    else if ((action.Equals("Index") && controller.Equals("Jobs"))
+    || (action.Equals("Details") && controller.Equals("Jobs")))
+    {
+        loginType = 2;
+    }
+
+    var logo = Model.Item2.Where(s => s.TenantDetailTypeId == (int)EnumList.TenantDetailType.LogoDark).ToList();
+    var logstr = string.Join(",", logo);
+
+    @if (Model.Item1.SiteName.Equals("Elevance Health"))
+    @*@if (server.Equals("HealthWorks"))*@
+    {
+        <header>
+            <div class="topbar">
+                <div class="topbar-inner">
+                    <div class="left-topbar">
+                        <a href="#content" class="skip-to-content">Skip to main content</a>
+                        <input id="domdir" type="hidden" value="@Model.Item1.DomainDirectory" />
+                        <input id="logos" type="hidden" value="@logstr" />
+                    </div>
+                    @*
+                        <div class="right-topbar">
+                        <ul class="accessibility-features">
+                        <li><a href="javascript:void(0)" id="decreaseZoomLevel" role="button">A<sup>-</sup></a></li>
+                        <li><a href="javascript:void(0)" id="regularZoomLevel" role="button">A</a></li>
+                        <li><a href="javascript:void(0)" id="increaseZoomLevel" role="button">A<sup>+</sup></a></li>
+                        <li class="change-contrast"><a href="javascript:void(0)" class="text-white" id="addContrast" role="button">A</a></li>
+                        <li class="normal-contrast"><a href="javascript:void(0)" id="removeContrast" role="button">A</a></li>
+                        </ul>
+                        </div>
+                    *@
+                </div>
+            </div>
+            <div class="navbar navbar-expand-xl navbar-light">
+                <div class="container-fluid align-items-center justify-content-between p-0">
+
+                    @if (logo.Any())
+                    {
+                        foreach (var i in logo)
+                        {
+                            <a class="navbar-brand m-0 p-0" href="/@Model.Item1.DomainDirectory">
+                                <img style="max-height: 47px;" class="navbar-logo" src="~/tenant/@Model.Item1.DomainDirectory/images/@i.Value" alt="TalentArbor Healthworks Powered by Rangam Logo" title="TalentArbor Healthworks Powered by Rangam Logo">
+                            </a>
+                        }
+                    }
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <nav class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="menulnk nav-link @Html.ActiveClass("Index", "Home")" href="javascript:void(0)" onclick="redirectToHome()">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="menulnk  nav-link @Html.ActiveClass("Index", "Jobs")" href="@(Configuration.GetSection("Endpoints").GetValue<string>("EHTalentArbor"))JobSeeker/SearchJob">Find a Job</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="menulnk nav-link @Html.ActiveClass("Service", "Page")" href="javascript:void(0)" onclick="redirectToService()">What We Offer</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="menulnk nav-link @Html.ActiveClass("About", "Page")" href="javascript:void(0)" onclick="redirectToAbout()">Who We Are</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle @Html.ActiveClass("Index", "Employee")  @Html.ActiveClass("Index", "SupportProvider")" href="#" id="ProviderDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Partnerships
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="ProviderDropdown">
+                                    <li><a class="menulnk dropdown-item @Html.ActiveClass("About", "Home")" href="javascript:void(0)" onclick="redirectToEmployee()">Employers</a></li>
+                                    <li><a class="menulnk dropdown-item @Html.ActiveClass(" Index", "SupportProvider" )" href="javascript:void(0)" onclick="redirectToSupportProvider()">Support Providers</a></li>
+                                </ul>
+                            </li>
+                            <!-- Mobile view menu starts -->
+                            <li class="nav-item d-block d-xl-none">
+                                <a class="nav-link @Html.ActiveClass("Contact", "Home")" href="javascript:void(0)" onclick="redirectToContact()">Contact Us</a>
+                            </li>
+                            <!-- Mobile view menu ends -->
+                        </ul>
+                    </nav>
+                    <div class="navbar-right d-none d-xl-flex align-items-center">
+                        <a class="menulnk nav-link @Html.ActiveClass("Contact", "Home")" href="javascript:void(0)" onclick="redirectToContact()">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+    }
+    else
+    {
+        <header>
+            @*  <a href="#content" class="skip">Skip to content</a> *@
+            <div class="navbar navbar-expand-lg navbar-light bg-white">
+                <div class="container-fluid align-items-center justify-content-between p-0">
+
+                    @if (logo.Any())
+                    {
+                        foreach (var i in logo)
+                        {
+                            <a class="navbar-brand m-0 p-0" href="/@Model.Item1.DomainDirectory">
+                                <img style="max-height: 47px;" class="navbar-logo" src="~/tenant/@Model.Item1.DomainDirectory/images/@i.Value" alt="Pfizer logo" title="Pfizer logo">
+                            </a>
+                        }
+                    }
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+
+                            @if (loginType == 0)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Index", "Home")" href="/@Model.Item1.DomainDirectory">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Index", "Employee")" href="/@Model.Item1.DomainDirectory/employee">Employee</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Index", "Jobseeker")" href="/@Model.Item1.DomainDirectory/jobseeker">Job Seeker</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Index", "SupportProvider")" href="/@Model.Item1.DomainDirectory/support-provider">Provider</a>
+                                </li>
+
+                                <!-- Mobile view menu starts -->
+                                @if (action == "Index" && controller == "Employee")
+                                {
+                                    <li class="nav-item d-block d-lg-none">
+                                        <a class="nav-link" href="/@Model.Item1.DomainDirectory/employee/login">Login</a>
+                                    </li>
+                                }
+
+                                @if (action == "Index" && controller == "Jobseeker")
+                                {
+                                    <li class="nav-item d-block d-lg-none">
+                                        <a class="nav-link" href="/@Model.Item1.DomainDirectory/jobseeker/register">Register</a>
+                                    </li>
+
+
+                                    <li class="nav-item d-block d-lg-none">
+                                        <a class="nav-link" href="https://careers.sourceabled.com/job-seekers">Login</a>
+                                    </li>
+                                }
+                                <!-- Mobile view menu ends -->
+                            }
+                            else if (loginType == 1)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Index", "Home")" href="/@Model.Item1.DomainDirectory">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Resources", "Home")" href="/@Model.Item1.DomainDirectory/resources">Resources</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Index", "Jobs")" href="/@Model.Item1.DomainDirectory/jobs">Jobs</a>
+                                </li>
+
+                                <!-- Mobile view menu starts -->
+                                <li class="nav-item d-block d-lg-none">
+                                    <a class="nav-link" href="/@Model.Item1.DomainDirectory/employee/login">Login</a>
+                                </li>
+                                <!-- Mobile view menu ends -->
+                            }
+                            else if (loginType == 2)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Index", "Home")" href="/@Model.Item1.DomainDirectory">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Index", "Jobs")" href="/@Model.Item1.DomainDirectory/jobs">Jobs</a>
+                                </li>
+
+                                <!-- Mobile view menu starts -->
+                                <li class="nav-item d-block d-lg-none">
+                                    <a class="nav-link" href="/@Model.Item1.DomainDirectory/jobseeker/register">Register</a>
+                                </li>
+                                <li class="nav-item d-block d-lg-none">
+                                    <a class="nav-link" href="https://careers.sourceabled.com/job-seekers">Login</a>
+                                </li>
+                                <!-- Mobile view menu ends -->
+                            }
+
+                            <!-- Mobile view menu starts -->
+                            <li class="nav-item d-block d-lg-none">
+                                <a class="nav-link @Html.ActiveClass("Contact", "Home")" href="/@Model.Item1.DomainDirectory/contact">Need Support?</a>
+                            </li>
+                            <!-- Mobile view menu ends -->
+                        </ul>
+                    </div>
+                    <div class="navbar-right d-none d-lg-flex align-items-center">
+                        @if (loginType == 0)
+                        {
+                            @if (action == "Index" && controller == "Employee")
+                            {
+                                <a class="text-decoration-none btn-secondary" href="/@Model.Item1.DomainDirectory/employee/login">Login</a>
+                            }
+
+                            @if (action == "Index" && controller == "Jobseeker")
+                            {
+                                <a class="nav-link" href="/@Model.Item1.DomainDirectory/jobseeker/register">Register</a>
+
+                                <a class="text-decoration-none btn-secondary" href="https://careers.sourceabled.com/job-seekers">Login</a>
+                            }
+                        }
+
+                        @if (loginType == 1)
+                        {
+                            <a class="text-decoration-none btn-secondary" href="/@Model.Item1.DomainDirectory/employee/login">Login</a>
+                        }
+
+                        @if (loginType == 2)
+                        {
+                            <a class="nav-link" href="/@Model.Item1.DomainDirectory/jobseeker/register">Register</a>
+
+                            <a class="text-decoration-none btn-secondary" href="https://careers.sourceabled.com/job-seekers">Login</a>
+                        }
+
+                        <a class="nav-link @Html.ActiveClass("Contact", "Home")" href="/@Model.Item1.DomainDirectory/contact">Need Support?</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+    }
+}

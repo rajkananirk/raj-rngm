@@ -1,0 +1,218 @@
+﻿@inject IConfiguration Configuration
+
+@{
+    var tenant = CommonFunctions.GetActiveTenant();
+    var page = CommonFunctions.GetControllerAction();
+    var siteSettings = CommonFunctions.GetSiteSetting();
+    var detailsType = CommonFunctions.GetAllTenantDetailsType();
+    var enableSEO = Configuration.GetValue<bool>("EnableSEO");
+
+
+    var menu = CommonFunctions.GetMenuByPage();
+    var server = Configuration.GetSection("TenantServer").GetSection("Server").Value ?? "";
+    var googleGeoKey = Configuration.GetValue<string>("GoogleGeoKey");
+
+    var isEnablePasscode = false;
+    var isPasscode = CacheFunctions.GetSession("Passcode");
+    var isAgreeToLimitedAccess = CacheFunctions.GetSession(CandidateAttributeName.AgreeToLimitedAccess);
+
+    if (page != null && isPasscode == null)
+    {
+        isEnablePasscode = siteSettings.EnablePasscode;
+    }
+
+    if (page != null && page.Item1.Equals("Accommodation") && page.Item2.Equals("Survey"))
+    {
+        isEnablePasscode = false;
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
+    <meta http-equiv="PRAGMA" content="NO-CACHE">
+    <meta http-equiv="EXPIRES" content="0">
+
+    <!--  Javascript Declaration   -->
+    <meta name="format-detection" content="telephone=yes">
+    <meta http-equiv="Content-Type" content="text/xhtml; charset=UTF-8">
+    <meta name="viewport" id="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="MobileOptimized" content="320">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>
+        @if (server.Equals("HealthWorks"))
+        {
+            @: @ViewData["Title"] | RangamWorks
+        }
+        else
+        {
+            @:  @ViewData["Title"] | @tenant.SiteName
+        }
+    </title>
+
+    <!--  START: SEO Meta Tag   -->
+    @if (enableSEO)
+    {
+        var seo = CommonFunctions.GetCurrentPageSeo();
+
+        if (seo != null && seo.TenantSeoManagerId > 0 && seo.RenderMetaTag)
+        {
+            if (!string.IsNullOrEmpty(seo.MetaKeywords))
+            {
+                <meta name="keywords" content="@seo.MetaKeywords" />
+                <meta name="twitter:card" content="@seo.MetaKeywords" />
+            }
+
+            if (!string.IsNullOrEmpty(seo.MetaDescription))
+            {
+                <meta name="description" content="@seo.MetaDescription" />
+                <meta property="og:description" content="@seo.MetaDescription" />
+                <meta name="twitter:description" content="@seo.MetaDescription" />
+            }
+
+            if (!string.IsNullOrEmpty(seo.MetaCanonical))
+            {
+                <meta name="canonical" content="@seo.MetaCanonical" />
+            }
+
+            if (!string.IsNullOrEmpty(seo.MetaImagePath))
+            {
+                <meta property="og:image" content="@seo.MetaImagePath" />
+                <meta name="twitter:image" content="@seo.MetaImagePath" />
+            }
+
+            <meta property="og:title" content="@ViewBag.Title" />
+            <meta name="twitter:title" content="@ViewBag.Title" />
+            <meta name="title" content="@ViewBag.Title" />
+        }
+    }
+    else
+    {
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="googlebot" content="noindex, nofollow">
+    }
+
+    <!--  END: SEO Meta Tag   -->
+
+    <link rel="icon" href="~/tenant/@tenant.FolderName/images/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    @if (server.Equals("HealthWorks"))
+    {
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap" rel="stylesheet">
+        <link href="~/lib/bootstrap/css/bootstrap-icons.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/lib/bootstrap/css/bootstrap-icons.css" rel="stylesheet" />
+    }
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/lib/ladda/dist/ladda-themeless.min.css" rel="stylesheet" />
+    <link href="~/lib/izitoast/izitoast.min.css" rel="stylesheet" />
+
+
+    <link href="~/tenant/@tenant.FolderName/css/var.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/tenant/@tenant.FolderName/css/controls.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/tenant/@tenant.FolderName/css/footer.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/tenant/@tenant.FolderName/css/header.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/tenant/@tenant.FolderName/css/site.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/tenant/@tenant.FolderName/css/custom.css" rel="stylesheet" asp-append-version="true" />
+
+    <link href="~/lib/tagify/tagify.css" rel="stylesheet" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+
+    <link href="~/css/custom.css" rel="stylesheet" asp-append-version="true" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics (Uncomment on Pfizer Poduction Portal Only) -->
+    <!--<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZWP3M0DK8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        } gtag('js', new Date()); gtag('config', 'G-PZWP3M0DK8');
+    </script>-->
+    <!-- Google Tag Manager -->
+    <!--<script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-N6XSHPG');</script>-->
+</head>
+<body>
+
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" id="HdDomainDirectory" value="@tenant.DomainDirectory" />
+    <input type="hidden" id="HdEnablePasscode" value="@(isEnablePasscode ? "true" : "false")" />
+    <input type="hidden" id="HdPasscode" value="@isPasscode" />
+    <input type="hidden" id="HdAgreeToLimitedAccess" value="@isAgreeToLimitedAccess" />
+    <input type="hidden" id="HdPasscodeCaseSensitve" value="@(siteSettings.IsCaseSensitive ? "true" : "false")" />
+    <input type="hidden" id="GoogleGeoKey" value="@googleGeoKey" />
+
+    @await Html.PartialAsync("_RenderHeader", new Tuple<CP_TenantMasterVm, List<CP_TenantDetailTypeTxnVm>, CP_ClientMenuVm?>(tenant, detailsType, menu))
+
+    <main id="content">
+        @RenderBody()
+    </main>
+
+    @await Html.PartialAsync("_RenderFooter", new Tuple<CP_TenantMasterVm, List<CP_TenantDetailTypeTxnVm>, CP_ClientMenuVm?>(tenant, detailsType, menu))
+
+    @await Html.PartialAsync("_Passcode", tenant)
+
+    @await Html.PartialAsync("_Notification")
+
+    @await Html.PartialAsync("_UserDataConsent")
+
+    <script>
+        var UrlTagify = '@Url.Action("GetLocation", "Jobs")';
+        var UrlIsValidEmailDomain = '@Url.Action("IsValidEmailDomain", "Base")';
+        var baseZipcodeUrl = '@Url.Action("IsValidZipcode", "Base")';
+        var baseSearchZipCodeUrl = '@Url.Action("SearchZipCode", "Base")';
+        var urlSaveAgreeToLimitedAccess = '@Url.Action("SaveAgreeToLimitedAccess", "Home")';
+        var UrlLocationByShortName = '@Url.Action("GetLocationByShortName", "Base")';
+    </script>
+
+    <script src="~/lib/jquery/jquery-3.7.0.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/ladda/dist/spin.min.js"></script>
+    <script src="~/lib/ladda/dist/ladda.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="~/lib/loadingoverlay/loadingoverlay.min.js"></script>
+    <script src="~/lib/izitoast/izitoast.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js"></script>
+
+    <script src="~/lib/tagify/tagify.min.js"></script>
+    <script src="~/scripts/site.js" asp-append-version="true"></script>
+    <script src="~/scripts/passcode.js" asp-append-version="true"></script>
+    <script src="~/tenant/@tenant.FolderName/js/site.js" asp-append-version="true"></script>
+    <script src="~/scripts/tagify-location.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script src="~/scripts/custom.js" asp-append-version="true"></script>
+
+    @await Html.PartialAsync("~/Views/Shared/_ChatPlugin.cshtml")
+
+</body>
+</html>

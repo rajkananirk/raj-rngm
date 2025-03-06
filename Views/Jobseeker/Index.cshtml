@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Job Seeker";
+
+    var tenant = CommonFunctions.GetActiveTenant();
+}
+
+ 
+
+
+
+ 
+@await Html.PartialAsync("_RenderSections")
+
+
+
+
+@section Styles{
+    <link href="~/lib/owl-carousel/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/owl-carousel/css/owl.theme.default.min.css" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script src="~/lib/owl-carousel/js/owl.carousel.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.owl-carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                responsiveClass: true,
+                responsive: {
+                    0: {
+                        items: 1,
+                        dots: false,
+                        nav: true
+                    },
+                    600: {
+                        items: 1,
+                        nav: true,
+                        dots: false
+                    },
+                    1000: {
+                        items: 1,
+                        nav: true,
+                        dots: false,
+                        loop: false,
+                        margin: 20
+                    }
+                }
+            })
+        })
+    </script>
+
+}

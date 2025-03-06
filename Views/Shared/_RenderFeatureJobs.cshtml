@@ -1,0 +1,112 @@
+﻿@inject IConfiguration Configuration
+
+@{
+    var jobs = CommonFunctions.GetFeatureJobs().Take(2);
+    var activeTenant = CommonFunctions.GetActiveTenant();
+    var server = Configuration.GetSection("TenantServer").GetSection("Server").Value ?? "";
+}
+
+
+@if (jobs.Any())
+{
+
+
+    <div class="row align-items-start">
+        <div class="col-lg-4 col-12 d-md-flex align-items-md-center justify-content-md-between d-lg-block mt-5">
+            <h2 class="featured-job-title mb-lg-5 mb-3">Featured Jobs</h2>
+            @if (server.Equals("HealthWorks"))
+            {
+                <a href="@(Configuration.GetSection("Endpoints").GetValue<string>("EHTalentArbor"))JobSeeker/SearchJob" class="btn-primary mb-lg-0 mb-3 text-decoration-none">View all Jobs</a>
+            }
+            else
+            {
+                <a asp-action="Index" asp-controller="Jobs" class="btn-primary mb-lg-0 mb-3 text-decoration-none">View all Jobs</a>
+            } 
+        </div>
+        @foreach (var i in jobs)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="featured-job-block">
+                    <h3 class="featured-job-name">
+                        @if (activeTenant.SiteName == "Elevance Health")
+                        {
+                            <a class="text-decoration-none" href="@(Configuration.GetSection("Endpoints").GetValue<string>("EHTalentArbor"))JobSeeker/JobDetails?rid=@i.RequirementID&tid=2&cid=@activeTenant.ClientId">
+                                @i.JobTitleText
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="text-decoration-none" href="javascript:void(0)" onclick="redirectToJobDetails('@i.RequirementID')">
+                                @i.JobTitleText
+                            </a>
+                        }
+                    </h3>
+                    <div class="job-details">
+                        <span class="job-location">
+                            <img src="~/tenant/pfizer/images/map.svg" alt="Requirement Location: ">@i.RequirementAddress
+                        </span>
+                        <span class="job-time">
+                            <img src="~/tenant/pfizer/images/clock.svg" alt="Requirement Type: "> @i.JobTypeText.toStringWithDash()
+                        </span>
+                        <span class="job-type">
+                            <img src="~/tenant/pfizer/images/buildings.svg" alt="Requirement Option: "> @i.RemoteOptionTypeName.toStringWithDash()
+                        </span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+else
+{
+    var topJobs = CommonFunctions.GetTopJobs(2);
+
+    <div class="row align-items-center">
+        <div class="col-lg-4 col-12 d-md-flex align-items-md-center justify-content-md-between d-lg-block">
+            <h2 class="featured-job-title mb-lg-5 mb-3">New Jobs</h2>
+            @if (server.Equals("HealthWorks"))
+            {
+                <a href="@(Configuration.GetSection("Endpoints").GetValue<string>("EHTalentArbor"))JobSeeker/SearchJob" class="btn-primary mb-lg-0 mb-3 text-decoration-none">View all Jobs</a>
+            }
+            else
+            {
+                <a asp-action="Index" asp-controller="Jobs" class="btn-primary mb-lg-0 mb-3 text-decoration-none">View all Jobs</a>
+            }
+        </div>
+        @foreach (var i in topJobs)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="featured-job-block">
+                    <h3 class="featured-job-name">
+                        @if (activeTenant.SiteName == "Elevance Health")
+                        {
+                            <a class="text-decoration-none" href="@(Configuration.GetSection("Endpoints").GetValue<string>("EHTalentArbor"))JobSeeker/JobDetails?rid=@i.RequirementID&tid=2&cid=@activeTenant.ClientId">
+                                @i.JobTitleText
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="text-decoration-none" href="javascript:void(0)" onclick="redirectToJobDetails('@i.RequirementID')">
+                                @i.JobTitleText
+                            </a>
+                        }
+                    </h3>
+                    <div class="job-details">
+                        <span class="job-location">
+                            <img src="~/tenant/pfizer/images/map.svg" alt="Requirement Location: ">@i.RequirementAddress
+                        </span>
+                        <span class="job-time">
+                            <img src="~/tenant/pfizer/images/clock.svg" alt="Requirement Type: ">@i.JobTypeText.toStringWithDash()
+                        </span>
+                        <span class="job-type">
+                            <img src="~/tenant/pfizer/images/buildings.svg" alt="Requirement Option: ">@i.RemoteOptionTypeName.toStringWithDash()
+                        </span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+

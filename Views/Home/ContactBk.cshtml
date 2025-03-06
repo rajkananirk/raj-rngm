@@ -1,0 +1,484 @@
+﻿@model CP_ContactVm
+@inject IConfiguration Configuration
+
+@{
+    // Set ViewData Title
+    ViewData["Title"] = Model.IsAccommodation ? "Accommodation" : "Contact Us";
+
+    // Retrieve Google Recaptcha site key from configuration
+    var siteKey = Configuration.GetSection("GoogleRecaptchaV3").GetSection("Sitekey").Value ?? "";
+
+    // Retrieve Tenant Server information from configuration
+    var server = Configuration.GetSection("TenantServer").GetSection("Server").Value ?? "";
+
+    // Get active tenant information
+    var tenant = CommonFunctions.GetActiveTenant();
+
+    var entityDropdown = DropdownFunctions.GetAllTicketFor(tenant.CaseManagementClientId, Model.IsAccommodation ? "Accommodation" : "General");
+
+    Model.EntityID = Convert.ToInt32(entityDropdown.Where(s => !string.IsNullOrWhiteSpace(s.value)).Select(s => s.value).FirstOrDefault() ?? "0");
+
+    var requestTypeDropdown = new List<KeyValue>
+{
+        new(){value = string.Empty, text = "-- Select --"}
+    };
+
+    if (Model.EntityID > 0)
+    {
+        requestTypeDropdown = DropdownFunctions.GetAllContactReasons(Model.EntityID);
+    }
+
+    Model.RequestTypeID = Convert.ToInt32(requestTypeDropdown.Where(s => !string.IsNullOrWhiteSpace(s.value)).Select(s => s.value).FirstOrDefault() ?? "0");
+}
+
+
+
+@if (Model.IsAccommodation)
+{
+    <form asp-antiforgery="true" asp-controller="Home" asp-action="GenerateTicket" method="post" id="frm">
+
+        <input asp-for="IsAccommodation" type="hidden" />
+
+        <input type="hidden" name="googleCaptcha" id="googleCaptcha" value="" />
+        <input type="hidden" name="googleCaptchaAction" id="googleCaptchaAction" value="Case_Management" />
+        <input type="hidden" name="CountryId" id="CountryId" value="@((int)EnumList.Country.UnitedState)" />
+        <section class="sign-up-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5">
+                        @await Html.PartialAsync("_RenderSections")
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="sign-up-block">
+                            <h1 class="mb-0">Accommodation Request</h1>
+                            <p class="contact-us-desc mb-4">Please complete the below to begin the accommodation request process.</p>
+                            <div class="row">
+                                <div class="col-sm-6 mb-4">
+                                    <label for="EntityID" class="form-label">User Type <span class="required">*</span></label>
+                                    <select aria-describedby="EntityID-error" aria-label="User Type" asp-for="EntityID"
+                                            asp-items="@(new SelectList(entityDropdown, "value", "text"))"
+                                            class="form-select" required></select>
+                                </div>
+                                <div class="col-sm-6 mb-4">
+                                    <label for="RequestTypeID" class="form-label">Type of Request <span class="required">*</span></label>
+                                    <select aria-describedby="RequestTypeID-error" aria-label="Type of Request" class="form-select" asp-for="RequestTypeID"
+                                            asp-items="@(new SelectList(requestTypeDropdown, "value", "text"))" required>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div id="Content-Dynamic-Control"></div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <button id="btnSubmit" class="btn-primary ladda-button" data-spinner-color="#fff" data-style="slide-up">
+                                        <span>Request for Accommodation</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 28 28" fill="none">
+                                            <path d="M4.3645 1.64255L25.9035 13.4889C25.995 13.5392 26.0712 13.6132 26.1243 13.7031C26.1775 13.793 26.2055 13.8955 26.2055 13.9999C26.2055 14.1043 26.1775 14.2068 26.1243 14.2967C26.0712 14.3865 25.995 14.4605 25.9035 14.5109L4.3645 26.3572C4.27569 26.4061 4.17567 26.4309 4.07432 26.4294C3.97296 26.4278 3.87377 26.3999 3.78651 26.3483C3.69924 26.2967 3.62693 26.2233 3.57669 26.1352C3.52645 26.0472 3.50002 25.9476 3.5 25.8462V2.15355C3.50002 2.05218 3.52645 1.95257 3.57669 1.86453C3.62693 1.77649 3.69924 1.70306 3.78651 1.65148C3.87377 1.5999 3.97296 1.57195 4.07432 1.57038C4.17567 1.56882 4.27569 1.59369 4.3645 1.64255ZM5.83333 15.1665V22.8864L21.9917 13.9999L5.83333 5.11338V12.8332H11.6667V15.1665H5.83333Z" fill="white" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <p class="mb-0">Once you submit this request, you will receive an email with a link to the Accommodation Form to complete.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+}
+else
+{
+    @if (server.Equals("HealthWorks") || tenant.DomainDirectory == "jnj")
+    {
+        <section class="sign-up-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5 text-center">
+                        @await Html.PartialAsync("_RenderSections")
+                    </div>
+                    <div class="col-lg-7">
+                        <form asp-antiforgery="true" asp-controller="Home" asp-action="GenerateTicket" method="post" id="frm">
+
+                            <input asp-for="IsAccommodation" type="hidden" />
+
+                            <input type="hidden" name="googleCaptcha" id="googleCaptcha" value="" />
+                            <input type="hidden" name="googleCaptchaAction" id="googleCaptchaAction" value="Case_Management" />
+                            <input type="hidden" name="CountryId" id="CountryId" value="@((int)EnumList.Country.UnitedState)" />
+                            <div class="sign-up-block">
+                                <h1 class="mb-0">Contact Us</h1>
+                                <p class="contact-us-desc mb-2">If you need our team's support or have any questions, please fill out the form below.</p>
+                                <small><span class="required">*</span> Indicates a required field</small>
+                                <div class="row mt-2">
+                                    <div class="col-sm-6 mb-4">
+                                        <label for="enti" class="form-label">Who are you? <span class="required">*</span></label>
+                                        <select aria-describedby="EntityID-error" aria-label="Who are you? *" asp-for="EntityID"
+                                                asp-items="@(new SelectList(entityDropdown, "value", "text"))" class="form-select" required></select>
+                                    </div>
+                                    <div class="col-sm-6 mb-4">
+                                        <label for="RequestTypeID" class="form-label">Reason for contact <span class="required">*</span></label>
+                                        <select aria-describedby="RequestTypeID-error" aria-label="Reason for contact *" class="form-select" asp-for="RequestTypeID"
+                                                asp-items="@(new SelectList(requestTypeDropdown, "value", "text"))" required>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="Content-Dynamic-Control"></div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button id="btnSubmit" class="btn-primary ladda-button d-flex align-items-center" data-spinner-color="#fff" data-style="slide-up">
+                                            <span class="me-2">Submit</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28" fill="none" role="img" aria-labelledby="title" aria-hidden="true">
+                                                <title id="title"></title>
+                                                <path d="M4.3645 1.64255L25.9035 13.4889C25.995 13.5392 26.0712 13.6132 26.1243 13.7031C26.1775 13.793 26.2055 13.8955 26.2055 13.9999C26.2055 14.1043 26.1775 14.2068 26.1243 14.2967C26.0712 14.3865 25.995 14.4605 25.9035 14.5109L4.3645 26.3572C4.27569 26.4061 4.17567 26.4309 4.07432 26.4294C3.97296 26.4278 3.87377 26.3999 3.78651 26.3483C3.69924 26.2967 3.62693 26.2233 3.57669 26.1352C3.52645 26.0472 3.50002 25.9476 3.5 25.8462V2.15355C3.50002 2.05218 3.52645 1.95257 3.57669 1.86453C3.62693 1.77649 3.69924 1.70306 3.78651 1.65148C3.87377 1.5999 3.97296 1.57195 4.07432 1.57038C4.17567 1.56882 4.27569 1.59369 4.3645 1.64255ZM5.83333 15.1665V22.8864L21.9917 13.9999L5.83333 5.11338V12.8332H11.6667V15.1665H5.83333Z" fill="white" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+    else
+    {
+        @await Html.PartialAsync("_RenderSections")
+
+        <section class="contact-us">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-10">
+                        <div class="contact-title-block">
+                            <form asp-antiforgery="true" asp-controller="Home" asp-action="GenerateTicket" method="post" id="frm">
+
+                                <input asp-for="IsAccommodation" type="hidden" />
+                                <input type="hidden" name="googleCaptcha" id="googleCaptcha" value="" />
+                                <input type="hidden" name="googleCaptchaAction" id="googleCaptchaAction" value="Case_Management" />
+                                <input type="hidden" name="CountryId" id="CountryId" value="@((int)EnumList.Country.UnitedState)" />
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <p class="required-fields-text">All fields marked with an asterisk (<span class="required">*</span>) are required</p>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <label for="EntityID" class="form-label">Who are you? <span class="required">*</span></label>
+                                        <select aria-describedby="EntityID-error" aria-label="Who are you?" asp-for="EntityID"
+                                                asp-items="@(new SelectList(entityDropdown, "value", "text"))" class="form-select" required></select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <label for="RequestTypeID" class="form-label">Reason for contact <span class="required">*</span></label>
+                                        <select aria-describedby="RequestTypeID-error" aria-label="Reason for contact" class="form-select" asp-for="RequestTypeID"
+                                                asp-items="@(new SelectList(requestTypeDropdown, "value", "text"))" required>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="Content-Dynamic-Control"></div>
+                                <div class="row mb-3">
+                                    <div class="col-12 text-center">
+                                        <button id="btnSubmit" class="btn-primary w-100 ladda-button" data-spinner-color="#fff" data-style="slide-up">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+}
+
+
+
+
+@section Scripts
+{
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=@(siteKey)"></script>
+    <script src="~/lib/jquery-mask/dist/jquery.mask.js"></script>
+    <script src="~/scripts/zipcode-autocomplete.js" asp-append-version="true"></script>
+    <script>
+
+        var form = $("#frm");
+
+        $(function () {
+
+            $("#frm").on("invalid-form", function () {
+                var firstErrorElement = $(this).find(".input-validation-error").first();
+                if (firstErrorElement.length) {
+                    firstErrorElement.focus();
+                } else {
+                    $('#EntityID').focus();
+                }
+            });
+
+
+            $('#btnSubmit').on('click', function (e) {
+                e.preventDefault();
+                if ($("#frm").valid()) {
+                    var ladda = window.laddaStart('btnSubmit');
+                    grecaptcha.enterprise.ready(function () {
+                        grecaptcha.enterprise.execute('@siteKey', { action: $('#googleCaptchaAction').val() }).then(function (token) {
+                            $('#googleCaptcha').val(token);
+                            $('#frm').submit();
+                        });
+                    });
+                } else {
+
+                }
+            });
+
+            $('#EntityID').on('change', function () {
+                if ($("#EntityID option:selected").text() === "Job Seeker") {
+                    $('#Content-Location').removeClass('d-none');
+                } else {
+                    $('#Content-Location').addClass('d-none');
+                }
+
+                loadContactReason();
+            });
+
+            if ($('#IsAccommodation').val() == "True") {
+                form.validate({
+                    rules: {
+                        "EntityID": {
+                            required: true
+                        },
+                        "RequestTypeID": {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        "EntityID": {
+                            required: "User type is required. Please, enter User type."
+                        },
+                        "RequestTypeID": {
+                            required: "Type of request is required. Please, enter type of request."
+                        }
+                    },
+                    errorClass: 'is-invalid',
+                    ignore: "",
+                    errorPlacement: function (error, element) {
+                        var elem = $(element);
+                        error.attr('role', 'alert'); // Add the role attribute here
+                        if (elem.hasClass("select2-hidden-accessible")) {
+                            element = $("#select2-" + elem.attr("id") + "-container").parent();
+                            var labelledby = "select2-" + elem.attr("id") + "-container";
+                            $("body").find("[aria-labelledby='" + labelledby + "']").addClass("errorBorder");
+                            error.insertAfter(element);
+                        } else {
+                            var span = $("<span></span>").addClass('error-message');
+                            error.appendTo(span);
+                            span.insertAfter(element);
+                        }
+                    },
+                    success: function (label, element) {
+                        var elem = $(element);
+                        if (elem.hasClass("select2-hidden-accessible")) {
+                            var labelledby = "select2-" + elem.attr("id") + "-container";
+                            $("body").find("[aria-labelledby='" + labelledby + "']").removeClass("errorBorder");
+                        }
+                        $(element).removeClass('is-invalid').addClass('valid');
+                        $(element).next('span.error-message').remove();
+                    },
+                    highlight: function (element, errorClass, validClass) {
+                        $(element).addClass(errorClass).removeClass(validClass);
+                    },
+                    unhighlight: function (element, errorClass, validClass) {
+                        $(element).removeClass(errorClass).addClass(validClass);
+                    }
+                });
+            } else {
+                form.validate({
+                    rules: {
+                        "EntityID": {
+                            required: true
+                        },
+                        "RequestTypeID": {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        "EntityID": {
+                            required: "User type is required. Please, enter User type."
+                        },
+                        "RequestTypeID": {
+                            required: "Contact reason is required. Please, enter Contact reason."
+                        }
+                    },
+                    errorClass: 'is-invalid',
+                    ignore: "",
+                    errorPlacement: function (error, element) {
+                        var elem = $(element);
+                        error.attr('role', 'alert'); // Add the role attribute here
+                        if (elem.hasClass("select2-hidden-accessible")) {
+                            element = $("#select2-" + elem.attr("id") + "-container").parent();
+                            var labelledby = "select2-" + elem.attr("id") + "-container";
+                            $("body").find("[aria-labelledby='" + labelledby + "']").addClass("errorBorder");
+                            error.insertAfter(element);
+                        } else {
+                            var span = $("<span></span>").addClass('error-message');
+                            error.appendTo(span);
+                            span.insertAfter(element);
+                        }
+                    },
+                    success: function (label, element) {
+                        var elem = $(element);
+                        if (elem.hasClass("select2-hidden-accessible")) {
+                            var labelledby = "select2-" + elem.attr("id") + "-container";
+                            $("body").find("[aria-labelledby='" + labelledby + "']").removeClass("errorBorder");
+                        }
+                        $(element).removeClass('is-invalid').addClass('valid');
+                        $(element).next('span.error-message').remove();
+                    },
+                    highlight: function (element, errorClass, validClass) {
+                        $(element).addClass(errorClass).removeClass(validClass);
+                    },
+                    unhighlight: function (element, errorClass, validClass) {
+                        $(element).removeClass(errorClass).addClass(validClass);
+                    }
+                });
+            }
+        });
+
+        function loadContactReason() {
+            $.ajax({
+                url: '@Url.Action("GetAllContactReasons", "Base")',
+                type: 'POST',
+                data: { contactUserTypeId: $('#EntityID').val() },
+                dataType: "json",
+                success: function (response) {
+                    var html = '';
+                    if (response.status) {
+                        html += '<option value="">-- Select --</option> ';
+                        for (var i = 0; i < response.data.length; i++) {
+                            if (i > 0) {
+                                html += '<option value="' + response.data[i].value + '"> ' + response.data[i].text + ' </option> ';
+                            }
+                        }
+                    } else {
+                        html += '<option value="">-- Select --</option> ';
+                    }
+                    $('#RequestTypeID').html(html);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        $('#RequestTypeID').on('change', function () {
+            loadTicketControl();
+        });
+
+        function UpdateBestTimetoContact() {
+
+            var bestTimetoContactElementName = $('#BestTimetoContactName').val();
+            var phoneNameElement = "#" + $('#PhoneName').val();
+
+            if ($("input[name='" + bestTimetoContactElementName + "']:checked").val() === "Email") {
+                $('#Required-Phone').addClass('d-none');
+                $(phoneNameElement).attr("required", false);
+                $(phoneNameElement).rules("remove", "required");
+                $(phoneNameElement).removeClass('is-invalid');
+                $(phoneNameElement + '-error').remove();
+            } else {
+                $('#Required-Phone').removeClass('d-none');
+                $(phoneNameElement).attr("required", true);
+                $(phoneNameElement).rules("add", {
+                    required: true, messages: {
+                        required: "Phone is required. Please, enter your Phone."
+                    }
+                });
+            }
+        }
+
+        function loadTicketControlScript() {
+
+            var zipCodeElement = "#" + $('#ZipcodeName').val();
+
+            if (validationData !== "" && validationData.length > 0) {
+
+                for (var i = 0; i < validationData.length; i++) {
+                    $('[name="' + validationData[i].Key + '"]').rules("add", {
+                        required: true,
+                        messages: {
+                            required: validationData[i].Value
+                        }
+                    });
+
+
+                    if (validationData[i].Key.indexOf('_Email') !== -1) {
+                        $('[name="' + validationData[i].Key + '"]').rules("add", {
+                            email: true,
+                            messages: {
+                                email: 'Must be a valid email. example@yourdomain.com. Please enter a valid value.'
+                            }
+                        });
+                    }
+                }
+            }
+
+            ZipCodeAutoComplete(zipCodeElement, "#zipCodeAddres", '#CountryId');
+
+            ZipCodeAutoCompleteBindOnPaste(zipCodeElement);
+
+            $(zipCodeElement).on('change',function () {
+
+                console.log($(this).val());
+
+                $(zipCodeElement).rules("add", {
+                    remote: {
+                        url: baseZipcodeUrl,
+                        type: "GET",
+                        data: {
+                            ZipCode: $(this).val(),
+                            CountryId: $("#CountryId").val()
+                        }
+                    },
+                    messages: {
+                        remote: "Please enter a valid zip code."
+                    }
+                });
+            });
+
+            $(zipCodeElement).blur(function () {
+                if ($(this).val() === "" || $(this).val() === " ") {
+                    $("#zipCodeAddres").text("");
+                }
+            });
+
+            $("#" + $('#PhoneName').val()).mask('(000) 000-0000');
+        }
+
+        function loadTicketControl() {
+            showLoader();
+            var formData = $('#frm').serializeArray();
+            $.ajax({
+               url: '@Url.Action("_TicketControl", "Home")',
+               type: 'POST',
+               data: $.param(formData),
+               success: function (response) {
+                   $('#Content-Dynamic-Control').html(response);
+                   adjustFooter();
+                   loadTicketControlScript();
+                   hideLoader();
+               },
+                error: function (error) {
+                    console.error(error);
+                   hideLoader();
+               }
+           });
+        }
+
+        $(document).ready(function () {
+            loadTicketControl();
+        });
+    </script>
+
+}

@@ -1,0 +1,14 @@
+﻿@{
+    Layout = null;
+}
+
+<input type="hidden" value="@CacheFunctions.GetSuccess()" id="msgSuccess" />
+<input type="hidden" value="@CacheFunctions.GetError()" id="msgError" />
+<input type="hidden" value="@CacheFunctions.GetWarning()" id="msgWarning" />
+
+
+@{
+    CacheFunctions.RemoveSuccess();
+    CacheFunctions.RemoveError();
+    CacheFunctions.RemoveWarning();
+}

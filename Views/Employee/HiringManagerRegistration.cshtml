@@ -1,0 +1,460 @@
+﻿@using Newtonsoft.Json;
+@model CP_CommunityMemberVm
+@inject IConfiguration Configuration
+
+@{
+    ViewData["Title"] = "Hiring Manager Registration";
+
+
+    var validationData = new List<KeyValuePair<string, string>>();
+    var locationData = DropdownFunctions.GetAllLocationForTraditioalStaffing(CommonFunctions.GetActiveTenant().ClientId);
+    var siteKey = Configuration.GetSection("GoogleRecaptchaV3").GetSection("Sitekey").Value ?? "";
+}
+
+@await Html.PartialAsync("_RenderSections")
+
+
+<!-- Hiring Manager section form code starts -->
+<section class="registration-form">
+    <div class="container mt-5">
+        <div class="registration-form-tabs">
+            <form asp-antiforgery="true" asp-controller="Employee" asp-action="GetInvolved" method="post" id="frm" enctype="multipart/form-data">
+
+                <input type="hidden" asp-for="StartDateUtc" />
+                <input type="hidden" asp-for="SurveyMasterID" />
+                <input type="hidden" asp-for="SurveyTypeMasterId" />
+                <input type="hidden" name="googleCaptcha" id="googleCaptcha" value="" />
+                <input type="hidden" name="googleCaptchaAction" id="googleCaptchaAction" value="HiringManager_Registration" />
+
+                <div>
+                    <h3>Basic Information</h3>
+                    <section>
+
+                        <div class="row">
+                            <div class="col-12 mb-16">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="IsIUTrainingCompleted" id="IsIUTrainingCompleted" />
+                                    <label class="form-check-label checkbox-dark" for="IsIUTrainingCompleted">
+                                        I have completed a session of the Insights and Understanding Training
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-32">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="IsInterviewTrainingCompleted" id="IsInterviewTrainingCompleted">
+                                    <label class="form-check-label checkbox-dark" for="IsInterviewTrainingCompleted">I have completed a session of Interview Training</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-55">
+                                <a href="/resources" class="">
+                                    <label class="primary-label">
+                                        How do I start hiring SourceAbled disability talent?
+                                    </label>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-xl-4 col-md-6 mb-5 mb-md-0">
+                                <label for="FirstName" class="form-label">First Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" asp-for="FirstName" aria-describedby="FirstName" placeholder="First Name" maxlength="50" />
+                                <span asp-validation-for="FirstName" role="alert"></span>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <label for="LastName" class="form-label">Last Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" asp-for="LastName" aria-describedby="LastName" placeholder="Last Name" maxlength="50" />
+                                <span asp-validation-for="LastName" role="alert"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-xl-4 col-md-6 mb-5 mb-md-0">
+                                <label for="Title" class="form-label">Title <span class="required">*</span></label>
+                                <input type="text" class="form-control" asp-for="Title" aria-describedby="Title" placeholder="Title" maxlength="500" />
+                                <span asp-validation-for="Title" role="alert"></span>
+                            </div>
+                            <div class="col-xl-4 col-md-6">
+                                <label for="Division" class="form-label">Division <span class="required">*</span></label>
+                                <input type="text" class="form-control" asp-for="Division" aria-describedby="Division" placeholder="Division" maxlength="500" />
+                                <span asp-validation-for="Division" role="alert"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-55">
+                            <div class="col-xl-4 col-md-6 mb-5 mb-md-0">
+                                <label for="Location" class="form-label">Location (City, State) <span class="required">*</span></label>
+                                <input type="text" class="form-control" asp-for="Location" aria-describedby="Location" placeholder="Location (City/State)" maxlength="500" />
+                                <span asp-validation-for="Location" role="alert"></span>
+                            </div>
+                            <div class="col-xl-4 col-md-6 iti">
+                                <label for="Phone" class="form-label">Phone <span class="required">*</span></label>
+                                <input type="text" class="form-control" asp-for="Phone" aria-describedby="Phone" placeholder="(555) 444-6666" />
+                                <span asp-validation-for="Phone" role="alert"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-88">
+                            <div class="col-xl-4 col-md-6">
+                                <label for="Email" class="form-label">Email <span class="required">*</span></label>
+                                <input type="Email" class="form-control" asp-for="Email" aria-describedby="Email" placeholder="Email" maxlength="128" />
+                                <span asp-validation-for="Email" role="alert"></span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <h3>Survey Details</h3>
+                    <section id="sectionWorkExep">
+
+                        @if (Model.Survey != null && Model.Survey.Any())
+                        {
+                            var queCount = 1;
+                            var className = "col-12 mb-5 mb-md-0";
+
+                            foreach (var item in Model.Survey)
+                            {
+                                switch (item.SurveyInputTypeId)
+                                {
+                                    case (int)EnumList.SurveyInputType.Text:
+                                        className = "col-xl-4 col-md-6 mb-5 mb-md-0";
+                                        break;
+                                    default:
+                                        className = "col-12 mb-5 mb-md-0";
+                                        break;
+                                }
+
+                                <div class="row mb-55">
+                                    <div class="@className">
+                                        <label class="form-label">
+                                            <b>@queCount. </b>
+                                            @Html.Raw(item.QuestionText)
+
+                                            @if (item.IsRequired)
+                                            {
+                                                <span class="required">*</span>
+
+                                                var message = $"This field is required. Please enter a value.";
+
+                                                switch (item.SurveyInputTypeId)
+                                                {
+                                                    case (int)EnumList.SurveyInputType.StartRating:
+                                                        message = "Select your rating.";
+                                                        break;
+                                                    case (int)EnumList.SurveyInputType.Radio:
+                                                        message = "Select your answer.";
+                                                        break;
+                                                    case (int)EnumList.SurveyInputType.CheckBox:
+                                                        message = "Mark your answer.";
+                                                        break;
+                                                }
+
+                                                var key = "qus_" + item.SurveyQuestionMasterId;
+                                                validationData.Add(new KeyValuePair<string, string>(key, message));
+                                            }
+                                        </label>
+                                        <div>
+                                            @switch (item.SurveyInputTypeId)
+                                            {
+                                                case (int)EnumList.SurveyInputType.Text:
+                                                    <input type="text" name="qus_@item.SurveyQuestionMasterId" class="form-control" placeholder="Enter your answer" />
+                                                    break;
+
+                                                case (int)EnumList.SurveyInputType.TextArea:
+                                                    <textarea name="qus_@item.SurveyQuestionMasterId" class="form-control" rows="4" placeholder="Enter your answer"></textarea>
+                                                    break;
+
+                                                case (int)EnumList.SurveyInputType.StartRating:
+                                                    <div class="form-group">
+                                                        <div class="star-rating">
+                                                            <input id="@item.SurveyQuestionMasterId-5" type="radio" name="qus_@item.SurveyQuestionMasterId" value="5" />
+                                                            <label for="@item.SurveyQuestionMasterId-5" title="Excellent">
+                                                                <i class="active fa fa-star" aria-hidden="true"></i>
+                                                            </label>
+                                                            <input id="@item.SurveyQuestionMasterId-4" type="radio" name="qus_@item.SurveyQuestionMasterId" value="4" />
+                                                            <label for="@item.SurveyQuestionMasterId-4" title="Very Good">
+                                                                <i class="active fa fa-star" aria-hidden="true"></i>
+                                                            </label>
+                                                            <input id="@item.SurveyQuestionMasterId-3" type="radio" name="qus_@item.SurveyQuestionMasterId" value="3" />
+                                                            <label for="@item.SurveyQuestionMasterId-3" title="Good">
+                                                                <i class="active fa fa-star" aria-hidden="true"></i>
+                                                            </label>
+                                                            <input id="@item.SurveyQuestionMasterId-2" type="radio" name="qus_@item.SurveyQuestionMasterId" value="2" />
+                                                            <label for="@item.SurveyQuestionMasterId-2" title="Fair">
+                                                                <i class="active fa fa-star" aria-hidden="true"></i>
+                                                            </label>
+                                                            <input id="@item.SurveyQuestionMasterId-1" type="radio" name="qus_@item.SurveyQuestionMasterId" value="1" />
+                                                            <label for="@item.SurveyQuestionMasterId-1" title="Unsatisfactory">
+                                                                <i class="active fa fa-star" aria-hidden="true"></i>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    break;
+
+                                                case (int)EnumList.SurveyInputType.Radio:
+                                                    if (item.SurveyQuestionOptions != null && item.SurveyQuestionOptions.Any())
+                                                    {
+                                                        var count = 1;
+                                                        foreach (var answer in item.SurveyQuestionOptions)
+                                                        {
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="radio" class="form-check-input @(answer.IsAdditionalInput ? "other-radio" : "")" id="@item.SurveyQuestionMasterId-@count" name="qus_@item.SurveyQuestionMasterId" value="@answer.SurveyAnswerMasterId">
+
+                                                                @if (answer.IsAdditionalInput)
+                                                                {
+                                                                    @:  <input type="text" name="additionalinput_@answer.SurveyAnswerMasterId" class="form-control" placeholder="@answer.AnswerText" style="display: inline; width: 50%" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="form-check-label" for="@item.SurveyQuestionMasterId-@count">  @answer.AnswerText</label>
+                                                                }
+
+                                                            </div>
+
+                                                            count++;
+                                                        }
+                                                    }
+                                                    break;
+
+                                                case (int)EnumList.SurveyInputType.CheckBox:
+                                                    if (item.SurveyQuestionOptions != null && item.SurveyQuestionOptions.Any())
+                                                    {
+                                                        var count = 1;
+                                                        foreach (var answer in item.SurveyQuestionOptions)
+                                                        {
+                                                            <div class="form-check form-check-inline">
+                                                                <input type="checkbox" class="form-check-input" id="@item.SurveyQuestionMasterId-@count" name="qus_@item.SurveyQuestionMasterId" value="@answer.SurveyAnswerMasterId">
+                                                                <label class="form-check-label" for="@item.SurveyQuestionMasterId-@count">
+                                                                    @answer.AnswerText
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="custom-control custom-checkbox mb-1">
+                                                            </div>
+                                                            count++;
+                                                        }
+                                                    }
+                                                    break;
+
+                                                case (int)EnumList.SurveyInputType.SelectList:
+                                                    if (item.QuestionText.Equals("Department"))
+                                                    {
+                                                        <select onchange="udpateOtherDepartment(this)" name="qus_@item.SurveyQuestionMasterId" id="qus_@item.SurveyQuestionMasterId" class="form-select">
+                                                            <option value="PGS">PGS</option>
+                                                            <option value="WRDM">WRDM</option>
+                                                            <option value="GBS"> GBS </option>
+                                                            <option value="GBD">GBD</option>
+                                                            <option value="Other">Other</option>
+                                                        </select>
+
+                                                        <input id="DepartmentOther" name="DepartmentOther" class="form-control mt-3 d-none" placeholder="type your answer" />
+                                                    }
+                                                    else if (item.QuestionText.Equals("Location"))
+                                                    {
+                                                        <select name="qus_@item.SurveyQuestionMasterId" id="qus_@item.SurveyQuestionMasterId"
+                                                                asp-items="@(new SelectList(locationData, "text", "text"))"
+                                                                class="form-select form-control input-lg"></select>
+                                                    }
+                                                    break;
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                queCount++;
+                            }
+                        }
+                    </section>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Hiring Manager section form code ends -->
+@section Styles{
+    <link href="~/lib/jquery-steps/css/jquery.steps.css" rel="stylesheet" />
+}
+
+
+@section Scripts
+    {
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-steps/js/jquery.steps.js"></script>
+    <script src="~/lib/jquery-mask/dist/jquery.mask.js"></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=@(siteKey)"></script>
+
+    <script>
+
+        function udpateOtherDepartment(e) {
+            if ($(e).val() == 'Other') {
+                $('#DepartmentOther').removeClass('d-none');
+                $('#DepartmentOther-error').removeClass('d-none');
+                $('#DepartmentOther').rules("add", { required: true });
+            } else {
+                $('#DepartmentOther').addClass('d-none');
+                $('#DepartmentOther-error').addClass('d-none');
+                $('#DepartmentOther').rules("remove", "required");
+            }
+        }
+
+        $(function () {
+            var form = $("#frm");
+
+            var validationData = @Html.Raw(JsonConvert.SerializeObject(validationData));
+
+            form.validate({
+                rules: {
+                    FirstName: {
+                        required: true,
+                        maxlength: 50
+                    },
+                    LastName: {
+                        required: true,
+                        maxlength: 50
+                    },
+                    Email: {
+                        required: true,
+                        email: true,
+                        maxlength: 128,
+                        remote: '@Url.Action("IsEmailExist", "Base", new { flag = 1 })'
+                    },
+                    Title: {
+                        required: true,
+                        maxlength: 500
+                    },
+                    Division: {
+                        required: true,
+                        maxlength: 500
+                    },
+
+                    Location: {
+                        required: true,
+                        maxlength: 500
+                    },
+                    Phone: {
+                        required: true,
+                        minlength: 14
+                    },
+                },
+                messages: {
+                    FirstName: {
+                        required: 'First name is required. Please enter first name.'
+                    },
+                    LastName: {
+                        required: 'Last name is required. Please enter last name.'
+                    },
+                    Email: {
+                        required: 'Email is required. Please enter email.',
+                        email: 'Enter a valid email address.',
+                        remote: 'Email is already in used. Register with a different email address'
+                    },
+                    Title: {
+                        required: 'Title is required. Please enter title.'
+                    },
+                    Division: {
+                        required: 'Division is required. Please enter division.'
+                    },
+                    Location: {
+                        required: 'Location is required. Please enter location.'
+                    },
+                    Phone: {
+                        required: 'Phone is required. Please enter phone.',
+                        minlength: 'Enter a valid mobile number.'
+                    }
+                },
+                errorClass: 'is-invalid',
+                errorElement: "div",
+                errorPlacement: function (error, element) {
+                    error.insertAfter($(element).parent());
+                }
+            });
+
+            if (validationData !== "" && validationData.length > 0) {
+                for (var i = 0; i < validationData.length; i++) {
+                    $('[name="' + validationData[i].Key + '"]').rules("add", {
+                        required: true
+                    });
+                }
+            }
+
+            form.children("div").steps({
+                headerTag: "h3",
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                onStepChanging: function (event, currentIndex, newIndex) {
+                    var response = form.valid();
+                    return response;
+
+                    //if (response) {
+                    //    response = checkEmailDomain();
+                    //    if (response) {
+                    //        response = checkEmailExist();
+                    //    }
+                    //}
+                    //return true;
+                },
+                onFinishing: function (event, currentIndex) {
+                    form.validate().settings.ignore = ":disabled";
+                    return form.valid();
+                },
+                onFinished: function (event, currentIndex) {
+                    submitForm();
+                }
+            });
+
+            $('#Phone').mask('(000) 000-0000');
+
+
+            $("#Email")
+                .focusout(function () {
+                    $(this).removeClass('is-invalid');
+                    $('#Email-error').remove();
+                });
+        });
+
+        function checkEmailExist() {
+            var response = false;
+
+            $.ajax({
+                async: false,
+                url: '/' + $('#TenantDomainDirectory').val() + '/Base/IsEmailExist?email=' + $('#Email').val() + '&flag=1',
+                success: function (res) {
+                    response = res;
+                }
+            });
+
+            return response;
+        }
+
+        function checkEmailDomain() {
+            var email = $('#Email').val().split('@@');
+            var response = false;
+
+            if (email.length === 2) {
+                var emailDomain = $('#EmailDomain').val().split(',');
+                var response = false;
+
+                for (var i = 0; i < emailDomain.length; i++) {
+                    console.log(emailDomain[i]);
+                    console.log(email[1]);
+                    if (emailDomain[i] == email[1]) {
+                        response = true;
+                        break;
+                    }
+                }
+
+                if (!response) {
+                    notifyError("Enter a valid email domain");
+                }
+            }
+
+            return response;
+        }
+
+        function submitForm() {
+            if ($("#frm").valid()) {
+                showLoader();
+                grecaptcha.enterprise.ready(function () {
+                    grecaptcha.enterprise.execute('@siteKey', { action: $('#googleCaptchaAction').val() }).then(function (token) {
+                        $('#googleCaptcha').val(token);
+                        $('#frm').submit();
+                    });
+                });
+            }
+        }
+    </script>
+}

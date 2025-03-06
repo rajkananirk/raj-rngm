@@ -1,0 +1,234 @@
+﻿@using static Rangam.TalentArbor.ClientPortal.V2.Models.Enum.EnumList
+@model CP_MemberRegistrationVm
+@inject IConfiguration Configuration
+
+@{
+    ViewData["Title"] = "Sign Up";
+
+    var siteKey = Configuration.GetSection("GoogleRecaptchaV3").GetSection("Sitekey").Value ?? "";
+    var taUrl = Configuration.GetSection("Endpoints").GetValue<string>("EHTalentArbor");
+}
+
+@await Html.PartialAsync("_RenderSections")
+
+
+<!-- Sign up design code starts -->
+<section class="sign-up-section" id="Section-Registration-Form">
+    <form id="frmMemberRegistration" asp-action="MemberRegistration" asp-controller="Jobseeker" asp-antiforgery="true">
+        <input type="hidden" asp-for="CountryId" />
+        <input type="hidden" asp-for="ZIPCodeID" />
+        <input type="hidden" asp-for="PageSessionId" />
+        <input type="hidden" name="googleCaptcha" id="googleCaptcha" value="" />
+        <input type="hidden" name="googleCaptchaAction" id="googleCaptchaAction" value="Case_Management" />
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 text-center d-none d-md-block">
+                    <img class="mw-100 mt-lg-4 mt-0 mb-4 mb-lg-0" src="/portal/tenant/elevancehealth/images/sign-up.png" alt="">
+                </div>
+                <div class="col-lg-7">
+                    <div class="sign-up-block">
+                        <h1 class="mb-2 mt-2 text-center">Sign Up</h1>
+                        <small><span class="required">*</span> Indicates a required field</small>
+                        <div class="row mt-2">
+                            <div class="col-xl-5 col-lg-6 col-md-6 mb-1 mb-md-4">
+                                <label for="FirstName" class="form-label">First Name <span class="required">*</span></label>
+                                <input aria-describedby="FirstName-error" asp-for="FirstName" type="text" class="form-control" placeholder="Type your first name" required />
+                                <span asp-validation-for="FirstName"></span>
+                            </div>
+                            <div class="col-xl-5 col-lg-6 col-md-6 mb-1 mb-md-4">
+                                <label for="LastName" class="form-label">Last Name <span class="required">*</span></label>
+                                <input aria-describedby="LastName-error" asp-for="LastName" type="text" class="form-control" placeholder="Type your last name" required />
+                                <span asp-validation-for="LastName"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-6 col-md-6 mb-1 mb-md-4">
+                                <label for="Email" class="form-label">Email <span class="required">*</span></label>
+                                <input asp-for="Email" aria-describedby="Email-error" type="email" class="form-control" placeholder="Your email id" required />
+                                <span asp-validation-for="Email"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-6 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 mb-1 mb-md-4">
+                                        <div class="password-field">
+                                            <label for="Password" class="form-label">Password <span class="required">*</span></label>
+                                            <input type="password" class="form-control" asp-for="Password" aria-describedby="Password password-info" placeholder="8+ characters" required>
+                                            <button role="switch" aria-checked="false" type="button" class="show-password text-decoration-none">
+                                                <span>Show</span>
+                                                <img src="/portal/tenant/elevancehealth/images/password-hide.svg" alt="">
+                                            </button>
+                                            <span asp-validation-for="Password"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-1 mb-md-4">
+                                        <div class="password-field">
+                                            <label for="ConfirmPassword" class="form-label">Retype Password <span class="required">*</span></label>
+                                            <input type="password" class="form-control" asp-for="ConfirmPassword" aria-describedby="Password" placeholder="8+ characters" required>
+                                            <button role="switch" aria-checked="false" type="button" class="show-password text-decoration-none">
+                                                <span>Show</span>
+                                                <img src="/portal/tenant/elevancehealth/images/password-hide.svg" alt="">
+                                            </button>
+                                            <span asp-validation-for="ConfirmPassword"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-7 col-lg-6 col-md-6 mb-1 mb-md-4">
+                                @await Html.PartialAsync("_PasswordRule")
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 mb-1 mb-md-4">
+                                <label for="TalentFirstName" class="form-label">How to Contact you? <span class="required">*</span></label>
+                                <div class="d-flex flex-row flex-wrap-mobile">
+                                    
+                                    @foreach (ConnectTalent option in Enum.GetValues(typeof(ConnectTalent)))
+                                    {
+                                        <div class="form-check me-3 position-relative">
+                                            @if (option == Model.SelectedContact)
+                                            {
+                                                <input type="radio" class="form-check-input" asp-for="SelectedContact" value="@option" id="sc-@option" checked="checked" />
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" class="form-check-input" asp-for="SelectedContact" value="@option" id="sc-@option" />
+                                            }
+
+                                            <label class="form-check-label" for="sc-@option">
+                                                @EnumList.GetEnumDescription(option)
+                                            </label>
+                                            @if (option == ConnectTalent.Both || option == ConnectTalent.Text)
+                                            {
+                                                var title = $"By selecting the {(option == ConnectTalent.Text ? "<b> text </b>" : "<b> email & text </b>")} option, I consent to receive text messages from the RangamWorks portal. Standard message and data rates may apply. Please review the <a href='{taUrl + "terms-of-use"}' target='_blank' class='text-decoration-none'>Terms of Use</a>, <a href='{taUrl + "privacy-policy"}' target='_blank' class='text-decoration-none'>Privacy Policy</a>.";
+
+                                                <div class="custom-tooltip-alert">
+                                                    <i class="bi bi-info-circle" id="showCustomTooltipAlert"></i>
+                                                    <div id="customTooltipAlertContent" class="custom-tooltip-content">@Html.Raw(title)</div>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-6 col-md-6 mb-1 mb-md-4">
+                                <label for="ZipCode" class="form-label">Zip Code <span class="required">*</span></label>
+                                <input aria-describedby="ZipCode-error" asp-for="ZipCode" type="text" class="form-control" placeholder="12345" required />
+                                <span asp-validation-for="ZipCode"></span>
+                                <div>
+                                    <small class="text-dark" id="zipCodeAddres"></small>
+                                </div>
+                            </div>
+                            <div class="col-xl-5 col-lg-6 col-md-6 mb-1 mb-md-4">
+                                <label for="Phone" class="form-label">Phone  <span class="required" id="Phone-Required">*</span></label>
+                                <input asp-for="Phone" type="text" class="form-control" placeholder="(201) 555-0123" />
+                                <span asp-validation-for="Phone"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-1 mb-md-4">
+                                <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" asp-for="IsAcceptTerms">
+                                    <label class="form-check-label" for="IsAcceptTerms">
+                                        By creating an account, you agree with our <a href="https://rangamworks.com/terms-of-use" class="text-decoration-none" target="_blank">Terms of Service</a> and <a href="https://rangamworks.com/privacy-policy" class="text-decoration-none" target="_blank">Privacy Policy</a>.
+                                    </label>
+                                    <span asp-validation-for="IsAcceptTerms"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 justify-content-center d-flex">
+                                <button id="btnMemberRegistration" type="button" data-style="slide-up" data-spinner-color="#ffffff" class="btn-primary ladda-button">
+                                    Create Account and Continue
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+<section class="sign-up-section d-none" id="Section-Otp-Verification">
+    <form id="frmOtpValidation">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 text-center">
+                    <img class="mw-100 mt-lg-2 mt-0 mb-4 mb-lg-0" src="/portal/tenant/elevancehealth/images/sign-up-jobseeker.png" alt="">
+                </div>
+                <div class="col-lg-7">
+                    <div class="sign-up-block">
+                        <h1 class="mb-3">Sign Up for JobSeeker</h1>
+                        <div class="verification-block mb-5">
+                            <div class="verification-msg" role="alert">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                    <path d="M20.0002 36.6673C10.7952 36.6673 3.3335 29.2057 3.3335 20.0007C3.3335 10.7957 10.7952 3.33398 20.0002 3.33398C29.2052 3.33398 36.6668 10.7957 36.6668 20.0007C36.6668 29.2057 29.2052 36.6673 20.0002 36.6673ZM20.0002 33.334C23.5364 33.334 26.9278 31.9292 29.4283 29.4287C31.9287 26.9283 33.3335 23.5369 33.3335 20.0007C33.3335 16.4644 31.9287 13.073 29.4283 10.5726C26.9278 8.07208 23.5364 6.66732 20.0002 6.66732C16.4639 6.66732 13.0726 8.07208 10.5721 10.5726C8.07159 13.073 6.66683 16.4644 6.66683 20.0007C6.66683 23.5369 8.07159 26.9283 10.5721 29.4287C13.0726 31.9292 16.4639 33.334 20.0002 33.334ZM18.3385 26.6673L11.2668 19.5957L13.6235 17.239L18.3385 21.954L27.7652 12.5257L30.1235 14.8823L18.3385 26.6673Z" fill="#01943C" />
+                                </svg>
+                                <span id="lblEmail"></span>
+                            </div>
+                            <div class="verify-link">
+                                <a asp-action="MemberRegistration" asp-controller="JobSeeker">
+                                    Not you? Start again  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M5.828 6.9998L8.364 9.5358L6.95 10.9498L2 5.9998L6.95 1.0498L8.364 2.4638L5.828 4.9998H13C15.1217 4.9998 17.1566 5.84266 18.6569 7.34295C20.1571 8.84324 21 10.8781 21 12.9998C21 15.1215 20.1571 17.1564 18.6569 18.6567C17.1566 20.157 15.1217 20.9998 13 20.9998H4V18.9998H13C14.5913 18.9998 16.1174 18.3677 17.2426 17.2424C18.3679 16.1172 19 14.5911 19 12.9998C19 11.4085 18.3679 9.88238 17.2426 8.75716C16.1174 7.63195 14.5913 6.9998 13 6.9998H5.828Z" fill="#0C61E7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-6 col-md-6 mb-4">
+                                <label for="verificationcode" class="form-label">Verification Code</label>
+                                <input aria-describedby="OneTimePassword-error" asp-for="OneTimePassword" type="text" class="form-control" placeholder="******" />
+                                <span asp-validation-for="OneTimePassword"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <button onclick="verifyOTP()" id="btnConfirmVerificationCode" type="button" data-style="slide-up" data-spinner-color="#ffffff" class="btn-primary ladda-button">
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="resend-code mt-3">
+                                    <span>Didn't receive a code?</span>
+                                    <a href="javascript:void(0)" onclick="resendMailForVerification()">Resend</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+<!-- Sign up design code ends -->
+@section Styles {
+    <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script>
+     var sitekey = '@siteKey';
+        var registermemberurl = '@Url.Action("SendMailForVerification", "JobSeeker")';
+        var verifyOTPurl = '@Url.Action("VerifyOTP", "JobSeeker")';
+        var resendverifyurl = '@Url.Action("ResendMailForVerification", "JobSeeker")';
+        var phoneExist = '@Url.Action("IsPhoneExist", "Base")';
+    </script>
+     
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=@(siteKey)"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+    <script src="~/lib/jquery-mask/dist/jquery.mask.js"></script>
+    <script src="~/scripts/custom-validation.js"></script>
+
+    <script src="~/scripts/password-rule.js" asp-append-version="true"></script>
+    <script src="~/scripts/modules/jobseeker/member-registration.js" asp-append-version="true"></script>
+    <script src="~/scripts/zipcode-autocomplete.js" asp-append-version="true"></script>
+
+}

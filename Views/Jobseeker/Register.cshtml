@@ -1,0 +1,690 @@
+﻿@model CP_JobSeekerVm
+@inject IConfiguration Configuration
+
+@{
+    ViewData["Title"] = "Job Seeker Registration";
+    var siteKey = Configuration.GetSection("GoogleRecaptchaV3").GetSection("Sitekey").Value ?? "";
+}
+
+
+
+<section class="registration-form">
+    <div class="container mt-5">
+        <div class="registration-form-tabs">
+            <form asp-antiforgery="true" asp-controller="Jobseeker" asp-action="Register" method="post" id="frm" enctype="multipart/form-data">
+
+                <input type="hidden" name="googleCaptcha" id="googleCaptcha" value="" />
+                <input type="hidden" name="googleCaptchaAction" id="googleCaptchaAction" value="Jobseeker_Registration" />
+
+                <div>
+                    <h3>Basic Information</h3>
+                    <section>
+                        <h5 class="card-title">Basic information</h5>
+                        <p><small><span class="red">*</span> Indicates a required field</small></p>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="FirstName" class="form-label">First Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" asp-for="FirstName" aria-hidden="true" aria-describedby="FirstName" placeholder="First Name" />
+                                <span asp-validation-for="FirstName"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="FirstName" class="form-label">Last Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" asp-for="LastName" aria-hidden="true" aria-describedby="LastName" placeholder="Last Name" />
+                                <span asp-validation-for="LastName"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="Email" class="form-label">Email <span class="required">*</span></label>
+                                <input type="email" class="form-control" asp-for="Email" aria-hidden="true" aria-describedby="Email" placeholder="Email" />
+                                <span asp-validation-for="Email"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="ContactNum" class="form-label">Phone Number <span class="required">*</span></label>
+                                <input type="text" class="form-control" aria-hidden="true" asp-for="ContactNum" aria-describedby="ContactNum" placeholder="(555) 444-6666" />
+                                <span asp-validation-for="ContactNum"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="CountryId" class="form-label">Country<span class="red">*</span></label>
+                                <select class="form-select" asp-for="CountryId" aria-hidden="true" asp-items="@(new SelectList(DropdownFunctions.GetAllCountry(),"value","text"))">  </select>
+                                <span asp-validation-for="CountryId"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="ZipCode" class="form-label">
+                                    <span id="lblZipCode"></span> <span class="required">*</span>
+                                </label>
+                                <input type="text" class="form-control" aria-hidden="true" asp-for="ZipCode" aria-describedby="ZipCode" placeholder="12345" />
+                                <span asp-validation-for="ZipCode"></span>
+                                <div>
+                                    <small class="text-dark" id="zipCodeAddres"></small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="ReferralFullName" class="form-label">Referral's Full Name </label>
+                                <input type="text" class="form-control" asp-for="ReferralFullName" aria-describedby="ReferralFullName" placeholder="Joe Smith" />
+                                <span asp-validation-for="ReferralFullName"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="ReferralEmail" class="form-label">Referral's Email </label>
+                                <input type="text" class="form-control" asp-for="ReferralEmail" aria-describedby="ReferralEmail" placeholder="Email" />
+                                <span asp-validation-for="ReferralEmail"></span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <h3>Work Experience</h3>
+                    <section id="sectionWorkExep">
+                        <h5 class="card-title">Work experience</h5>
+                        <p><small><span class="red">*</span> Indicates a required field</small></p>
+                        <div class="row g-4">
+                            <div class="row mt-1">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <legend>
+                                                <label class="form-label">How would you like to enter your work experience? (This includes volunteer work, internships, and apprenticeships.)<span class="red">*</span></label>
+                                            </legend>
+                                            <div class="form-check mb-2 mt-2">
+                                                <input asp-for="WorkExperienceTypeId" type="radio" id="WorkExperienceTypeId_1" aria-hidden="true" value="1" class="form-check-input" checked onchange="updateWorkExperienceData('1')">
+                                                <label class="form-check-label" for="WorkExperienceTypeId_1">Upload my resume </label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input asp-for="WorkExperienceTypeId" type="radio" aria-hidden="true" id="WorkExperienceTypeId_2" value="2" class="form-check-input" onchange="updateWorkExperienceData('2')">
+                                                <label class="form-check-label" for="WorkExperienceTypeId_2">Enter a few of my work experiences now</label>
+                                            </div>
+
+                                            <div class="form-check mb-2">
+                                                <input asp-for="WorkExperienceTypeId" type="radio" aria-hidden="true" id="WorkExperienceTypeId_3" value="3" class="form-check-input" onchange="updateWorkExperienceData('3')">
+                                                <label class="form-check-label" for="WorkExperienceTypeId_3">I need help entering my experience </label>
+                                            </div>
+                                        </fieldset>
+
+                                        <span asp-validation-for="WorkExperienceTypeId"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2" id="divWorkExp1">
+                                <div class="col-md-12">
+                                    <label for="WorkExperienceResumeFile" class="form-label">Upload Resume<span class="red">*</span></label>
+                                    <input class="form-control" aria-hidden="true" asp-for="WorkExperienceResumeFile" type="file" accept=".pdf, .doc, .docx, .txt">
+                                    <span class="fs-15">(Please upload a file in a supported format: .PDF, .DOC,.DOCX and .TXT)</span>
+                                    <br />
+                                    <span class="fs-15">(Maximum file size limit is 5 MBs)</span>
+                                    <br />
+                                    <span asp-validation-for="WorkExperienceResumeFile" class="server-error"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2 d-none" id="divWorkExp2">
+                                <div class="col-md-12">
+                                    <div data-repeater-list="WorkExperienceVms">
+                                        <div data-repeater-item>
+                                            <div class="card mb-2 mt-3">
+                                                <div class="card-body">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12 text-right">
+                                                            <button type="button" data-repeater-delete class="btn btn-sm btn-danger">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Company/Organization <span class="red">*</span></label>
+                                                                <input type="text" aria-hidden="true" name="Company" class="form-control company" aria-describedby="Company" id="" maxlength="100" placeholder="Enter company name">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Job Title <span class="red">*</span></label>
+                                                                <input type="text" aria-hidden="true" name="JobTitle" class="form-control jobtitle" aria-describedby="JobTitle" id="" maxlength="100" placeholder="Enter job title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Start Date <span class="red">*</span></label>
+                                                                <input type="text" aria-hidden="true" name="StartDateStr" class="form-control sdt" aria-describedby="StartDateStr" id="" placeholder="mm-dd-yyyy">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label">End Date </label>
+                                                                <input type="text" name="EndDateStr" class="form-control edt" aria-describedby="EndDateStr" id="" placeholder="mm-dd-yyyy">
+                                                            </div>
+                                                            <div class="mt-3">
+                                                                <input value="true" class="form-check-input" type="checkbox" name="IsCurrentlyWorkingHere">
+                                                                <label class="form-check-label">Currently working here</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button data-repeater-create type="button" class="btn btn-secondary mt-3">
+                                        <i class="fas fa-plus-square"></i> &nbsp; Add another work experience
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2 d-none" id="divWorkExp3">
+                                <div class="col-md-12">
+                                    <label class="form-label">
+                                        After completing your registration, we will notify someone from the SourceAbled Team to contact you about your work experience.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <h3>Review</h3>
+                    <section>
+                        <h5 class="card-title">Review</h5>
+                        <p>  Please check if the information below is correct. When you press Submit, you will receive an email to set your password to log into your account.</p>
+                        <div class="row g-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card mb-2 mt-3">
+                                        <div class="card-body">
+                                            <div class="row mt-1 mb-3">
+                                                <div class="col-md-6">
+                                                    <h6 class="fw-bold">Basic information</h6>
+                                                </div>
+                                                <div class="col-md-6 text-end">
+                                                    <a href="javascript:void(0)" onclick="gotoStep(0)" class="link-danger">Edit</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <label class="col-md-3 form-label">Full Name: </label>
+                                                <label class="col-md-9 form-label" id="lblFullName"></label>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <label class="col-md-3 form-label">Email: </label>
+                                                <label class="col-md-9 form-label" id="lblEmail"></label>
+                                            </div>
+
+
+                                            <div class="row mb-2">
+                                                <label class="col-md-3 form-label">Address: </label>
+                                                <label class="col-md-9 form-label" id="lblAddress"></label>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <label class="col-md-3 form-label">Phone: </label>
+                                                <label class="col-md-9 form-label" id="lblPhone"></label>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <label class="col-md-3 form-label">Referral Name: </label>
+                                                <label class="col-md-9 form-label" id="referralName"></label>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <label class="col-md-3 form-label">Referral Email: </label>
+                                                <label class="col-md-9 form-label" id="referralEmail"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card mb-2 mt-3">
+                                        <div class="card-body">
+                                            <div class="row mt-1 mb-3">
+                                                <div class="col-md-6">
+                                                    <h6 class="fw-bold">Work experience</h6>
+                                                </div>
+                                                <div class="col-md-6 text-end">
+                                                    <a href="javascript:void(0)" onclick="gotoStep(1)" class="link-danger">Edit</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <label class="col-md-3 form-label">Cited experience: </label>
+                                                <label class="col-md-9 form-label" id="lblWorkExperience"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" asp-for="IsSubscribed">
+                                        <label class="form-check-label" for="IsSubscribed">
+                                            I would like to stay up-to-date on SourceAbled activities and updates through email.
+                                        </label>
+                                        <span asp-validation-for="IsSubscribed"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" asp-for="IsTermsAndCondAgreed">
+                                        <label class="form-check-label" for="IsTermsAndCondAgreed">
+                                            By checking this box I confirm that I have read and agree to be bound by the <a href="@(Configuration.GetSection("Endpoints").GetValue<string>("JSAgreementLink"))" target="_blank" class="secondarylink">agreement</a>. If I am agreeing on the behalf of my company, I represent and warrant that I have legal authority to bind my company to the terms of the <a href="@(Configuration.GetSection("Endpoints").GetValue<string>("JSAgreementLink"))" target="_blank" class="secondarylink">agreement</a>. I also confirm that I am of the legal age in the jurisdiction in which I reside (at least 18 years of the age in many countries).
+                                        </label>
+                                        <span asp-validation-for="IsTermsAndCondAgreed"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+@section Styles{
+    <link href="~/lib/jquery-steps/css/jquery.steps.css" rel="stylesheet" />
+    <link href="~/lib/flatpicker/flatpickr.min.css" rel="stylesheet" />
+    <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />
+
+    <style>
+        .is-invalid {
+            padding-top: 5px;
+        }
+    </style>
+}
+
+@section Scripts{
+    <script src="~/lib/flatpicker/flatpickr.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+    <script src="~/lib/jquery-steps/js/jquery.steps.js"></script>
+    <script src="~/lib/repeater/repeater.js"></script>
+    <script src="~/lib/jquery-mask/dist/jquery.mask.js"></script>
+    <script src="~/scripts/zipcode-autocomplete.js"></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=@(siteKey)"></script>
+
+
+    <script>
+
+    </script>
+
+    @*Wizard Setting*@
+    <script>
+        function updateWorkExperienceData(id) {
+            if (id === "1") {
+                $('#divWorkExp1').removeClass('d-none');
+                $('#divWorkExp2').addClass('d-none');
+                $('#divWorkExp3').addClass('d-none');
+            } else if (id === "2") {
+                $('#divWorkExp1').addClass('d-none');
+                $('#divWorkExp2').removeClass('d-none');
+                $('#divWorkExp3').addClass('d-none');
+            } else {
+                $('#divWorkExp3').removeClass('d-none');
+                $('#divWorkExp1').addClass('d-none');
+                $('#divWorkExp2').addClass('d-none');
+            }
+
+            dynamicValidation(id);
+        }
+
+        $.validator.addMethod("endDate", function (value, element) {
+            var x = $(element).attr('name').split('[')[1].split(']')[0];
+            var startDate = $('input[name="WorkExperienceVms[' + x + '][StartDateStr]"]').val();
+            return Date.parse(startDate) <= Date.parse(value) || value == "";
+        }, "End date must be after corresponding start date");
+
+        function dynamicValidation(id) {
+
+            if (id === "1") {
+                $("input[name*=WorkExperienceResumeFile]").rules('add', {
+                    required: true,
+                    messages: { required: "Resume is required. Please select a resume." }
+                });
+
+                $('.company').each(function () {
+                    $(this).rules("remove", "required");
+                });
+
+                $('.jobtitle').each(function () {
+                    $(this).rules("remove", "required");
+                });
+
+                $('.sdt').each(function () {
+                    $(this).rules("remove", "required");
+                });
+
+            } else if (id === "2") {
+                $('.company').each(function () {
+                    $(this).rules('add', {
+                        required: true,
+                        messages: { required: "Company/organization is required. Please enter company/organization." }
+                    });
+                });
+
+                $('.jobtitle').each(function () {
+                    $(this).rules('add', {
+                        required: true,
+                        messages: { required: "Job title is required. Please enter a job title." }
+                    });
+                });
+
+                $('.sdt').each(function () {
+                    $(this).rules('add', {
+                        required: true,
+                        messages: { required: "Start date is required. Please enter a start date." }
+                    });
+                });
+
+                var valCount = 0;
+
+                $('.edt').each(function () {
+                    $(this).rules('add', { 'endDate': "WorkExperienceVms[" + valCount + "][StartDateStr]" });
+                    valCount++;
+                });
+
+
+                $("input[name*=WorkExperienceResumeFile]").rules("remove", "required");
+            } else {
+                $("input[name*=WorkExperienceResumeFile]").rules("remove", "required");
+
+                $('.company').each(function () {
+                    $(this).rules("remove", "required");
+                });
+
+                $('.jobtitle').each(function () {
+                    $(this).rules("remove", "required");
+                });
+
+                $('.sdt').each(function () {
+                    $(this).rules("remove", "required");
+                });
+
+                $('.edt').each(function () {
+                    $(this).rules("remove", 'endDate');
+                });
+            }
+        }
+
+        function assignFormToLabel() {
+            var experienceTypeId = $('input[name="WorkExperienceTypeId"]:checked').val();
+            var experienceText = '';
+
+            if (experienceTypeId === "1") {
+                experienceText = "Resume";
+            } else if (experienceTypeId === "2") {
+                var frCount = 0;
+                $('.sdt').each(function () {
+                    frCount++;
+                });
+                experienceText = frCount + " experiences";
+            } else {
+                experienceText = "Unknown";
+            }
+
+            $('#lblFullName').text($('#FirstName').val() + " " + $('#LastName').val());
+            $('#lblEmail').text($('#Email').val());
+            $('#lblAddress').text($('#zipCodeAddres').text().trim());
+            $('#Address').val($('#zipCodeAddres').text().trim());
+            $('#lblPhone').text($('#ContactNum').val());
+            $('#referralName').text($('#ReferralFullName').val());
+            $('#referralEmail').text($('#ReferralEmail').val());
+
+            $('#lblWorkExperience').text(experienceText);
+        }
+
+        var form = $("#frm");
+        form.validate({
+            rules: {
+                FirstName: {
+                    required: true,
+                    maxlength: 50
+                },
+                LastName: {
+                    required: true,
+                    maxlength: 50
+                },
+                Email: {
+                    required: true,
+                    email: true,
+                    maxlength: 128,
+                    remote: '@Url.Action("IsEmailExist", "Base", new { flag = 2 })'
+                },
+                CountryId: {
+                    required: true
+                },
+                ZipCode: {
+                    required: true,
+                    maxlength: 10
+                },
+                ContactNum: {
+                    required: true,
+                    minlength: 14
+                },
+                ReferralFullName: {
+                    maxlength: 128
+                },
+                ReferralEmail: {
+                    maxlength: 128,
+                    remote: '@Url.Action("IsValidEmailDomain", "Base" )'
+                },
+                IsTermsAndCondAgreed: {
+                    required: true
+                },
+                WorkExperienceResumeFile: {
+                    filesize: 5242880
+                }
+            },
+            messages: {
+                FirstName: {
+                    required: "First name is required. Please enter a first name.",
+                    maxlength: "Maximum 50 chracters allowed."
+                },
+                LastName: {
+                    required: "Last name is required. Please enter a last name.",
+                    maxlength: "Maximum 50 chracters allowed."
+                },
+                Email: {
+                    required: "Email is required. Please enter an email.",
+                    email: "Enter a valid email address.",
+                    maxlength: "Maximum 128 chracters allowed.",
+                    remote: 'Email is already in used. Register with a different email address.'
+                },
+                CountryId: {
+                    required: "Country is required. Please select a country.",
+                },
+                ZipCode: {
+                    required: "Zipcode is required. Please enter a zipcode.",
+                    maxlength: "Maximum 10 chracters allowed."
+                },
+                ContactNum: {
+                    required: "Phone number is required. Please enter a phone number.",
+                    maxlength: "Maximum 14 chracters allowed."
+                },
+                ReferralFullName: {
+                    maxlength: "Maximum 128 chracters allowed."
+                },
+                ReferralEmail: {
+                    maxlength: "Maximum 128 chracters allowed.",
+                    remote: 'Please enter a valid domain.'
+                },
+                IsTermsAndCondAgreed: {
+                    required: 'Please select a terms and condition.'
+                },
+                WorkExperienceResumeFile: {
+                    filesize: 'Maximum 5 MBs allowed'
+                }
+            },
+            errorClass: 'is-invalid',
+            errorElement: "div",
+            errorPlacement: function (error, element) {
+                error.insertAfter($(element));
+            }
+        });
+
+        form.children("div").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            onStepChanging: function (event, currentIndex, newIndex) {
+                if (newIndex === 2) {
+                    assignFormToLabel();
+                }
+                form.validate().settings.ignore = ":disabled,:hidden";
+                var isValidForm = form.valid();
+
+                // if (newIndex === 1) {
+                //     var email = $('#ReferralEmail').val().split('@@');
+                //     if (email.length === 2) {
+                //         var emailDomain = $('#EmailDomain').val().split(',');
+                //         var response = false;
+                //         for (var i = 0; i < emailDomain.length; i++) {
+
+                //             if (emailDomain[i] == email[1]) {
+                //                 response = true;
+                //                 break;
+                //             }
+                //         }
+                //         if (!response) {
+                //             isValidForm = false;
+                //         }
+                //     }
+                // }
+                return isValidForm;
+                //return true;
+            },
+            onFinishing: function (event, currentIndex) {
+                form.validate().settings.ignore = ":disabled";
+                return form.valid();
+                //return true;
+            },
+            onFinished: function (event, currentIndex) {
+                submitForm();
+            }
+        });
+
+        function gotoStep(id) {
+            if (id === 0) {
+                form.children("div").steps("previous");
+            }
+
+            form.children("div").steps("previous");
+        }
+    </script>
+
+    @*Form Repeater*@
+    <script>
+        function dateAssigned() {
+            $('.sdt').each(function () {
+                $(this).flatpickr({ disableMobile: true, dateFormat: 'm-d-Y' });
+            });
+            $('.edt').each(function () {
+                $(this).flatpickr({ disableMobile: true, dateFormat: 'm-d-Y' });
+            });
+        }
+
+        $(document).ready(function () {
+
+            $.validator.addMethod('filesize', function (value, element, param) {
+                return this.optional(element) || (element.files[0].size <= param)
+            }, 'File size must be less than {0}');
+
+            dynamicValidation($('input[name="WorkExperienceTypeId"]:checked').val());
+
+            window.id = 0;
+            dateAssigned();
+
+            $('.repeater').repeater(
+                {
+                    defaultValues: {
+                        'id': window.id
+                    },
+                    show: function () {
+                        dateAssigned();
+                        $(this).slideDown();
+                        dynamicValidation($('input[name="WorkExperienceTypeId"]:checked').val());
+                    },
+                    hide: function (deleteElement) {
+                        window.id--;
+                        $(this).slideUp(deleteElement);
+                        dynamicValidation($('input[name="WorkExperienceTypeId"]:checked').val());
+                    },
+                    ready: function (setIndexes) {
+                    },
+                    isFirstItemUndeletable: true
+                }
+            );
+        });
+    </script>
+
+    @*Page Level*@
+    <script>
+        $(function () {
+            $('#ContactNum').mask('(000) 000-0000');
+            $('a[href$="finish"]').addClass('ladda-button');
+            $('a[href$="finish"]').text('Submit');
+            $('a[href$="finish"]').attr('data-style', 'slide-up');
+            $('a[href$="finish"]').attr('id', 'btnSubmit');
+        });
+
+        function submitForm() {
+            if ($("#frm").valid()) {
+                var ladda = window.laddaStart('btnSubmit');
+                grecaptcha.enterprise.ready(function () {
+                    grecaptcha.enterprise.execute('@siteKey', { action: $('#googleCaptchaAction').val() }).then(function (token) {
+                        $('#googleCaptcha').val(token);
+                        $('#frm').submit();
+                    });
+                });
+            }
+        }
+    </script>
+
+    @*Location Binding*@
+    <script>
+        $(document).ready(function () {
+            lableUpdate('#CountryId', '#ZipCode', '#lblZipCode', false);
+
+            $('#CountryId').on('change', function () {
+                clearAddressData('#ZipCode', '#zipCodeAddres');
+                lableUpdate('#CountryId', '#ZipCode', '#lblZipCode', false);
+            });
+
+            ZipCodeAutoComplete("#ZipCode", "#zipCodeAddres", '#CountryId');
+
+            ZipCodeAutoCompleteBindOnPaste("#ZipCode");
+
+            $('#ZipCode').keypress(function () {
+                $("#ZipCode").rules("add", {
+                    remote: {
+                        url: '@Url.Action("IsValidZipcode", "Base")',
+                        type: "GET",
+                        data: {
+                            CountryId: $("#CountryId").val()
+                        }
+                    },
+                    messages: {
+                        remote: "Please enter a valid address."
+                    }
+                });
+            });
+            $('#ZipCode').blur(function () {
+                if ($(this).val() === "" || $(this).val() === " ") {
+                    $("#zipCodeAddres").text("");
+                }
+            });
+        });
+    </script>
+
+}

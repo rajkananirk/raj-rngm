@@ -1,0 +1,188 @@
+﻿@using Newtonsoft.Json;
+@model CP_CommunityMemberVm;
+
+@{
+    ViewData["Title"] = "Accommodation Survey";
+
+    var validationData = new List<KeyValuePair<string, string>>();
+}
+<style>
+    .f-40{
+        font-size:40px;
+    }
+
+    .bg-lavender{
+        background-color: #EFF3F8;
+    }
+
+    .bg-lightgray{
+        background-color: #F9F9F9;
+    }
+
+    main#content {
+        margin-top: 80px;
+        background: #fff;
+    }
+
+    body {
+        background:#fff;
+    }
+
+    .btn-primary {
+        width: 200px;
+    }
+</style>
+
+<form asp-action="SaveAccommodation" asp-controller="Survey" method="post" id="frm_AccommodationSurvey">
+    <div class="container mt-5 pt-5 ">
+        <div class="col-md-12 bg-lavender p-3">
+            <h1 class="f-40">J&J Accommodation Survey</h1>
+            <p>Rangam utilizes your survey feedback related to request <b>@Model.RequestID</b> for ongoing support and continuous improvement.</p>
+        </div>
+    </div>
+    <div class="container mt-2 mb-5">
+        <div class="col-md-12 bg-lightgray p-3">
+            <p>Please complete the survey below.</p>
+            <p><span class="required">*</span>Required</p>
+
+            <input type="hidden" asp-for="RequestID" />
+            <input type="hidden" asp-for="SurveyMasterID" />
+            <input type="hidden" asp-for="SurveyTypeMasterId" />
+
+            @if (Model.Survey != null && Model.Survey.Any())
+            {
+                var queCount = 1;
+                var className = "col-12 mb-5 mb-md-0";
+
+                foreach (var item in Model.Survey)
+                {
+                    <div class="row mb-55">
+                        <div class="@className">
+                            <label class="form-label">
+                                <b>@queCount. </b>
+                                @Html.Raw(item.QuestionText)
+
+                                @if (item.IsRequired)
+                                {
+                                    <span class="required">*</span>
+
+                                    var message = $"Required field. Please select the valid value.";
+
+                                    var key = "qus_" + item.SurveyQuestionMasterId;
+                                    validationData.Add(new KeyValuePair<string, string>(key, message));
+                                }
+                            </label>
+                            <div>
+                                @switch (item.SurveyInputTypeId)
+                                {
+                                    case (int)EnumList.SurveyInputType.StartRating:
+                                        <div class="form-group rating-group-container">
+                                            <div class="rating-group">
+                                                <label aria-label="question 1 first star" class="rating__label" for="@item.SurveyQuestionMasterId-1">
+                                                    <i class="rating__icon rating__icon--star bi bi-star"></i>
+                                                </label>
+                                                <input class="rating__input" name="qus_@item.SurveyQuestionMasterId" id="@item.SurveyQuestionMasterId-1" value="1" type="radio">
+
+                                                <label aria-label="question 1 second star" class="rating__label" for="@item.SurveyQuestionMasterId-2">
+                                                    <i class="rating__icon rating__icon--star bi bi-star"></i>
+                                                </label>
+                                                <input class="rating__input" name="qus_@item.SurveyQuestionMasterId" id="@item.SurveyQuestionMasterId-2" value="2" type="radio">
+                                                <label aria-label="question 1 third star" class="rating__label" for="@item.SurveyQuestionMasterId-3">
+                                                    <i class="rating__icon rating__icon--star bi bi-star"></i>
+                                                </label>
+                                                <input class="rating__input" name="qus_@item.SurveyQuestionMasterId" id="@item.SurveyQuestionMasterId-3" value="3" type="radio">
+                                                <label aria-label="question 1 fourth star" class="rating__label" for="@item.SurveyQuestionMasterId-4">
+                                                    <i class="rating__icon rating__icon--star bi bi-star"></i>
+                                                </label>
+                                                <input class="rating__input" name="qus_@item.SurveyQuestionMasterId" id="@item.SurveyQuestionMasterId-4" value="4" type="radio">
+                                                <label aria-label="question 1 fifth star" class="rating__label" for="@item.SurveyQuestionMasterId-5">
+                                                    <i class="rating__icon rating__icon--star bi bi-star"></i>
+                                                </label>
+                                                <input class="rating__input" name="qus_@item.SurveyQuestionMasterId" id="@item.SurveyQuestionMasterId-5" value="5" type="radio">
+                                            </div>
+                                        </div>
+                                        break;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    queCount++;
+                }
+            }
+
+            <button id="btnSave" type="button" value="submit" form="frm_AccommodationSurvey"
+                    class="btn-primary text-decoration-none d-inline-block" disabled>
+                Submit
+            </button>
+
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</form>
+
+<script src="~/lib/jquery/jquery-3.7.0.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script>
+    $(function () {
+        var form = $("#frm_AccommodationSurvey");
+
+        $(form).validate({
+            errorElement: 'span',
+            errorClass: 'error-text',
+            highlight: function (element) {
+                $(element).closest('.form-group').addClass('has-error');
+            },
+            unhighlight: function (element) {
+                $(element).closest('.form-group').removeClass('has-error');
+            },
+            errorPlacement: function (error, element) {
+                if (element.attr("type") === "radio") {
+                    error.insertAfter(element.closest('.rating-group')).css("color", "red");
+                } else {
+                    error.insertAfter(element).css("color", "red");
+                }
+                error.css("display", "block");
+            }
+        });
+
+        var validationData = @Html.Raw(JsonConvert.SerializeObject(validationData));
+
+        if (validationData !== "" && validationData.length > 0) {
+            for (var i = 0; i < validationData.length; i++) {
+                $('[name="' + validationData[i].Key + '"]').rules("add", {
+                    required: true,
+                    messages: {
+                        required: validationData[i].Value
+                    }
+                });
+            }
+        }
+
+        function checkRequiredFields() {
+            var allFilled = true;
+            $('.rating-group-container').each(function () {
+                var name = $(this).find('input[type="radio"]').attr('name');
+                if (!$('input[name="' + name + '"]:checked').length) {
+                    allFilled = false;
+                    return false; // Exit each loop
+                }
+            });
+
+            $('#btnSave').prop('disabled', !allFilled);
+        }
+
+        checkRequiredFields();
+
+        $(document).on('change', 'input[type="radio"]', function () {
+            checkRequiredFields();
+        });
+
+        $('#btnSave').on('click', function (e) {
+            e.preventDefault();
+            if ($(form).valid()) {
+                showLoader();
+                $(form).submit();
+            }
+        });
+    });
+</script>

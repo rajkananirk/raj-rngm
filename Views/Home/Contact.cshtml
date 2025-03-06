@@ -1,0 +1,410 @@
+﻿@model CP_Contact
+@inject IConfiguration Configuration
+
+@{
+    ViewData["Title"] = "Contact Us";
+    var siteKey = Configuration.GetSection("GoogleRecaptchaV3").GetSection("Sitekey").Value ?? "";
+    var server = Configuration.GetSection("TenantServer").GetSection("Server").Value ?? "";
+}
+
+<input type="hidden" asp-for="IsMemberResumeSelected"/>
+
+@if (server.Equals("HealthWorks") || CommonFunctions.GetActiveTenant().DomainDirectory == "jnj")
+{
+    <section class="sign-up-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 text-center">
+                    @if (server.Equals("HealthWorks"))
+                    {
+                        <img class="mw-100 mt-lg-4 mt-0 mb-4 mb-lg-0" src="/portal/tenant/elevancehealth/images/sign-up.png">
+                    }
+                    else
+                    {
+                        @await Html.PartialAsync("_RenderSections")
+                    }
+
+                </div>
+                <div class="col-lg-7">
+                    <form asp-antiforgery="true" asp-controller="Home" asp-action="Contact" method="post" id="frm">
+
+                        <input type="hidden" name="googleCaptcha" id="googleCaptcha" value="" />
+                        <input type="hidden" name="googleCaptchaAction" id="googleCaptchaAction" value="Case_Management" />
+
+                        <div class="sign-up-block">
+                            <h1 class="mb-0 text-center text-md-start">Contact Us</h1>
+                            <p class="contact-us-desc mb-2">If you need our team's support or have any questions, please fill out the form below.</p>
+                            <small><span class="required">*</span> Indicates a required field</small>
+                            <div class="row mt-2">
+                                <div class="col-xl-5 col-lg-6 col-md-6 mb-4">
+                                    <label for="ContactUserTypeId" class="form-label">Who are you? <span class="required">*</span></label>
+                                    <select aria-describedby="ContactUserTypeId-error" aria-label="Who are you?" asp-for="ContactUserTypeId"
+                                            asp-items="@(new SelectList(DropdownFunctions.GetAllContactUserTypes(), "value", "text"))"
+                                            class="form-select"></select>
+                                    <span asp-validation-for="ContactUserTypeId" id="ContactUserTypeId-error"></span>
+                                </div>
+                                <div class="col-xl-5 col-lg-6 col-md-6 mb-4">
+                                    <label for="ContactReason" class="form-label">Reason for contact <span class="required">*</span></label>
+                                    <select aria-describedby="ContactReason-error" aria-label="Reason for contact" class="form-select" asp-for="ContactReason">
+                                        <option>--Select--</option>
+                                    </select>
+                                    <span asp-validation-for="ContactReason" id="ContactReason-error"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-5 col-lg-6 col-md-6 mb-4">
+                                    <label for="FirstName" class="form-label">First Name <span class="required">*</span></label>
+                                    <input aria-describedby="FirstName-error" aria-labelledby="FirstName" asp-for="FirstName" type="text" id="FirstName" class="form-control" placeholder="Type your first name" required />
+                                    <span asp-validation-for="FirstName" id="FirstName-error"></span>
+                                </div>
+                                <div class="col-xl-5 col-lg-6 col-md-6 mb-4">
+                                    <label for="LastName" class="form-label">Last Name <span class="required">*</span></label>
+                                    <input aria-describedby="LastName-error" asp-for="LastName" aria-labelledby="LastName" type="text" id="LastName" class="form-control" placeholder="Type your last name" required />
+                                    <span asp-validation-for="LastName" id="LastName-error"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-5 col-lg-6 col-md-6 mb-4">
+                                    <label for="Email" class="form-label">Email <span class="required">*</span></label>
+                                    <input aria-describedby="Email-error" type="text" class="form-control" asp-for="Email" id="Email" placeholder="Your email id" required />
+                                    <span asp-validation-for="Email" id="Email-error"></span>
+                                </div>
+                                <div class="col-xl-5 col-lg-6 col-md-6 mb-4">
+                                    <label for="Phone" class="form-label">Phone Number <span id="Required-Phone" class="required d-none">*</span></label>
+                                    <input aria-describedby="Phone-error" type="text" class="form-control" asp-for="Phone" placeholder="Your phone number" />
+                                    <span id="Phone-error" class="field-validation-error" asp-validation-for="Phone"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <fieldset>
+                                        <legend for="BestTimetoContact" class="form-label">Preferred communication method <span id="Required-Phone" class="required">*</span></legend>
+                                        <div class="form-check form-check-inline">
+                                            <input onchange="UpdateBestTimetoContact()" asp-for="BestTimetoContact" class="form-check-input" type="radio" id="BestTimetoContactEmail" value="Email" checked required>
+                                            <label class="form-check-label" for="BestTimetoContactEmail">Email</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input onchange="UpdateBestTimetoContact()" asp-for="BestTimetoContact" class="form-check-input" type="radio" id="BestTimetoContactPhone" value="Phone" required>
+                                            <label class="form-check-label" for="BestTimetoContactPhone">Phone</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input onchange="UpdateBestTimetoContact()" asp-for="BestTimetoContact" class="form-check-input" type="radio" id="BestTimetoContactSMS" value="SMS" required>
+                                            <label class="form-check-label" for="BestTimetoContactSMS">Text Message (SMS)</label>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-5 col-lg-6 col-md-6 mb-4">
+                                    @*<label for="Location" class="form-label">Location(Optional) </label>
+                                        <input type="text" class="form-control" asp-for="Location" placeholder="City, State" />
+                                        <span asp-validation-for="Location"></span>*@
+
+                                    <label for="Zipcode" class="form-label">Zip Code </label>
+                                    <input type="text" class="form-control" asp-for="Zipcode" />
+                                    <span asp-validation-for="Zipcode"></span>
+                                    <div>
+                                        <small class="text-dark" id="zipCodeAddres"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <label for="Message" class="form-label">Message <span class="required">*</span></label>
+                                    <textarea aria-describedby="Message-error" class="form-control" asp-for="Message" rows="4" required placeholder="Hi, I need help while looking for jobs because..."></textarea>
+                                    <span asp-validation-for="Message" id="Message-error"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button id="btnSubmit" class="mx-auto mx-md-0 btn-primary ladda-button d-flex align-items-center" data-spinner-color="#fff" data-style="slide-up">
+                                        <span class="me-2">Submit</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 28 28" fill="none" role="img" aria-labelledby="title" aria-hidden="true">
+                                            <title id="title">Submit contact form</title>
+                                            <path d="M4.3645 1.64255L25.9035 13.4889C25.995 13.5392 26.0712 13.6132 26.1243 13.7031C26.1775 13.793 26.2055 13.8955 26.2055 13.9999C26.2055 14.1043 26.1775 14.2068 26.1243 14.2967C26.0712 14.3865 25.995 14.4605 25.9035 14.5109L4.3645 26.3572C4.27569 26.4061 4.17567 26.4309 4.07432 26.4294C3.97296 26.4278 3.87377 26.3999 3.78651 26.3483C3.69924 26.2967 3.62693 26.2233 3.57669 26.1352C3.52645 26.0472 3.50002 25.9476 3.5 25.8462V2.15355C3.50002 2.05218 3.52645 1.95257 3.57669 1.86453C3.62693 1.77649 3.69924 1.70306 3.78651 1.65148C3.87377 1.5999 3.97296 1.57195 4.07432 1.57038C4.17567 1.56882 4.27569 1.59369 4.3645 1.64255ZM5.83333 15.1665V22.8864L21.9917 13.9999L5.83333 5.11338V12.8332H11.6667V15.1665H5.83333Z" fill="white" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    @await Html.PartialAsync("_RenderSections")
+
+    <!-- Contact Us page design starts -->
+    <section class="contact-us">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-10">
+                    <div class="contact-title-block">
+                        <form asp-antiforgery="true" asp-controller="Home" asp-action="Contact" method="post" id="frm">
+                            <input type="hidden" name="googleCaptcha" id="googleCaptcha" value="" />
+                            <input type="hidden" name="googleCaptchaAction" id="googleCaptchaAction" value="Case_Management" />
+
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <p class="required-fields-text">All fields marked with an asterik (<span class="required">*</span>) are required</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label for="ContactUserTypeId" class="form-label">Who are you test? <span class="required">*</span></label>
+                                    <select aria-describedby="ContactUserTypeId-error" aria-label="Who are you?" asp-for="ContactUserTypeId"
+                                            asp-items="@(new SelectList(DropdownFunctions.GetAllContactUserTypes(), "value", "text"))"
+                                            class="form-select"></select>
+                                    <span asp-validation-for="ContactUserTypeId" id="ContactUserTypeId-error"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label for="ContactReason" class="form-label">Reason for contact <span class="required">*</span></label>
+                                    <select aria-describedby="ContactReason-error" aria-label="Reason for contact" class="form-select" asp-for="ContactReason">
+                                        <option>--Select--</option>
+                                    </select>
+                                    <span asp-validation-for="ContactReason" id="ContactReason-error"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-xl-6 col-md-6 mb-5 mb-md-0">
+                                    <label for="FirstName" class="form-label">First Name <span class="required">*</span></label>
+                                    <input aria-describedby="FirstName-error" asp-for="FirstName" type="text" id="FirstName" class="form-control" placeholder="Charlie" required />
+                                    <span asp-validation-for="FirstName" id="FirstName-error"></span>
+                                </div>
+                                <div class="col-xl-6 col-md-6">
+                                    <label for="LastName" class="form-label">Last Name <span class="required">*</span></label>
+                                    <input aria-describedby="LastName-error" asp-for="LastName" type="text" id="LastName" class="form-control" placeholder="Doe" required />
+                                    <span asp-validation-for="LastName" id="LastName-error"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-xl-6 col-md-6 mb-5 mb-md-0">
+                                    <label for="Email" class="form-label">Email <span class="required">*</span></label>
+                                    <input aria-describedby="Email-error" type="email" class="form-control" asp-for="Email" id="Email" placeholder="name@companyemail.com" required />
+                                    <span asp-validation-for="Email" id="Email-error"></span>
+                                </div>
+                                <div class="col-xl-6 col-md-6 iti">
+                                    <label for="Phone" class="form-label">Phone <span id="Required-Phone" class="required d-none">*</span></label>
+                                    <input aria-describedby="Phone-error" type="text" class="form-control" asp-for="Phone" />
+                                    <span id="Phone-error" class="field-validation-error" asp-validation-for="Phone"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3 d-none" id="Content-Location">
+                                <div class="col-xl-6 col-md-6 mb-5 mb-md-0">
+                                    <label for="Location" class="form-label">Location <span class="required">*</span></label>
+                                    <input aria-describedby="Location-error" type="text" class="form-control" asp-for="Location" placeholder="City, State" />
+                                    <span asp-validation-for="Location" id="Location-error"></span>
+                                </div>
+                                <div class="col-xl-6 col-md-6 iti">
+                                    <label for="Country" class="form-label">Country <span class="required">*</span></label>
+                                    <select class="form-select" asp-for="Country"
+                                            asp-items="@(new SelectList(DropdownFunctions.GetAllCountry(), "text", "text"))">
+                                    </select>
+                                    <span asp-validation-for="Country"></span>
+                                </div>l
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-xl-12 col-md-12">
+                                    <fieldset>
+                                        <legend for="BestTimetoContact" class="form-label">What is the best way to contact you?</legend>
+                                        <div class="form-check form-check-inline">
+                                            <input onchange="UpdateBestTimetoContact()" asp-for="BestTimetoContact" class="form-check-input" type="radio" id="BestTimetoContactEmail" value="Email" checked>
+                                            <label class="form-check-label" for="BestTimetoContactEmail">Email</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input onchange="UpdateBestTimetoContact()" asp-for="BestTimetoContact" class="form-check-input" type="radio" id="BestTimetoContactPhone" value="Phone">
+                                            <label class="form-check-label" for="BestTimetoContactPhone">Phone</label>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label for="Message" class="form-label">Message <span class="required">*</span></label>
+                                    <textarea aria-describedby="Message-error" class="form-control" asp-for="Message" rows="4" placeholder="Hi! I need help while looking for jobs because..." required></textarea>
+                                    <span asp-validation-for="Message" id="Message-error"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12 text-center text-md-start">
+                                    <button id="btnSubmit" class="btn-primary  w-100 ladda-button" data-spinner-color="#fff" data-style="slide-up">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+
+
+@section Scripts
+{
+
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=@(siteKey)"></script>
+    <script src="~/lib/jquery-mask/dist/jquery.mask.js"></script>
+    <script src="~/scripts/zipcode-autocomplete.js" asp-append-version="true"></script>
+
+    <script>
+        var contactReason = '';
+
+        $(function () {
+
+            $('#Phone').mask('(000) 000-0000');
+
+            $("#frm").on("invalid-form", function () {
+                var firstErrorElement = $(this).find(".input-validation-error").first();
+                if (firstErrorElement.length) {
+                    firstErrorElement.focus();
+                } else {
+                    $('#ContactUserTypeId').focus();
+                }
+            });
+
+
+            $('#btnSubmit').on('click', function (e) {
+                e.preventDefault();
+                if ($("#frm").valid()) {
+                    var ladda = window.laddaStart('btnSubmit');
+                    grecaptcha.enterprise.ready(function () {
+                        grecaptcha.enterprise.execute('@siteKey', { action: $('#googleCaptchaAction').val() }).then(function (token) {
+                            $('#googleCaptcha').val(token);
+                            $('#frm').submit();
+                        });
+                    });
+                } else {
+
+                }
+            });
+
+            $('#ContactUserTypeId').on('change', function () {
+                if ($("#ContactUserTypeId option:selected").text() === "Job Seeker") {
+                    $('#Content-Location').removeClass('d-none');
+                } else {
+                    $('#Content-Location').addClass('d-none');
+                }
+
+                loadContactReason();
+            });
+
+            loadContactReason();
+
+            if ($('#IsMemberResumeSelected').val() == "true" || $('#IsMemberResumeSelected').val() == "True") {
+                var $dropdown = $('#ContactUserTypeId');   
+
+                // Find the option by text and set it as selected
+                $dropdown.find("option").filter(function () {
+                    return $(this).text() == "Member";
+                }).prop("selected", true);
+
+                contactReason = 'Resume Assistance';
+
+                // Trigger the change event
+                $dropdown.trigger("change");
+            }
+
+            $("#frm").validate({
+                rules: {
+                    "ContactUserTypeId": {
+                        required: true
+                    }
+                },
+                messages: {
+                    "ContactUserTypeId": {
+                        required: "User type is required. Please enter User type."
+                    }
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                }
+            });
+        });
+
+        function UpdateBestTimetoContact() {
+            if ($("input[name='BestTimetoContact']:checked").val() === "Email") {
+                $('#Required-Phone').addClass('d-none');
+                $("#Phone").attr("required", false);
+                $('#Phone').rules("remove", "required");
+                $('#Error-Phone').html('');
+                $('#Phone').removeClass('input-validation-error');
+            } else {
+                $('#Required-Phone').removeClass('d-none');
+                $("#Phone").attr("required", true);
+                $('#Phone').rules("add", {
+                    required: true, messages: {
+                        required: "Phone is required. Please enter your Phone."
+                    }
+                });
+            }
+        }
+
+
+        function loadContactReason() {
+            $.ajax({
+                url: '@Url.Action("GetAllContactReasonsCaseManagement", "Base")',
+                type: 'POST',
+                async: false,
+                data: { contactUserTypeId: $('#ContactUserTypeId').val() },
+                dataType: "json",
+                success: function (response) {
+                    var html = '';
+                    if (response.status) {
+                        html += '<option value="">-- Select --</option> ';
+                        for (var i = 0; i < response.data.length; i++) {
+                            if (i > 0) {
+                                html += '<option value="' + response.data[i].text + '"> ' + response.data[i].text + ' </option> ';
+                            }
+                        }
+                    } else {
+                        html += '<option value="">-- Select --</option> ';
+                    }
+                    $('#ContactReason').html(html);
+                    if (contactReason != '') {
+                        $('#ContactReason').val(contactReason);
+                        contactReason = '';
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        $(function () {
+            ZipCodeAutoComplete("#Zipcode", "#zipCodeAddres", '#CountryId');
+
+            ZipCodeAutoCompleteBindOnPaste("#Zipcode");
+
+            $('#Zipcode').keypress(function () {
+                $("#Zipcode").rules("add", {
+                    remote: {
+                        url: baseZipcodeUrl,
+                        type: "GET",
+                        data: {
+                            CountryId: $("#CountryId").val()
+                        }
+                    },
+                    messages: {
+                        remote: "Please enter a valid zip code."
+                    }
+                });
+            });
+            $('#Zipcode').blur(function () {
+                if ($(this).val() === "" || $(this).val() === " ") {
+                    $("#zipCodeAddres").text("");
+                }
+            });
+        });
+    </script>
+}

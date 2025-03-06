@@ -1,0 +1,55 @@
+﻿@inject IConfiguration Configuration
+
+@{
+    
+    Layout = null;
+    var sections = CommonFunctions.GetAllTenantSectionTxn();
+    var server = Configuration.GetSection("TenantServer").GetSection("Server").Value ?? "";
+}
+
+@if (sections != null && sections.Any())
+{
+    foreach (var item in sections.OrderBy(s => s.SortIndex).ToList())
+    {
+        if (!item.IsDynamicDataLoad)
+        {
+            @Html.Raw(item.SectionContent)
+        }
+        else
+        {
+            //code for dynamic data
+            switch (item.TenantDataSectionMasterId)
+            {
+                case (int)EnumList.TenantDataSectionMaster.FeaturedJobs:
+                    <section class="featured-jobs-section">
+                        <div class="container">
+                            @await Html.PartialAsync("_RenderFeatureJobs")
+                        </div>
+                    </section>
+                    break;
+
+                case (int)EnumList.TenantDataSectionMaster.JobSearchPanel:
+                    @if (server.Equals("HealthWorks"))
+                    { 
+                        @await Html.PartialAsync("_SearchPanel")
+                    }
+                    else
+                    {
+                        <section class="job-seeker-banner-search">
+                            <form asp-action="IndexMinimal" asp-controller="Jobs" method="post" asp-antiforgery="true">
+                                <div class="search-job-block">
+                                    <h2>Search a Job</h2>
+                                    <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Add a job keyword">
+                                    <select class="form-select mx-md-3 mx-0 my-3 my-md-0"
+                                            id="countryId" name="countryId"
+                                            asp-items="@(new SelectList(DropdownFunctions.GetAllCountry(), "value", "text", "1"))"> </select>
+                                    <button type="submit" class="btn-secondary">Search</button>
+                                </div>
+                            </form>
+                        </section>
+                    }
+                    break;
+            }
+        }
+    }
+}

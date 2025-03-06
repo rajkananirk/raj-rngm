@@ -1,0 +1,325 @@
+﻿@model CP_JobPageVm
+
+@{
+    ViewData["Title"] = "Jobs";
+
+}
+
+<input type="hidden" asp-for="Search.IsNationwideJob" />
+<!-- Search jobs filter code starts -->
+<section class="search-jobs-filter">
+    <div class="container-fluid">
+        <div class="search-block">
+            <div class="row align-items-start justify-content-end">
+                <div class="col-xxl-2 col-xl-2 col-lg-12">
+                    <h1 class="search-title mt-4 pt-2">Search Jobs</h1>
+                </div>
+                <div class="col-xxl-3 col-xl-3 col-lg-4 mt-3 mt-lg-0">
+                    <div class="keyword-job-title">
+                        <label for="Search_Keywords" class="form-label">Keyword or Job Title</label>
+                        <input type="text" class="form-control" asp-for="Search.Keywords" placeholder="Java Developer">
+                    </div>
+                </div>
+                <div class="col-xxl-2 col-xl-3 col-lg-3 mt-3 mt-lg-0">
+                    <div class="country-block">
+                        <label for="Search_CountryID" class="form-label">Country</label>
+                        <input asp-for="Search.CountryID" type="hidden" />
+                        <select class="form-select" disabled="disabled"
+                                asp-items="@(new SelectList(DropdownFunctions.GetAllCountry(),"value","text"))">  </select>
+                        @*<select class="form-select" asp-for="Search.CountryID"
+                                    asp-items="@(new SelectList(DropdownFunctions.GetAllCountry(), "value", "text"))">
+                            </select>*@
+                    </div>
+                </div>
+                <div class="col-xxl-3 col-xl-4 col-lg-5 mt-3 mt-lg-0">
+                    <div class="location-city-state">
+                        <label for="Search_Location" class="form-label">Location (City, State, Postal Code)</label>
+                        <input asp-for="Search.Location" type="text" class="form-control" placeholder="Location (City, State, Postal Code)">
+                    </div>
+                </div>
+                <div class="col-xxl-2 col-xl-4 mt-3 mt-xxl-0 text-center text-xl-end">
+                    <div class="search-btns mt-xxl-4 pt-2">
+                        <button id="btnSubmit" onclick="searchJob()" class="btn-primary ladda-button" data-spinner-color="#fff" data-style="slide-up">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Search jobs filter code ends -->
+<!-- Job listing code starts -->
+<section class="job-listing-section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-5 d-none">
+                <div class="job-listing-filter">
+                    <div class="filter-title">
+                        <span>Filters</span>
+                        <a href="#">Reset Filters</a>
+                    </div>
+                    <div class="filters">
+                        <div class="filter-block mt-3">
+                            <div class="filter-block-title mb-2" data-bs-toggle="collapse" data-bs-target="#OnSiteRemoteStatus" role="button" aria-expanded="true" aria-controls="OnSiteRemoteStatus">
+                                <span>By On-site/Remote Status</span>
+                                <i class="fa fa-angle-up"></i>
+                            </div>
+                            <div class="collapse filter-types show" id="OnSiteRemoteStatus">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxOne">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxOne">All <span>350</span></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxTwo">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxTwo">On-site <span>135</span></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxThree">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxThree">Completely Remote <span>128</span></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxFour">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxFour">Location-based Remote <span>121</span></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxFive">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxFive">Hybrid Remote <span>108</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="filter-block mt-3">
+                            <div class="filter-block-title mb-2" data-bs-toggle="collapse" data-bs-target="#ByLocation" role="button" aria-expanded="true" aria-controls="ByLocation">
+                                <span>By Location</span>
+                                <i class="fa fa-angle-up"></i>
+                            </div>
+                            <div class="collapse filter-types show" id="ByLocation">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxSix">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxSix">ALL</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxSeven">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxSeven">Edmonton, Alberta <span>87</span></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxEight">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxEight">Regina, Saskatchewan <span>81</span></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxNine">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxNine">Vancouver, British Columbia <span>75</span></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxTen">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxTen">Victoria, British Columbia <span>45</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <a href="#" class="view-more-link">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="filter-block mt-3">
+                            <div class="filter-block-title mb-2" data-bs-toggle="collapse" data-bs-target="#ByIndustry" role="button" aria-expanded="false" aria-controls="ByIndustry">
+                                <span>By Industry</span>
+                                <i class="fa fa-angle-up"></i>
+                            </div>
+                            <div class="collapse filter-types" id="ByIndustry">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxSix">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxSix">ALL</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxSeven">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxSeven">Edmonton, Alberta <span>87</span></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxEight">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxEight">Regina, Saskatchewan <span>81</span></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxNine">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxNine">Vancouver, British Columbia <span>75</span></label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="CheckboxTen">
+                                            <label class="form-check-label checkbox-dark" for="CheckboxTen">Victoria, British Columbia <span>45</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <a href="#" class="view-more-link">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* <div class="col-xl-9 col-lg-8 col-md-7">*@
+            <div class="col-md-12" id="Content-JobList">
+                @await Html.PartialAsync("_JobList", Model.Jobs)
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Job listing code ends -->
+
+@section Scripts{
+    <script>
+     var locationUrl = '@Url.Action("GetLocation", "Jobs")';
+    </script>
+
+    <script>
+        $(function () {
+            // Get the current URL
+            var currentUrl = window.location.href;
+
+            // Remove the query string from the URL
+            var updatedUrl = currentUrl.split('?')[0];
+
+            // Update the URL without the query string
+            window.history.replaceState({ path: updatedUrl }, '', updatedUrl);
+        });
+    </script>
+
+
+    @*Tagify init*@
+    <script>
+
+        var whitelist = JSON.parse($("<div/>").html('@JsonConvert.SerializeObject(Model.TagifyVms)').text());
+        var tagify;
+
+        if (whitelist === null) {
+            whitelist = [];
+        }
+
+        $(document).ready(function () {
+            var input = document.getElementById('Search_Location');
+            var controller; // for aborting the call
+
+            tagify = new Tagify(input, {
+                enforceWhitelist: true,
+                delimiters: null,
+                whitelist: whitelist,
+                dropdown: {
+                    closeOnSelect: true,
+                    highlightFirst: true
+                }
+            });
+
+            // listen to any keystrokes which modify tagify's input
+            tagify.on('input', onInput);
+
+            tagify.on('change', function (e) {
+                //if (tagify.value.length <= 1)
+                //    $("#RadiusID").attr("disabled", false);
+                //else {
+                //    $('#RadiusID').val('0');
+                //    $("#RadiusIDVal").html("0");
+                //    $("#RadiusID").attr("disabled", true);
+                //}
+            });
+
+            function onInput(e) {
+                var value = e.detail.value;
+                tagify.settings.whitelist.length = 0; // reset the whitelist
+
+                controller && controller.abort();
+                controller = new AbortController();
+
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    ContentType: 'application/json; charset=utf-8',
+                    url: locationUrl,
+                    datatype: "jsonp",
+                    data: {
+                        'query': value, 'countryId': $('#Search_CountryID').val(), __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        if (response.status && response.data.length > 0) {
+                            tagify.settings.whitelist = response.data;
+                        }
+                    },
+                    beforeSend: function () {
+                        // show loading animation and hide the suggestions dropdown
+                        tagify.loading(true).dropdown.hide.call(tagify)
+                    },
+                    complete: function () {
+                        tagify.loading(false).dropdown.show.call(tagify, value); // render the suggestions dropdown
+                    }
+                });
+            }
+
+            tagify.on('keydown', onTagifyKeyDown)
+
+            function onTagifyKeyDown(e) {
+                if (e.detail.originalEvent.key == 'Enter'
+                ) {
+                    setTimeout(() => submitSearchData(true), 500);
+                }
+            }
+
+            $('#Search_CountryID').on('change', function () {
+                tagify.removeAllTags();
+            });
+        });
+    </script>
+
+    <script>
+        function pageChange(pageNo) {
+            $('#CurrentPage').val(pageNo);
+            filterData();
+        }
+
+        function searchJob() {
+            filterData();
+        }
+
+        function filterData() {
+
+            showLoader();
+
+            // Create a FormData object
+            var formData = new FormData();
+            formData.append('Keywords', $('#Search_Keywords').val());
+            formData.append('Location', $('#Search_Location').val());
+            formData.append('CountryID', $('#Search_CountryID').val());
+            formData.append('PageNo', $('#CurrentPage').val());
+            formData.append('PageSize', $('#PageSize').val());
+            formData.append('IsNationwideJob', $('#Search_IsNationwideJob').val());
+
+            $.ajax({
+                url: '/' + $('#HdDomainDirectory').val() + '/jobs',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    $('#Content-JobList').html(result);
+                    $('html, body').animate({ scrollTop: 0 }, 'fast');
+                    hideLoader();
+                },
+                error: function (error) {
+                    console.error(error);
+                    hideLoader();
+                }
+            });
+        }
+    </script>
+}

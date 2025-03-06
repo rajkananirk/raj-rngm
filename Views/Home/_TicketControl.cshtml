@@ -1,0 +1,190 @@
+﻿@model List<CP_RequestTypeControlVm>
+
+@{
+    Layout = null;
+    var validationData = new List<KeyValuePair<string, string>>();
+    var autoCompleteName = string.Empty;
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var i in Model.Where(s => s.IsDisplay).OrderBy(s => s.SortOrder))
+        {
+            var colClass = "col-sm-6 mb-4";
+
+
+            if (i.IsRenderOnSingleRow)
+            {
+                colClass = "col-12 mb-4";
+            }
+
+            @if (i.Type == "TEXT")
+            {
+                var key = $"TEXT_{i.RequestTypeControlID}_{i.Label.Replace(" ", string.Empty)}";
+                var maxLength = i.MaxLength != null ? i.MaxLength : 5000;
+
+                if (i.IsRequired)
+                {
+                    var message = !string.IsNullOrWhiteSpace(i.RequiredValidationMessage) ? i.RequiredValidationMessage : "This field is required. Please enter a value.";
+                    validationData.Add(new KeyValuePair<string, string>(key, message));
+                }
+
+                if (i.Label == "First Name")
+                {
+                    autoCompleteName = "given-name";
+                }
+                else if (i.Label == "Last Name")
+                {
+                    autoCompleteName = "family-name";
+                }
+                else if (i.Label == "Email")
+                {
+                    autoCompleteName = "email";
+                }
+                else if (i.Label == "Phone")
+                {
+                    autoCompleteName = "phone";
+                }
+                else if (i.Label == "Zipcode")
+                { 
+                    autoCompleteName = "postal-code";
+                }
+                 
+                <div class="@colClass">
+                    <label for="@key" class="form-label">
+                        @i.Label
+                        @if (i.Label.ToLower().Contains("phone"))
+                        {
+                            <span id="Required-Phone" class="required d-none">*</span>
+                        }
+                        else
+                        {
+                            @Html.Raw(i.IsRequired ? "<span class=\"required\">*</span>" : "")
+                        }
+                    </label>
+                    <input aria-describedby="@key-error" aria-labelledby="@i.Label"
+                           autocomplete="@autoCompleteName" type="text" id="@key" name="@key" class="form-control"
+                           placeholder="@i.Tooltip" maxlength="@maxLength" />
+                    
+
+                    @if (i.Label.ToLower().Contains("zipcode"))
+                    {
+                        <div>
+                            <small class="text-dark" id="zipCodeAddres"></small>
+                        </div>
+                        <input id="ZipcodeName" value="@key" type="hidden" />
+                    }
+
+                    @if (i.Label.ToLower().Contains("phone"))
+                    {
+                        <input id="PhoneName" value="@key" type="hidden" />
+                    }
+                </div>
+            }
+            else if (i.Type == "TEXT (MULTILINE)")
+            {
+                var key = $"TEXTAREA_{i.RequestTypeControlID}";
+
+                if (i.IsRequired)
+                {
+                    var message = !string.IsNullOrWhiteSpace(i.RequiredValidationMessage) ? i.RequiredValidationMessage : "This field is required. Please enter a value.";
+                    validationData.Add(new KeyValuePair<string, string>(key, message));
+                }
+
+                if (i.Label == "Message")
+                {
+                    autoCompleteName = "message";
+                }
+
+                <div class="@colClass">
+                    <label for="@key" class="form-label"> @i.Label @Html.Raw(i.IsRequired ? "<span class=\"required\">*</span>" : "")</label>
+                    <textarea  autocomplete="@autoCompleteName" aria-describedby="@key-error" class="form-control" id="@key" name="@key" rows="4"
+                              placeholder="@i.Tooltip"></textarea>
+                </div>
+            }
+            else if (i.Type == "RADIOLIST")
+            {
+                var key = $"RADIOLIST_{i.RequestTypeControlID}";
+
+                <div class="@colClass">
+                    <fieldset>
+                        <legend for="@key" class="form-label">@i.Label @Html.Raw(i.IsRequired ? "<span class=\"required\">*</span>" : "")</legend>
+
+                        @if (i.DataKeyValues != null)
+                        {
+                            var rCount = 0;
+                            foreach (var val in i.DataKeyValues)
+                            {
+                                var split = val.Split(",");
+
+                                if (split.Length >= 2)
+                                {
+                                    if (i.DataKey.Equals("PrefferedCommunication"))
+                                    {
+                                        <div class="form-check form-check-inline">
+                                            <input onchange="UpdateBestTimetoContact()" name="@key" id="@($"RADIOLIST_{i.RequestTypeControlID}_{split[1]}")"
+                                                   class="form-check-input" type="radio" value="@split[1]" @(rCount == 0 ? "checked" : "")>
+                                            <label class="form-check-label" for="@($"RADIOLIST_{i.RequestTypeControlID}_{split[1]}")">@split[0]</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-check form-check-inline">
+                                            <input name="@key" id="@($"RADIOLIST_{i.RequestTypeControlID}_{split[1]}")"
+                                                   class="form-check-input" type="radio" value="@split[1]" @(rCount == 0 ? "checked" : "")>
+                                            <label class="form-check-label" for="@($"RADIOLIST_{i.RequestTypeControlID}_{split[1]}")">@split[0]</label>
+                                        </div>
+                                    }
+
+                                    rCount++;
+                                }
+                            }
+                        }
+
+                    </fieldset>
+                </div>
+
+                @if (i.DataKey.Equals("PrefferedCommunication"))
+                {
+                    <input id="BestTimetoContactName" value="@key" type="hidden" />
+                }
+            }
+            else if (i.Type == "DROPDOWN")
+            {
+                var key = $"DROPDOWN_{i.RequestTypeControlID}";
+
+                if (i.IsRequired)
+                {
+                    var message = !string.IsNullOrWhiteSpace(i.RequiredValidationMessage) ? i.RequiredValidationMessage : "This field is required. Please select a value.";
+                    validationData.Add(new KeyValuePair<string, string>(key, message));
+                }
+
+                <div class="@colClass">
+                    <label for="@key" class="form-label">@i.Label @Html.Raw(i.IsRequired ? "<span class=\"required\">*</span>" : "")</label>
+                    <select aria-describedby="@($"DROPDOWN_{i.RequestTypeControlID}")-error" aria-label="@i.Label"
+                            id="@key" name="@key" class="form-select">
+                        @if (i.DataKeyValues != null)
+                        {
+                            <option value=""> - Select - </option>
+
+                            foreach (var val in i.DataKeyValues)
+                            {
+                                var split = val.Split(",");
+
+                                if (split.Length >= 2)
+                                {
+                                    <option value="@split[1]"> @split[0] </option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            }
+        }
+    </div>
+}
+
+<script>
+     var validationData = @Html.Raw(JsonConvert.SerializeObject(validationData));
+</script>

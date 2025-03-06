@@ -1,0 +1,25 @@
+﻿<h1 class="sr-only">RangamWorks</h1>
+<section class="search-section">
+    <form id="frmTaJobs" asp-action="TaJobs" asp-controller="Jobs" method="post" asp-antiforgery="true">
+        <input id="countryId" name="countryId" value="@((int)EnumList.Country.UnitedState)" type="hidden" />
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-10 col-xl-11 col-12">
+                    <div class="home-search-block" role="search">
+                        <div class="job-keyword-input">
+                            <img class="high-contrast-white" src="/portal/tenant/elevancehealth/images/search-icon.svg" alt="">
+                            <input maxlength="200" type="text" id="keywords" name="keywords" class="form-control" aria-label="Search Job Title or Keywords" placeholder="Search Job Title or Keywords">
+                        </div>
+                        <div class="city-state">
+                            <img class="high-contrast-white" src="/portal/tenant/elevancehealth/images/map-marker.svg" alt="">
+                            <input id="location" name="location" type="text" class="form-control" aria-label="City, State" placeholder="City, State">
+                        </div>
+                        <div class="submit-btn text-center">
+                            <button type="button" id="btnSearchJob" class="btn-primary ladda-button" data-style="slide-up" data-spinner-color="#ffffff">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

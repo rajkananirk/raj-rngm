@@ -1,0 +1,41 @@
+﻿@inject IConfiguration Configuration
+
+@{
+    ViewData["Title"] = "Alert";
+    var domain = Configuration.GetSection("Endpoints").GetValue<string>("ClientPortal");
+    var tenant = CommonFunctions.GetActiveTenant();
+    var tenantDir = tenant?.DomainDirectory ?? "oh";
+}
+
+
+<style>
+    .alert-page-block p {
+        padding-left: 40px;
+        font-size: 18px;
+    }
+
+        .alert-page-block p:before {
+            content: "\f33b";
+            font-family: bootstrap-icons !important;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+        }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xxl-8 col-xl-8 col-lg-10 col-12 my-5 py-5">
+            <div class="alert-page-block my-5 py-5">
+                <p class="text-danger position-relative">
+                    Your password has been set already.
+                    <a href="@($"{domain}{tenantDir}/member/login")" class="text-blue text-decoration-none">Log In.</a>
+                    <br /> If you can't remember your password, click
+                    <a asp-controller="Jobseeker" asp-action="ForgotPassword" class="text-blue text-decoration-none">Forgot Password.</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

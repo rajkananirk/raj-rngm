@@ -1,0 +1,142 @@
+﻿@inject IConfiguration Configuration
+
+@{
+    Layout = null;
+    string ChatArborInitializeURL = Configuration.GetSection("ChatArbor").GetValue<string>("EndpointInitialize") ?? string.Empty;
+    var uid = CommonFunctions.GetUserId();
+    var tokenCBValue =  ChatArborService.GetChatArborJwTToken(CommonFunctions.GetUserDisplayName() ?? "Guest",
+        CommonFunctions.GetUserEmail());
+    string ChatArborPageURL = Configuration.GetSection("ChatArbor").GetValue<string>("EndpointPage") ?? string.Empty;
+}
+
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<script>
+
+    // Make an AJAX request to fetch the chatbot HTML
+    $.ajax({
+        url: '@ChatArborPageURL',
+        type: "GET",
+        header: { "Access-Control-Allow-Origin": "*" },
+        crossDomain: true,
+        success: function (data) {
+            // Inject the fetched HTML into the container
+            $('#chatbot-artie').html(data);
+        },
+        error: function (xhr, status, error) {
+            // Handle errors here
+            console.log("Error loading chatbot HTML:", error);
+        }
+    }).done(() => {
+        $("#loader").hide();
+    });
+
+    function sendUserDetails() {
+        var tokenCB = '@tokenCBValue';
+        //if (tokenCB != undefined || tokenCB != null) {
+        updateCookie('_gatokenCB', tokenCB)
+        // }
+    }
+
+    function setchatCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        var cVal = document.cookie;
+        cVal += cname.trim() + "=" + cvalue.trim() + ";" + expires + ";path=/;secure;";
+        document.cookie = cVal;
+    }
+
+    // Function to check if a cookie exists
+    function checkCookie(cookieName) {
+        // Split the document.cookie string into individual cookies
+        var cookies = document.cookie.split('; ');
+
+        // Loop through the cookies to find the specified cookie
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].split('=');
+
+            // Trim any leading or trailing spaces in the cookie name
+            var name = cookie[0].trim();
+
+            // Check if the cookie name matches the specified name
+            if (name === cookieName) {
+                return true; // Cookie found
+            }
+        }
+
+        return false; // Cookie not found
+    }
+
+    // Function to update the value of a cookie
+    function updateCookie(cookieName, newValue) {
+        // Check if the cookie exists
+        if (checkCookie(cookieName)) {
+            // Split the document.cookie string into individual cookies
+            var cookies = document.cookie.split('; ');
+
+            // Loop through the cookies to find and update the specified cookie
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].split('=');
+
+                // Trim any leading or trailing spaces in the cookie name
+                var name = cookie[0].trim();
+
+                // Check if the cookie name matches the specified name
+                if (name === cookieName) {
+                    // Update the cookie value
+                    //document.cookie = name + '=' + newValue;
+                    var cVal = document.cookie;
+                    var d = new Date();
+                    d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
+                    var expires = "expires=" + d.toUTCString();
+                    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    cVal = name + "=" + newValue + ";" + expires + ";path=/;secure;";
+                    document.cookie = cVal;
+                    break;
+                }
+            }
+        } else {
+            setchatCookie(cookieName, newValue, 1);
+        }
+    }
+
+</script>
+
+<div id="chatbot-artie"></div>
+<link href="~/css/chatarbor.css" rel="stylesheet" />
+<script>
+
+    window.addEventListener('load', function () {
+        sendUserDetails();
+
+        var chat_id = localStorage.getItem('chat_id_Generated');
+
+        if (@uid > 0 && chat_id == null) {
+            localStorage.setItem('chat_id_Generated', true);
+            RegenerateInitialize();
+        }
+
+        function RegenerateInitialize() {
+            var storedValue = "Bearer " + '@tokenCBValue';
+
+            //if (flg == false) {
+            fetch('@ChatArborInitializeURL', {
+                method: 'GET',
+                headers: {
+                    'Authorization': storedValue,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.setItem('chat_id', data.data.chat_id);
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+        }
+    });
+
+</script>
